@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng ký tài khoản</title>
+    <link rel="stylesheet" th:href="@{/register.css}">
+</head>
+<body>
+<div class="container">
+    <h2>Đăng ký tài khoản</h2>
+    <form th:action="@{/api/auth/register}" method="post" onsubmit="return validateForm()">
+        <input type="text" name="hoTen" placeholder="Họ và tên" required>
+        <input type="tel" name="soDienThoai" placeholder="Số điện thoại" required pattern="[0-9]{9,11}">
+        <input type="date" name="ngaySinh" required>
+        <select name="gioiTinh" required>
+            <option value="">-- Chọn giới tính --</option>
+            <option value="NAM">Nam</option>
+            <option value="NU">Nữ</option>
+            <option value="KHAC">Khác</option>
+        </select>
+        <input type="email" id="email" name="email" placeholder="Email (@gmail.com)" required autocomplete="new-password">
+        <input type="password" id="password" name="password" placeholder="Mật khẩu (≥8 ký tự)" required autocomplete="new-password">
+        <button type="submit">Đăng ký</button>
+    </form>
+
+    <a href="/login">Quay lại đăng nhập</a>
+
+    <div th:if="${error}" class="error">
+        <p th:text="${error}"></p>
+    </div>
+</div>
+
+<script>
+    function validateForm() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        if (!email.endsWith("@gmail.com")) {
+            alert("Email phải có đuôi @gmail.com");
+            return false;
+        }
+        if (password.length < 8) {
+            alert("Mật khẩu phải có ít nhất 8 ký tự");
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

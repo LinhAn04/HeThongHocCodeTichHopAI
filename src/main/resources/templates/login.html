@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập - Hệ thống học code AI</title>
+    <link rel="stylesheet" th:href="@{/login.css}">
+</head>
+<body>
+<div class="container">
+    <h2>Đăng nhập</h2>
+    <form th:action="@{/api/auth/login}" method="post" autocomplete="off">
+        <input type="email" name="email" placeholder="Email (@gmail.com)" required autocomplete="new-password">
+        <input type="password" name="password" placeholder="Mật khẩu" required autocomplete="new-password">
+        <button type="submit">Đăng nhập</button>
+    </form>
+    <a href="/register">Chưa có tài khoản? Đăng ký ngay</a>
+    <div th:if="${message}" style="color:green; margin-bottom:10px;">
+        <p th:text="${message}"></p>
+    </div>
+
+    <div th:if="${error}" style="color:red; margin-bottom:10px;">
+        <p th:text="${error}"></p>
+    </div>
+
+</div>
+</body>
+</html>

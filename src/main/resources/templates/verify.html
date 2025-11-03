@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Xác thực tài khoản</title>
+  <link rel="stylesheet" th:href="@{/verify.css}">
+</head>
+<body>
+<div class="box">
+  <h2>Nhập mã xác thực</h2>
+  <form th:action="@{/api/auth/verify-code}" method="post">
+    <input type="hidden" name="email" th:value="${email}">
+    <input type="text" name="code" placeholder="Nhập mã 6 số" required>
+    <button type="submit">Xác nhận</button>
+  </form>
+  <div th:if="${error}" style="color:red;margin-top:10px;">
+    <p th:text="${error}"></p>
+  </div>
+  <div th:if="${message}" style="color:green;margin-top:10px;">
+    <p th:text="${message}"></p>
+  </div>
+</div>
+</body>
+</html>

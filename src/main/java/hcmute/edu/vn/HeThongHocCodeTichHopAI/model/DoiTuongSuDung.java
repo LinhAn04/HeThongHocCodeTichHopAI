@@ -23,7 +23,7 @@ public class DoiTuongSuDung {
 
     private GioiTinh gioiTinh;
 
-    private LoaiDoiTuongSuDung loaiDoiTuongSuDung = LoaiDoiTuongSuDung.KHACHHANG;
+        private LoaiDoiTuongSuDung loaiDoiTuongSuDung = LoaiDoiTuongSuDung.KHACHHANG;
 
     @DBRef // tham chiếu sang collection "tk_doi_tuong_su_dung"
     private TKDoiTuongSuDung taiKhoan;

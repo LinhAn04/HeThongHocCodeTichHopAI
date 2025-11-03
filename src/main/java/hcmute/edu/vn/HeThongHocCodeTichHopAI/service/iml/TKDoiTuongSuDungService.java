@@ -1,18 +1,30 @@
 package hcmute.edu.vn.HeThongHocCodeTichHopAI.service.iml;
 
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.TKDoiTuongSuDung;
-import org.springframework.stereotype.Service;
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.repository.DoiTuongSuDungRepository;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.repository.TKDoiTuongSuDungRepository;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.ITKDoiTuongSuDungService;
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.email.EmailService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class TKDoiTuongSuDungService implements ITKDoiTuongSuDungService {
-    private final TKDoiTuongSuDungRepository tkDoiTuongSuDungRepository;
 
-    public TKDoiTuongSuDungService(TKDoiTuongSuDungRepository tkDoiTuongSuDungRepository) {
+    private final TKDoiTuongSuDungRepository tkDoiTuongSuDungRepository;
+    private final DoiTuongSuDungRepository doiTuongSuDungRepository;
+    private final EmailService emailService;
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+    public TKDoiTuongSuDungService(
+            TKDoiTuongSuDungRepository tkDoiTuongSuDungRepository,
+            DoiTuongSuDungRepository doiTuongSuDungRepository,
+            EmailService emailService) {
         this.tkDoiTuongSuDungRepository = tkDoiTuongSuDungRepository;
+        this.doiTuongSuDungRepository = doiTuongSuDungRepository;
+        this.emailService = emailService;
     }
 
     @Override
@@ -26,8 +38,8 @@ public class TKDoiTuongSuDungService implements ITKDoiTuongSuDungService {
     }
 
     @Override
-    public TKDoiTuongSuDung save(TKDoiTuongSuDung tkDoiTuongSuDung) {
-        return tkDoiTuongSuDungRepository.save(tkDoiTuongSuDung);
+    public TKDoiTuongSuDung save(TKDoiTuongSuDung tk) {
+        return tkDoiTuongSuDungRepository.save(tk);
     }
 
     @Override
