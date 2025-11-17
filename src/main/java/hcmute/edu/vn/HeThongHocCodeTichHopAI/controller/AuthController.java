@@ -22,26 +22,26 @@ public class AuthController {
 
     @PostMapping("/register")
     public ModelAndView register(
-            @RequestParam String hoTen,
-            @RequestParam String soDienThoai,
-            @RequestParam String ngaySinh,
-            @RequestParam String gioiTinh,
             @RequestParam String email,
-            @RequestParam String password
+            @RequestParam String fullName,
+            @RequestParam String password,
+            @RequestParam(defaultValue = "STUDENT") String role
     ) {
         ModelAndView mv = new ModelAndView();
 
         if (!email.endsWith("@gmail.com")) {
             mv.setViewName("register");
-            mv.addObject("error", "Email phải có đuôi @gmail.com");
+            mv.addObject("error",
+                    "Email format is incorrect. Please re-enter.");
             return mv;
         }
 
         try {
-            authService.register(hoTen, soDienThoai, ngaySinh, gioiTinh, email, password);
+            authService.register(fullName, email, password, role);
             mv.setViewName("verify");
             mv.addObject("email", email);
-            mv.addObject("message", "Đăng ký thành công! Vui lòng kiểm tra email để nhập mã xác thực.");
+            mv.addObject("message",
+                    "Registration successful! Please check your email for verification code.");
             return mv;
         } catch (RuntimeException e) {
             mv.setViewName("register");
@@ -65,7 +65,7 @@ public class AuthController {
 
                 mv.setViewName("verify");
                 mv.addObject("email", email);
-                mv.addObject("message", "Tài khoản chưa kích hoạt. Mã xác thực mới đã được gửi đến email của bạn.");
+                mv.addObject("message", "Account not activated. New verification code has been sent to your email.");
                 return mv;
             }
 
@@ -75,7 +75,7 @@ public class AuthController {
                 mv.addObject("role", "ADMIN");
             } else {
                 mv.setViewName("dashboard_customer");
-                mv.addObject("role", "KHACHHANG");
+                mv.addObject("role", "STUDENT");
             }
 
             return mv;
@@ -96,14 +96,14 @@ public class AuthController {
         if (!valid) {
             mv.setViewName("verify");
             mv.addObject("email", email);
-            mv.addObject("error", "Mã xác thực sai hoặc đã hết hạn!");
+            mv.addObject("error", "The verification code is incorrect or has expired!");
             return mv;
         }
 
         authService.activateUser(email);
         mv.setViewName("dashboard_customer");
-        mv.addObject("role", "KHACHHANG");
-        mv.addObject("message", "Tài khoản đã được kích hoạt thành công!");
+        mv.addObject("role", "STUDENT");
+        mv.addObject("message", "Account has been activated successfully!");
         return mv;
     }
 }

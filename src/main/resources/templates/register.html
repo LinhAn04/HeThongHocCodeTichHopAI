@@ -1,49 +1,100 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <title>Đăng ký tài khoản</title>
-    <link rel="stylesheet" th:href="@{/register.css}">
+    <link rel="stylesheet" th:href="@{/css/register.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body>
-<div class="container">
-    <h2>Đăng ký tài khoản</h2>
-    <form th:action="@{/api/auth/register}" method="post" onsubmit="return validateForm()">
-        <input type="text" name="hoTen" placeholder="Họ và tên" required>
-        <input type="tel" name="soDienThoai" placeholder="Số điện thoại" required pattern="[0-9]{9,11}">
-        <input type="date" name="ngaySinh" required>
-        <select name="gioiTinh" required>
-            <option value="">-- Chọn giới tính --</option>
-            <option value="NAM">Nam</option>
-            <option value="NU">Nữ</option>
-            <option value="KHAC">Khác</option>
-        </select>
-        <input type="email" id="email" name="email" placeholder="Email (@gmail.com)" required autocomplete="new-password">
-        <input type="password" id="password" name="password" placeholder="Mật khẩu (≥8 ký tự)" required autocomplete="new-password">
-        <button type="submit">Đăng ký</button>
-    </form>
+<body class="register-page">
+<div class="register-wrapper">
+    <div class="register-card">
+        <h2 class="register-title">Sign up</h2>
+        <p><strong>Already have an account?</strong> <a href="/login">Sign in</a></p>
 
-    <a href="/login">Quay lại đăng nhập</a>
+        <form th:action="@{/api/auth/register}" method="post" onsubmit="return validateForm()">
+        <div class="form-grid">
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input id="email" name="email" type="text" required placeholder="Email address">
+                </div>
 
-    <div th:if="${error}" class="error">
-        <p th:text="${error}"></p>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-wrapper">
+                        <input id="password" name="password" type="password" required placeholder="Password">
+                        <span class="toggle-password" id="togglePassword">
+                            <img src="/images/eye_hidepass.png" alt="Toggle password">
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="fullName">Full name</label>
+                    <input id="fullName" name="fullName" type="text" required placeholder="Full name">
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <select id="role" name="role">
+                        <option value="">Student</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit">Sign up</button>
+            <div id="error-popup" class="popup hidden"></div>
+        </form>
     </div>
 </div>
 
 <script>
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    togglePassword.addEventListener('click', () => {
+        const isHidden = passwordInput.getAttribute('type') === 'password';
+
+        // Đổi type input
+        passwordInput.setAttribute('type', isHidden ? 'text' : 'password');
+
+        // Đổi icon
+        const img = togglePassword.querySelector('img');
+        img.src = isHidden ? '/images/eye_seepass.png' : '/images/eye_hidepass.png';
+    });
+
     function validateForm() {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        if (!email.endsWith("@gmail.com")) {
-            alert("Email phải có đuôi @gmail.com");
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const popup = document.getElementById('error-popup');
+
+        email.classList.remove('error-field');
+        password.classList.remove('error-field');
+        popup.classList.add('hidden');
+
+        if (!email.value.includes('@')) {
+            email.classList.add('error-field');
+            popup.textContent = 'Email format is incorrect. Please re-enter.';
+            popup.classList.remove('hidden');
             return false;
         }
-        if (password.length < 8) {
-            alert("Mật khẩu phải có ít nhất 8 ký tự");
+
+        if (password.value.length < 8) {
+            password.classList.add('error-field');
+            popup.textContent = 'Password must be at least 8 characters.';
+            popup.classList.remove('hidden');
             return false;
         }
+
         return true;
     }
+
+    document.querySelectorAll('input, select').forEach(input => {
+        input.addEventListener('focus', () => {
+            input.classList.remove('error-field');
+            document.getElementById('error-popup').classList.add('hidden');
+        });
+    });
 </script>
 </body>
 </html>

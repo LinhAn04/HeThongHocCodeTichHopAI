@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* hoặc min-height: 100vh */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url("/images/ErrorBG2.jpg") no-repeat center center fixed;
+    background-size: cover;
+    font-family: "Inria Sans", sans-serif;
+    color: #ffffff;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+    padding: 40px;
+    max-width: 900px;
+}
+
+.content {
+    flex: 1;
+}
+
+.logo {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 2rem;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 16px;
+    color: #fff;
+}
+
+p {
+    font-size: 1.5rem;
+    line-height: 1.6;
+}
+
+.note {
+    margin-top: 12px;
+}
+
+.muted {
+    color: #999;
+}
+
+.robot img {
+    max-width: 300px;
+    filter: brightness(1.2);
+}

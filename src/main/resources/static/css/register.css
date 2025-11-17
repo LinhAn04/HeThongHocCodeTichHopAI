@@ -1,62 +1,163 @@
+@import url("https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&display=swap");
+
 body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #4ca1af, #c4e0e5);
+    margin: 0;
+    font-family: 'Inria Sans', sans-serif;
+}
+
+body.register-page {
+    background: url("/images/BackGround.jpg") no-repeat center bottom fixed;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
+    color: #fff;
 }
 
-.container {
-    background: #fff;
+.register-wrapper {
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.register-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
     padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    width: 420px;
-    text-align: center;
-}
-
-h2 {
-    color: #333;
-    margin-bottom: 25px;
-}
-
-input, select {
+    border-radius: 12px;
+    max-width: 720px;
     width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
-button {
-    width: 100%;
-    padding: 12px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
+.register-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 
-button:hover {
-    background: #0056b3;
+form > p {
+    margin-bottom: 24px;
 }
 
 a {
-    display: block;
-    margin-top: 15px;
-    color: #007bff;
+    color: #bbb;
     text-decoration: none;
 }
 
 a:hover {
+    color: #fff;
     text-decoration: underline;
 }
 
-.error {
-    color: red;
-    margin-top: 10px;
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 6px;
+    font-size: 1rem;
+}
+
+input {
+    padding: 10px 14px;
+    padding-right: 40px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.95);
+    font-size: 1rem;
+    color: #000;
+}
+
+select {
+    padding: 10px 14px;
+    padding-right: 40px; /* Để tránh icon bị sát viền */
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.95);
+    font-size: 1rem;
+    color: #000;
+    appearance: none;             /* Ẩn icon mặc định */
+    -webkit-appearance: none;    /* Safari */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+input::placeholder {
+    color: #555;
+}
+
+.password-wrapper {
+    position: relative;
+    width: 84%;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 40px;
+}
+
+
+.toggle-password {
+    position: absolute;
+    right: -38px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.toggle-password img {
+    width: 20px;
+    height: 20px;
+}
+
+button {
+    margin-top: 24px;
+    padding: 10px 24px;
+    background-color: #6c757d;
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+button:hover {
+    background-color: #5a6268;
+}
+
+.popup {
+    margin-top: 16px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background-color: #ffdddd;
+    color: #990000;
+    font-size: 0.95rem;
+}
+
+.popup.hidden {
+    display: none;
+}
+
+.error-field {
+    border: 2px solid red !important;
+}
+
+@media (max-width: 700px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
 }

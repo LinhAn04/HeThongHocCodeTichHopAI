@@ -7,7 +7,7 @@ html, body {
 
 body.login-page {
     height: 100%;
-    background: url("/images/BG4.jpg") no-repeat center center fixed;
+    background: url("/images/BackGround.jpg") no-repeat center bottom  fixed;
     background-size: cover;
     display: flex;
     align-items: center;
@@ -67,7 +67,7 @@ body.login-page {
 
 .toggle-password {
     position: absolute;
-    right: 20px;
+    right: 12px;
     top: 50%;
     transform: translateY(-50%);
     width: 20px;
@@ -99,7 +99,7 @@ body.login-page {
 }
 
 .login-card a {
-    font-size: 0.85rem;
+    font-size: 1rem;
     color: #bbbbbb;
     text-decoration: none;
 }

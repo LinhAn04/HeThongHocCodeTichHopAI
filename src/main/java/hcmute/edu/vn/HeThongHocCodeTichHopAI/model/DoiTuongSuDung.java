@@ -17,7 +17,7 @@ public class DoiTuongSuDung {
 
     private String email;
 
-    private LoaiDoiTuongSuDung loaiDoiTuongSuDung = LoaiDoiTuongSuDung.KHACHHANG;
+    private LoaiDoiTuongSuDung loaiDoiTuongSuDung = LoaiDoiTuongSuDung.STUDENT;
 
     private LocalDateTime ngaySinh;
 
