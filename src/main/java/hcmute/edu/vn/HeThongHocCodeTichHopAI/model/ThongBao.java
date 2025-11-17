@@ -17,6 +17,8 @@ public class ThongBao {
 
     private LocalDateTime thoiGianDangTB;
 
+    private boolean nhanThongBao = true;
+
     @DBRef // tham chiếu sang collection "doi_tuong_su_dung"
     private DoiTuongSuDung nguoiTao;
 
@@ -33,6 +35,9 @@ public class ThongBao {
 
     public LocalDateTime getThoiGianDangTB() { return thoiGianDangTB; }
     public void setThoiGianDangTB(LocalDateTime thoiGianDangTB) { this.thoiGianDangTB = thoiGianDangTB; }
+
+    public boolean isNhanThongBao() { return nhanThongBao; }
+    public void setNhanThongBao(boolean nhanThongBao) { this.nhanThongBao = nhanThongBao; }
 
     public DoiTuongSuDung getNguoiTao() { return nguoiTao; }
     public void setNguoiTao(DoiTuongSuDung nguoiTao) { this.nguoiTao = nguoiTao; }

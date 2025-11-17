@@ -3,25 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <title>Đăng nhập - Hệ thống học code AI</title>
-    <link rel="stylesheet" th:href="@{/login.css}">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <!-- CSS custom của trang đăng nhập -->
+    <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
-<body>
-<div class="container">
-    <h2>Đăng nhập</h2>
-    <form th:action="@{/api/auth/login}" method="post" autocomplete="off">
-        <input type="email" name="email" placeholder="Email (@gmail.com)" required autocomplete="new-password">
-        <input type="password" name="password" placeholder="Mật khẩu" required autocomplete="new-password">
-        <button type="submit">Đăng nhập</button>
-    </form>
-    <a href="/register">Chưa có tài khoản? Đăng ký ngay</a>
-    <div th:if="${message}" style="color:green; margin-bottom:10px;">
-        <p th:text="${message}"></p>
-    </div>
+<body class="login-page">
 
-    <div th:if="${error}" style="color:red; margin-bottom:10px;">
-        <p th:text="${error}"></p>
-    </div>
+<div class="login-wrapper d-flex align-items-center justify-content-center">
+    <div class="login-card text-white">
 
+        <h1 class="login-title mb-2">Sign in</h1>
+        <p class="mb-4">
+            Don’t have an account?
+            <a th:href="@{/register}" class="link-light text-decoration-underline fw-semibold">
+                Sign up
+            </a>
+        </p>
+
+        <!-- Thông báo -->
+        <div th:if="${message}" class="alert alert-success py-2 mb-3" th:text="${message}"></div>
+        <div th:if="${error}" class="alert alert-danger py-2 mb-3" th:text="${error}"></div>
+
+        <form th:action="@{/api/auth/login}" method="post" autocomplete="off">
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="email" class="form-label text-light">Email address</label>
+                <input type="email"
+                       id="email"
+                       name="email"
+                       class="form-control form-control-custom"
+                       placeholder="Email address"
+                       required
+                       autocomplete="new-password">
+            </div>
+
+            <!-- Password + eye icon -->
+            <div class="mb-3 position-relative password-wrapper">
+                <label for="password" class="form-label text-light">Password</label>
+
+                <input type="password"
+                       id="password"
+                       name="password"
+                       class="form-control form-control-custom"
+                       placeholder="Password"
+                       required
+                       autocomplete="new-password">
+                <span class="toggle-password" id="togglePassword">
+                    <img src="/images/eye_hidepass.png" alt="Toggle password">
+                </span>
+            </div>
+
+            <div class="d-flex justify-content-end mb-4">
+                <a th:href="@{/forgot-password}" class="text-secondary small text-decoration-none">
+                    Forgot password?
+                </a>
+            </div>
+
+            <button type="submit" class="btn btn-signin w-100">
+                Sign in
+            </button>
+        </form>
+    </div>
 </div>
+
+<!-- Bootstrap JS -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+<!-- Toggle show/hide password -->
+<script>
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    togglePassword.addEventListener('click', () => {
+        const isHidden = passwordInput.getAttribute('type') === 'password';
+
+        // Đổi type input
+        passwordInput.setAttribute('type', isHidden ? 'text' : 'password');
+
+        // Đổi icon
+        const img = togglePassword.querySelector('img');
+        img.src = isHidden ? '/images/eye_seepass.png' : '/images/eye_hidepass.png';
+    });
+</script>
 </body>
 </html>

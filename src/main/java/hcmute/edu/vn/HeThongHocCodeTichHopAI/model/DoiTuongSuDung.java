@@ -15,15 +15,19 @@ public class DoiTuongSuDung {
 
     private String hoTen;
 
-    private String soDienThoai;
-
     private String email;
+
+    private LoaiDoiTuongSuDung loaiDoiTuongSuDung = LoaiDoiTuongSuDung.KHACHHANG;
 
     private LocalDateTime ngaySinh;
 
+    private String soDienThoai;
+
+    private String diaChi;
+
     private GioiTinh gioiTinh;
 
-        private LoaiDoiTuongSuDung loaiDoiTuongSuDung = LoaiDoiTuongSuDung.KHACHHANG;
+    private String avatar;
 
     @DBRef // tham chiếu sang collection "tk_doi_tuong_su_dung"
     private TKDoiTuongSuDung taiKhoan;
@@ -54,20 +58,26 @@ public class DoiTuongSuDung {
     public String getHoTen() { return hoTen; }
     public void setHoTen(String hoTen) { this.hoTen = hoTen; }
 
-    public String getSoDienThoai() { return soDienThoai; }
-    public void setSoDienThoai(String soDienThoai) { this.soDienThoai = soDienThoai; }
-
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
+
+    public LoaiDoiTuongSuDung getLoaiDoiTuongSuDung() { return loaiDoiTuongSuDung; }
+    public void setLoaiDoiTuongSuDung(LoaiDoiTuongSuDung loaiDoiTuongSuDung) { this.loaiDoiTuongSuDung = loaiDoiTuongSuDung; }
 
     public LocalDateTime getNgaySinh() { return ngaySinh; }
     public void setNgaySinh(LocalDateTime ngaySinh) { this.ngaySinh = ngaySinh; }
 
+    public String getSoDienThoai() { return soDienThoai; }
+    public void setSoDienThoai(String soDienThoai) { this.soDienThoai = soDienThoai; }
+
+    public String getDiaChi() { return diaChi; }
+    public void setDiaChi(String diaChi) { this.diaChi = diaChi; }
+
     public GioiTinh getGioiTinh() { return gioiTinh; }
     public void setGioiTinh(GioiTinh gioiTinh) { this.gioiTinh = gioiTinh; }
 
-    public LoaiDoiTuongSuDung getLoaiDoiTuongSuDung() { return loaiDoiTuongSuDung; }
-    public void setLoaiDoiTuongSuDung(LoaiDoiTuongSuDung loaiDoiTuongSuDung) { this.loaiDoiTuongSuDung = loaiDoiTuongSuDung; }
+    public String getAvatar () { return avatar; }
+    public void setAvatar(String avatar) { this.avatar = avatar; }
 
     public TKDoiTuongSuDung getTaiKhoan() { return taiKhoan; }
     public void setTaiKhoan(TKDoiTuongSuDung taiKhoan) { this.taiKhoan = taiKhoan; }
