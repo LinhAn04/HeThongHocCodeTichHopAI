@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="avatarPopup"
+     id="avatarPopup"
+     class="popup-container hidden">
+
+  <div class="popup-box avatar-box">
+
+    <img src="/images/avatar_user.png" class="avatar-big">
+
+    <div class="avatar-name">User Name</div>
+    <div class="avatar-email">username@gmail.com</div>
+
+    <a href="/customer/account-setting" class="btn-manage">
+      Manage your account
+    </a>
+
+    <a href="/logout" class="logout-link">Log out</a>
+  </div>
+
+</div>
+
+</body>
+</html>

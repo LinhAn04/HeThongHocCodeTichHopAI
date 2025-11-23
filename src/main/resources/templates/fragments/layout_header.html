@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <link rel="stylesheet" th:href="@{/css/header.css}">
+</head>
+
+<body>
+
+<header th:fragment="header" class="header-container">
+
+  <!-- Logo -->
+  <div class="header-left">
+    <img src="/images/logo.png" class="header-logo">
+    <div class="header-title-group">
+      <div class="header-title">Codemy</div>
+      <div class="header-subtitle">Your own code academy</div>
+    </div>
+  </div>
+
+  <!-- Notification + Avatar -->
+  <div class="header-actions">
+
+    <!-- Notification icon -->
+    <div class="header-icon-wrapper" id="notifyBtn">
+      <img src="/images/icon_bell.png" class="header-icon">
+    </div>
+
+    <!-- Avatar icon -->
+    <div class="header-icon-wrapper" id="avatarBtn">
+      <img src="/images/avatar_user.png" class="header-avatar">
+    </div>
+
+  </div>
+
+</header>
+
+<!-- POPUP NOTIFICATION -->
+<div th:replace="fragments/notification_popup :: notifyPopup"></div>
+
+<!-- POPUP AVATAR -->
+<div th:replace="fragments/avatar_popup :: avatarPopup"></div>
+
+<script th:src="@{/js/header.js}"></script>
+
+</body>
+</html>

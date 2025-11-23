@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+</head>
+
+<body>
+
+<aside th:fragment="sidebar" id="sidebar" class="sidebar">
+
+  <!-- Logo (chỉ hiện khi expanded) -->
+  <div class="sidebar-header">
+    <span class="sidebar-title">Codemy Menu</span>
+
+    <!-- Nút thu nhỏ -->
+    <button id="toggleSidebarBtn" class="toggle-btn">&lt;&lt;</button>
+  </div>
+
+  <!-- Menu list -->
+  <ul class="menu-list">
+
+    <li class="menu-item" th:classappend="${activePage=='dashboard'?'active':''}">
+      <a href="/dashboard">
+        <img src="/images/icon_dashboard.png" class="menu-icon">
+        <span class="menu-text">Dashboard</span>
+      </a>
+    </li>
+
+    <li class="menu-item has-sub"
+        th:classappend="${activePage=='courses'?'active':''}">
+      <a href="#" class="submenu-toggle">
+        <img src="/images/icon_course.png" class="menu-icon">
+        <span class="menu-text">My Courses</span>
+        <img src="/images/icon_arrow.png" class="submenu-arrow">
+      </a>
+
+      <ul class="submenu">
+        <li><a href="/courses/enrolled">Enrolled</a></li>
+        <li><a href="/courses/learning">Learning progress</a></li>
+        <li><a href="/courses/completed">Completed</a></li>
+      </ul>
+    </li>
+
+    <li class="menu-item" th:classappend="${activePage=='settings'?'active':''}">
+      <a href="/customer/account-setting">
+        <img src="/images/icon_settings.png" class="menu-icon">
+        <span class="menu-text">Account settings</span>
+      </a>
+    </li>
+
+    <li class="menu-item" th:classappend="${activePage=='billing'?'active':''}">
+      <a href="/billing">
+        <img src="/images/icon_billing.png" class="menu-icon">
+        <span class="menu-text">Billing</span>
+      </a>
+    </li>
+
+  </ul>
+
+</aside>
+
+<script th:src="@{/js/sidebar.js}"></script>
+
+</body>
+</html>

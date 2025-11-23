@@ -9,29 +9,35 @@ import java.util.List;
 
 @Service
 public class DoiTuongSuDungService implements IDoiTuongSuDungService {
-    private final DoiTuongSuDungRepository doiTuongSuDungRepository;
 
-    public DoiTuongSuDungService(DoiTuongSuDungRepository doiTuongSuDungRepository) {
-        this.doiTuongSuDungRepository = doiTuongSuDungRepository;
+    private final DoiTuongSuDungRepository repo;
+
+    public DoiTuongSuDungService(DoiTuongSuDungRepository repo) {
+        this.repo = repo;
     }
 
     @Override
     public List<DoiTuongSuDung> findAll() {
-        return doiTuongSuDungRepository.findAll();
+        return repo.findAll();
     }
 
     @Override
     public DoiTuongSuDung findById(String id) {
-        return doiTuongSuDungRepository.findById(id).orElse(null);
+        return repo.findById(id).orElse(null);
     }
 
     @Override
-    public DoiTuongSuDung save(DoiTuongSuDung doiTuongSuDung) {
-        return doiTuongSuDungRepository.save(doiTuongSuDung);
+    public DoiTuongSuDung save(DoiTuongSuDung d) {
+        return repo.save(d);
     }
 
     @Override
     public void deleteById(String id) {
-        doiTuongSuDungRepository.deleteById(id);
+        repo.deleteById(id);
+    }
+
+    @Override
+    public DoiTuongSuDung findByEmail(String email) {
+        return repo.findByEmail(email);
     }
 }

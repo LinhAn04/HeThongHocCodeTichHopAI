@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="notifyPopup"
+     id="notifyPopup"
+     class="popup-container hidden">
+
+  <div class="popup-box">
+    <div class="popup-title">Notification</div>
+
+    <!-- UI cứng để sẵn, sau này thay API -->
+    <div class="popup-item">
+      <div class="popup-item-title">Your course has been updated</div>
+      <div class="popup-item-desc">A new lesson has been added</div>
+      <div class="popup-item-time">3 days ago</div>
+    </div>
+
+    <div class="popup-item">
+      <div class="popup-item-title">Payment successful</div>
+      <div class="popup-item-desc">You have purchased Java Basic course</div>
+      <div class="popup-item-time">10 days ago</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

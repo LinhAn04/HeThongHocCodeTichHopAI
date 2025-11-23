@@ -1,0 +1,112 @@
+/* ==== SIDEBAR MAIN ==== */
+.sidebar {
+    position: fixed;
+    top: 70px; /* must match header height */
+    left: 0;
+    width: 240px;
+    height: calc(100vh - 70px);
+    background: #1d1d1d;
+    color: #fff;
+    transition: width 0.25s ease;
+    border-right: 2px solid rgba(255,255,255,0.08);
+    overflow: hidden;
+    z-index: 999;
+}
+
+/* When collapsed */
+.sidebar.collapsed {
+    width: 72px;
+}
+
+/* ===== HEADER ===== */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+}
+
+.sidebar.collapsed .sidebar-title {
+    display: none;
+}
+
+/* Collapse button */
+.toggle-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 4px 8px;
+}
+
+.sidebar.collapsed .toggle-btn {
+    transform: rotate(180deg);
+}
+
+/* ===== MENU ===== */
+.menu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu-item a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 18px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background .2s;
+}
+
+.menu-item:hover {
+    background: rgba(255,255,255,0.12);
+}
+
+.menu-item.active {
+    background: rgba(255,255,255,0.18);
+}
+
+/* Icons */
+.menu-icon {
+    width: 22px;
+}
+
+/* Hide menu text when collapsed */
+.sidebar.collapsed .menu-text {
+    display: none;
+}
+
+.sidebar.collapsed .submenu-arrow {
+    display: none;
+}
+
+/* ===== SUBMENU ===== */
+.has-sub .submenu {
+    list-style: none;
+    padding-left: 55px;
+    display: none;
+}
+
+.has-sub.open .submenu {
+    display: block;
+}
+
+.submenu a {
+    padding: 10px 0;
+    color: #ddd;
+    font-size: 0.9rem;
+}
+
+.submenu a:hover {
+    color: #fff;
+}
+
+/* Hide submenu entirely when collapsed */
+.sidebar.collapsed .submenu {
+    display: none !important;
+}

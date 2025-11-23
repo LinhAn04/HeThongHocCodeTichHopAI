@@ -9,4 +9,5 @@ public interface IDoiTuongSuDungService {
     DoiTuongSuDung findById(String id);
     DoiTuongSuDung save(DoiTuongSuDung doiTuongSuDung);
     void deleteById(String id);
+    DoiTuongSuDung findByEmail(String email);
 }
