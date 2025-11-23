@@ -52,20 +52,25 @@
                 </div>
             </div>
 
-            <!-- Thông báo lỗi -->
             <div id="login-error-popup"
-                 class="login-error-popup"
-                 th:classappend="${error != null or message != null} ? '' : ' hidden'">
+                 class="error"
+                 th:if="${error != null}">
 
-                <span th:text="${error != null ? error : message}" ></span>
+                <span th:text="${error}"></span>
 
                 <span th:if="${unverifiedEmail != null}">
-                    <a th:href="@{'/api/auth/resend-verify'(email=${unverifiedEmail})}"
+                    <a th:href="@{'/api/auth/resend-register'(email=${unverifiedEmail})}"
                        style="color:#990000; text-decoration: underline; cursor:pointer;">
                         Receive verify code to activate your account.
                     </a>
                 </span>
+            </div>
 
+            <div id="login-message-popup"
+                 class="message"
+                 th:if="${message != null}">
+
+                <span th:text="${message}"></span>
             </div>
 
             <button type="submit" class="btn-sign-in">

@@ -12,6 +12,7 @@
   <div class="otp-card">
 
     <h1 class="title">OTP code</h1>
+
     <p class="subtitle" th:if="${mode == 'register'}">
       Enter the OTP code sent to your email to verify your account.
     </p>
@@ -20,39 +21,55 @@
       Enter the OTP code sent to your email to reset password.
     </p>
 
-    <form th:action="${mode == 'register'}
-                  ? @{/api/auth/verify-register}
-                  : @{/api/auth/verify-reset}"
+    <form th:with="actionUrl=${mode == 'register'
+                          ? '/api/auth/verify-register'
+                          : '/api/auth/verify-reset-pass'}"
+          th:action="@{${actionUrl}}"
           method="post"
           onsubmit="return validateOtp(event)">
 
-    <input type="hidden" name="email" th:value="${email}"/>
+      <input type="hidden" name="email" th:value="${email}"/>
 
       <div class="otp-inputs mb-3">
-        <input maxlength="1" name="d1" class="otp-box" autocomplete="off">
-        <input maxlength="1" name="d2" class="otp-box" autocomplete="off">
-        <input maxlength="1" name="d3" class="otp-box" autocomplete="off">
-        <input maxlength="1" name="d4" class="otp-box" autocomplete="off">
-        <input maxlength="1" name="d5" class="otp-box" autocomplete="off">
-        <input maxlength="1" name="d6" class="otp-box" autocomplete="off">
+        <input maxlength="1" class="otp-box" autocomplete="off"
+               th:classappend="${error != null} ? ' error-field' : ''">
+        <input maxlength="1" class="otp-box" autocomplete="off"
+               th:classappend="${error != null} ? ' error-field' : ''">
+        <input maxlength="1" class="otp-box" autocomplete="off"
+               th:classappend="${error != null} ? ' error-field' : ''">
+        <input maxlength="1" class="otp-box" autocomplete="off"
+               th:classappend="${error != null} ? ' error-field' : ''">
+        <input maxlength="1" class="otp-box" autocomplete="off"
+               th:classappend="${error != null} ? ' error-field' : ''">
+        <input maxlength="1" class="otp-box" autocomplete="off"
+               th:classappend="${error != null} ? ' error-field' : ''">
       </div>
 
-      <!-- Error -->
-      <div th:if="${error}" class="error"
-           th:text="${error}"></div>
+      <input type="hidden" id="otp-hidden-code" name="code">
 
-      <!-- Success message -->
-      <div th:if="${message}" class="message"
+      <div id="otp-error-popup"
+           th:class="'error ' + (${error} != null ? '' : 'hidden')">
+      <span th:text="${error}"></span>
+      </div>
+
+      <div id="otp-success"
+           class="message"
+           th:if="${message}"
            th:text="${message}"></div>
 
       <div class="btn-row">
-        <a th:href="${mode == 'register'}
-                ? @{/api/auth/resend-register(email=${email})}
-                : @{/api/auth/resend-reset(email=${email})}"
+        <a th:if="${mode == 'register'}"
+           th:href="@{/api/auth/resend-register(email=${email})}"
            class="btn btn-resend">Resend OTP</a>
+
+        <a th:unless="${mode == 'register'}"
+           th:href="@{/api/auth/resend-reset-pass(email=${email})}"
+           class="btn btn-resend">Resend OTP</a>
+
         <button type="submit" class="btn-next">Next</button>
       </div>
     </form>
+
   </div>
 </div>
 
@@ -60,91 +77,100 @@
   const boxes = document.querySelectorAll(".otp-box");
 
   boxes.forEach((box, index) => {
-
-    // Chỉ cho nhập số
     box.addEventListener("input", (e) => {
       let value = box.value;
 
-      // Nếu không phải số → xóa
       if (!/^[0-9]$/.test(value)) {
         box.value = "";
         return;
       }
 
-      // Nếu nhập hợp lệ → chuyển sang ô sau
       if (value && index < boxes.length - 1) {
         boxes[index + 1].focus();
       }
     });
 
-    // Backspace → lùi về ô trước
     box.addEventListener("keydown", (e) => {
       if (e.key === "Backspace" && box.value === "" && index > 0) {
         boxes[index - 1].focus();
       }
     });
 
-    // Khi dán 1 chuỗi
     box.addEventListener("paste", (e) => {
       e.preventDefault();
-
       let paste = (e.clipboardData || window.clipboardData).getData("text");
-
-      // Lọc chỉ lấy số
       paste = paste.replace(/\D/g, "").substring(0, 6);
 
-      // Gán vào từng ô
       for (let i = 0; i < paste.length && i < boxes.length; i++) {
         boxes[i].value = paste[i];
       }
 
-      // Focus ô cuối có dữ liệu
       boxes[Math.min(paste.length, 5)].focus();
     });
   });
 
-  // Validate
+  function showOtpError(msg) {
+    const popup = document.getElementById("otp-error-popup");
+    popup.classList.remove("hidden");
+    popup.querySelector("span").textContent = msg;
+
+    // Ẩn message BE nếu đang tồn tại
+    const success = document.getElementById("otp-success");
+    if (success) success.style.display = "none";
+  }
+
+  function hideOtpError() {
+    const popup = document.getElementById("otp-error-popup");
+    popup.classList.add("hidden");
+  }
+
   function validateOtp(event) {
     const boxes = document.querySelectorAll(".otp-box");
-    const errorDiv = document.getElementById("otp-error");
 
-    // Xoá lỗi cũ
+    hideOtpError();
     boxes.forEach(b => b.classList.remove("error-field"));
-    if (errorDiv) errorDiv.textContent = "";
 
-    // Check trống
     let empty = false;
-    boxes.forEach(b => {
-      if (!b.value.trim()) empty = true;
-    });
+    boxes.forEach(b => { if (!b.value.trim()) empty = true; });
 
     if (empty) {
       event.preventDefault();
-
-      // Bôi đỏ tất cả 6 ô
       boxes.forEach(b => b.classList.add("error-field"));
+      showOtpError("OTP cannot be empty.");
 
-      // Hiện lỗi (nếu chưa có div thì tạo tạm)
-      if (errorDiv) errorDiv.textContent = "OTP cannot be empty.";
+      const success = document.getElementById("otp-success");
+      if (success) success.style.display = "none";
+
       return false;
     }
+
+    let code = "";
+    boxes.forEach(b => code += b.value);
+    document.getElementById("otp-hidden-code").value = code;
 
     return true;
   }
 
-  // Khi nhập → bỏ đỏ + ẩn lỗi
-  document.querySelectorAll(".otp-box").forEach(b => {
-    b.addEventListener("input", () => {
-      b.classList.remove("error-field");
-      const err = document.getElementById("otp-error");
-      if (err) err.textContent = "";
+  document.querySelectorAll(".otp-box").forEach(box => {
+    box.addEventListener("input", () => {
+      hideOtpError();
+
+      const success = document.getElementById("otp-success");
+      if (success) success.style.display = "none";
     });
   });
-</script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-whatever"
-        crossorigin="anonymous"></script>
+  document.querySelectorAll(".otp-box").forEach(box => {
+    box.addEventListener("input", () => {
+      hideOtpError();
+
+      // Xóa viền đỏ của tất cả các ô
+      document.querySelectorAll(".otp-box")
+              .forEach(b => b.classList.remove("error-field"));
+    });
+  });
+
+</script>
 
 </body>
 </html>

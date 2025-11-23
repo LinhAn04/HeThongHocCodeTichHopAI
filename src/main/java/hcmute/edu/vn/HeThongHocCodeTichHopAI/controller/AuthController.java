@@ -2,9 +2,11 @@ package hcmute.edu.vn.HeThongHocCodeTichHopAI.controller;
 
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.LoaiDoiTuongSuDung;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.TKDoiTuongSuDung;
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.repository.TKDoiTuongSuDungRepository;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.IAuthService;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.email.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,9 +18,10 @@ public class AuthController {
 
     @Autowired
     private IAuthService authService;
-
     @Autowired
     private IEmailService emailService;
+    @Autowired
+    private TKDoiTuongSuDungRepository tkRepository;
 
     @PostMapping("/register")
     public ModelAndView register(
@@ -28,21 +31,18 @@ public class AuthController {
             @RequestParam(defaultValue = "STUDENT") String role
     ) {
         ModelAndView mv = new ModelAndView();
-
         // 1. Check email format
         if (!email.contains("@")) {
             mv.setViewName("register");
             mv.addObject("error", "Invalid email format.");
             return mv;
         }
-
         // 2. Check email already exists
         if (authService.existsByEmail(email)) {
             mv.setViewName("register");
             mv.addObject("error", "Email already exists!");
             return mv;
         }
-
         try {
             // 3. Register
             authService.register(fullName, email, password, role);
@@ -64,10 +64,8 @@ public class AuthController {
     @PostMapping("/login")
     public ModelAndView login(@RequestParam String email, @RequestParam String password) {
         ModelAndView mv = new ModelAndView();
-
         try {
             TKDoiTuongSuDung tk = authService.login(email, password);
-
             // Nếu chưa kích hoạt
             if (!tk.isTrangThaiKichHoat()) {
                 // Gửi mã xác thực mới
@@ -80,7 +78,6 @@ public class AuthController {
                 mv.addObject("message", "Account not activated. New verification code has been sent to your email.");
                 return mv;
             }
-
             if (tk.getDoiTuongSuDung() != null &&
                     tk.getDoiTuongSuDung().getLoaiDoiTuongSuDung() == LoaiDoiTuongSuDung.ADMIN) {
                 mv.setViewName("dashboard_admin");
@@ -89,9 +86,7 @@ public class AuthController {
                 mv.setViewName("dashboard_customer");
                 mv.addObject("role", "STUDENT");
             }
-
             return mv;
-
         } catch (RuntimeException e) {
             mv.setViewName("login");
             mv.addObject("error", e.getMessage());
@@ -99,12 +94,11 @@ public class AuthController {
             if (e.getMessage().equals("Account email not verified!")) {
                 mv.addObject("unverifiedEmail", email); // Gửi lại email xuống FE
             }
-
             return mv;
         }
     }
 
-    @PostMapping("/verify-code")
+    @PostMapping("/verify-register")
     public ModelAndView verifyCode(@RequestParam String email, @RequestParam String code) {
         ModelAndView mv = new ModelAndView();
 
@@ -119,25 +113,23 @@ public class AuthController {
         }
 
         authService.activateUser(email);
-        mv.setViewName("dashboard_customer");
+        mv.setViewName("login");
         mv.addObject("role", "STUDENT");
         mv.addObject("mode", "register");
-        mv.addObject("message", "Account has been activated successfully!");
+        mv.addObject("message", "Account has been activated successfully! Please log in again.");
         return mv;
     }
 
-    @GetMapping("/resend-verify")
+    @GetMapping("/resend-register")
     public ModelAndView resendVerify(@RequestParam String email) {
         ModelAndView mv = new ModelAndView();
 
-        String code = emailService.createCode(email);
-        emailService.sendVerificationCode(email, code);
+        emailService.resendVerificationCode(email);
 
         mv.setViewName("otp_verify");
         mv.addObject("email", email);
         mv.addObject("mode", "register");
         mv.addObject("message", "Verification code re-sent to your email.");
-
         return mv;
     }
 
@@ -157,34 +149,42 @@ public class AuthController {
             return mv;
         }
 
-        if (!authService.existsByEmail(email)) {
+        // Lấy user trực tiếp từ repository
+        TKDoiTuongSuDung tk = tkRepository.findByTenDangNhap(email).orElse(null);
+
+        if (tk == null) {
             mv.setViewName("forgot_password");
             mv.addObject("error", "Email does not exist.");
             return mv;
         }
 
+        // Kiểm tra tài khoản đã activate chưa
+        if (!tk.isTrangThaiKichHoat()) {
+            mv.setViewName("forgot_password");
+            mv.addObject("unverifiedEmail", email);
+            mv.addObject("error",
+                    "Your account is not verified yet.");
+            return mv;
+        }
+
+        // Gửi OTP reset
         String code = emailService.createCode(email);
         emailService.sendResetPasswordEmail(email, code);
 
         mv.setViewName("otp_verify");
         mv.addObject("mode", "reset");
         mv.addObject("email", email);
+        mv.addObject("message",
+                "Please check your email for verification code to reset your password.");
         return mv;
     }
 
-    @PostMapping("/verify-reset")
+    @PostMapping("/verify-reset-pass")
     public ModelAndView verifyResetCode(
             @RequestParam String email,
-            @RequestParam String d1,
-            @RequestParam String d2,
-            @RequestParam String d3,
-            @RequestParam String d4,
-            @RequestParam String d5,
-            @RequestParam String d6
+            @RequestParam String code
     ) {
         ModelAndView mv = new ModelAndView();
-
-        String code = d1+d2+d3+d4+d5+d6;
 
         if (code.trim().isEmpty()) {
             mv.setViewName("otp_verify");
@@ -204,23 +204,60 @@ public class AuthController {
             return mv;
         }
 
-        mv.setViewName("reset_new_password");
+        mv.setViewName("change_password");
         mv.addObject("mode", "reset");
         mv.addObject("email", email);
+        mv.addObject("message", "OTP authentication successful, you can change password now.");
         return mv;
     }
 
-    @GetMapping("/resend-reset")
+    @GetMapping("/resend-reset-pass")
     public ModelAndView resendReset(@RequestParam String email) {
         ModelAndView mv = new ModelAndView();
 
-        String code = emailService.createCode(email);
-        emailService.sendResetPasswordEmail(email, code);
+        emailService.resendResetPasswordCode(email);
 
         mv.setViewName("otp_verify");
         mv.addObject("email", email);
         mv.addObject("mode", "reset");
         mv.addObject("message", "New reset OTP has been sent to your email.");
+        return mv;
+    }
+
+    @PostMapping("/change-password")
+    public ModelAndView changePassword(
+            @RequestParam String email,
+            @RequestParam String newPassword,
+            @RequestParam String confirmPassword
+    ) {
+        ModelAndView mv = new ModelAndView();
+
+        if (!newPassword.equals(confirmPassword)) {
+            mv.setViewName("change_password");
+            mv.addObject("email", email);
+            mv.addObject("error", "Passwords do not match.");
+            return mv;
+        }
+
+        // Tìm user
+        TKDoiTuongSuDung tk = tkRepository.findByTenDangNhap(email)
+                .orElse(null);
+
+        if (tk == null) {
+            mv.setViewName("change_password");
+            mv.addObject("error", "Account not found.");
+            return mv;
+        }
+
+        // Hash password
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        tk.setMatKhau(encoder.encode(newPassword));
+
+        // Update DB
+        tkRepository.save(tk);
+
+        mv.setViewName("login");
+        mv.addObject("message", "Password updated successfully! Please log in again.");
         return mv;
     }
 }
