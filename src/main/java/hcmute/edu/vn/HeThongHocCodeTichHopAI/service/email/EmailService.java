@@ -2,10 +2,10 @@ package hcmute.edu.vn.HeThongHocCodeTichHopAI.service.email;
 
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.EmailVerification;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.repository.EmailVerificationRepository;
-import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -56,15 +56,16 @@ public class EmailService implements IEmailService {
     public void sendResetPasswordEmail(String toEmail, String code) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(toEmail);
-        message.setSubject("Đặt lại mật khẩu Hệ thống học code AI");
+        message.setSubject("Reset your password - AI Code Learning");
+
         message.setText(
-                "Xin chào,\n\n" +
-                        "Bạn vừa yêu cầu đặt lại mật khẩu cho tài khoản của mình.\n" +
-                        "Mã xác nhận đặt lại mật khẩu là: " + code + "\n" +
-                        "Vui lòng nhập mã này trong trang Đặt lại mật khẩu.\n" +
-                        "Mã có hiệu lực trong 10 phút.\n\n" +
-                        "Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này."
+                "Hello,\n\n" +
+                        "You requested to reset your password.\n" +
+                        "Your OTP code is: " + code + "\n" +
+                        "This code is valid for 10 minutes.\n\n" +
+                        "If you did not request this, please ignore this email."
         );
+
         mailSender.send(message);
     }
 

@@ -1,0 +1,121 @@
+@import url("https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&display=swap");
+
+html, body {
+    margin: 0;
+    height: 100%;
+    font-family: "Inria Sans", sans-serif;
+}
+
+body.otp-page {
+    background: url("../images/BackGround.jpg") no-repeat center bottom fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.otp-card {
+    max-width: 35vw;
+    width: 28vw;
+    padding: 2vw 2vw;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    color: #fff;
+}
+
+.title {
+    font-size: 42px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+}
+
+.subtitle {
+    color: #dcdcdc;
+    margin-bottom: 10px;
+}
+
+.otp-inputs {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    gap: 0;
+}
+
+.otp-box {
+    width: 48px;
+    height: 58px;
+    font-size: 26px;
+    text-align: center;
+    border-radius: 10px;
+    border: none;
+}
+
+.btn-next {
+    margin-top: 6px;
+    width: 25%;
+    padding: 10px 15px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-next:hover {
+    background-color: #5a6268;
+}
+
+.btn-resend {
+    text-decoration: none;
+    margin-top: 6px;
+    width: 22%;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #c23b22;
+    padding: 8px 20px;
+}
+
+.btn-resend:hover {
+    background: #8c2411;
+}
+
+.btn-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.error, .message {
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.error {
+    background-color: #ffdddd;
+    color: #990000;
+}
+
+.message {
+    background-color: #e2ffdd;
+    color: #219900;
+}
+
+.popup.hidden {
+    display: none;
+}
+
+/* highlight input lỗi */
+.error-field {
+    border: 2px solid red !important;
+}

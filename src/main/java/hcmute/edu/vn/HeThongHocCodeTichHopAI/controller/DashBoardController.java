@@ -21,11 +21,6 @@ public class DashBoardController {
         return "register";
     }
 
-    @GetMapping("/verify-success")
-    public String verifySuccessPage() {
-        return "verify_success";
-    }
-
     @GetMapping("/dashboard-admin")
     public String dashboardAdmin() {
         return "dashboard_admin";
@@ -34,5 +29,10 @@ public class DashBoardController {
     @GetMapping("/dashboard-customer")
     public String dashboardCustomer() {
         return "dashboard_customer";
+    }
+
+    @GetMapping("/forgot-password")
+    public String forgotPasswordPage() {
+        return "forgot_password";
     }
 }

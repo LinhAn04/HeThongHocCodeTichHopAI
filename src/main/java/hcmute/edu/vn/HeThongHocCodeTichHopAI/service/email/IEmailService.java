@@ -1,4 +1,4 @@
-package hcmute.edu.vn.HeThongHocCodeTichHopAI.service;
+package hcmute.edu.vn.HeThongHocCodeTichHopAI.service.email;
 
 public interface IEmailService {
     String createCode(String email);

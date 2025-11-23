@@ -10,19 +10,20 @@
 <div class="register-wrapper">
     <div class="register-card">
         <h2 class="register-title">Sign up</h2>
-        <p><strong>Already have an account?</strong> <a href="/login">Sign in</a></p>
+        <p><strong>Already have an account?</strong> <a href="/login" class="sign-in-link">Sign in</a></p>
 
-        <form th:action="@{/api/auth/register}" method="post" onsubmit="return validateForm()">
+        <form th:action="@{/api/auth/register}" method="post"
+              onsubmit="return validateRegisterForm(event)">
         <div class="form-grid">
                 <div class="form-group">
                     <label for="email">Email address</label>
-                    <input id="email" name="email" type="text" required placeholder="Email address">
+                    <input id="email" name="email" type="text" placeholder="Email address">
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password</label>
                     <div class="password-wrapper">
-                        <input id="password" name="password" type="password" required placeholder="Password">
+                        <input id="password" name="password" type="password" placeholder="Password">
                         <span class="toggle-password" id="togglePassword">
                             <img src="/images/eye_hidepass.png" alt="Toggle password">
                         </span>
@@ -31,7 +32,7 @@
 
                 <div class="form-group">
                     <label for="fullName">Full name</label>
-                    <input id="fullName" name="fullName" type="text" required placeholder="Full name">
+                    <input id="fullName" name="fullName" type="text"  placeholder="Full name">
                 </div>
 
                 <div class="form-group">
@@ -42,6 +43,13 @@
                 </div>
             </div>
 
+            <!-- Thông báo lỗi -->
+            <div id="register-error-popup"
+                 class="register-error-popup"
+                 th:classappend="${error != null or message != null} ? '' : ' hidden'"
+                 th:text="${error != null ? error : message}">
+            </div>
+
             <button type="submit">Sign up</button>
             <div id="error-popup" class="popup hidden"></div>
         </form>
@@ -49,6 +57,7 @@
 </div>
 
 <script>
+    <!--Toggle password-->
     const togglePassword = document.getElementById('togglePassword');
     const passwordInput = document.getElementById('password');
 
@@ -63,38 +72,82 @@
         img.src = isHidden ? '/images/eye_seepass.png' : '/images/eye_hidepass.png';
     });
 
-    function validateForm() {
-        const email = document.getElementById('email');
-        const password = document.getElementById('password');
-        const popup = document.getElementById('error-popup');
-
-        email.classList.remove('error-field');
-        password.classList.remove('error-field');
-        popup.classList.add('hidden');
-
-        if (!email.value.includes('@')) {
-            email.classList.add('error-field');
-            popup.textContent = 'Email format is incorrect. Please re-enter.';
-            popup.classList.remove('hidden');
-            return false;
-        }
-
-        if (password.value.length < 8) {
-            password.classList.add('error-field');
-            popup.textContent = 'Password must be at least 8 characters.';
-            popup.classList.remove('hidden');
-            return false;
-        }
-
-        return true;
+    // Validate
+    function showError(msg) {
+        const popup = document.getElementById("register-error-popup");
+        popup.textContent = msg;
+        popup.classList.remove("hidden");
     }
 
-    document.querySelectorAll('input, select').forEach(input => {
-        input.addEventListener('focus', () => {
-            input.classList.remove('error-field');
-            document.getElementById('error-popup').classList.add('hidden');
+    function hideError() {
+        document.getElementById("register-error-popup").classList.add("hidden");
+    }
+
+    function validateRegisterForm(event) {
+        const email = document.getElementById("email");
+        const password = document.getElementById("password");
+        const fullName = document.getElementById("fullName");
+
+        // Reset
+        email.classList.remove("error-field");
+        password.classList.remove("error-field");
+        fullName.classList.remove("error-field");
+        hideError();
+
+        // FE validation
+        if (!email.value.trim()) {
+            email.classList.add("error-field");
+            showError("Email cannot be empty.");
+            event.preventDefault();
+            return false;
+        }
+
+        if (!email.value.includes("@")) {
+            email.classList.add("error-field");
+            showError("Invalid email format.");
+            event.preventDefault();
+            return false;
+        }
+
+        if (!fullName.value.trim()) {
+            fullName.classList.add("error-field");
+            showError("Full name cannot be empty.");
+            event.preventDefault();
+            return false;
+        }
+
+        if (!password.value.trim()) {
+            password.classList.add("error-field");
+            showError("Password cannot be empty.");
+            event.preventDefault();
+            return false;
+        }
+
+        // Ít nhất 8 ký tự, 1 hoa, 1 số, 1 ký tự đặc biệt
+        const strongPasswordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()_+\-={}\[\]|:;'"<>,./~`]).{8,}$/;
+
+        if (!strongPasswordRegex.test(password.value)) {
+            password.classList.add("error-field");
+            showError("Password must be at least 8 characters long, contain at least one uppercase letter, one number, and one special character.");
+            event.preventDefault();
+            return false;
+        }
+
+        return true; // → gửi BE
+    }
+
+    // Ẩn lỗi khi user nhập lại
+    document.querySelectorAll("input").forEach(input => {
+        input.addEventListener("input", () => {
+            input.classList.remove("error-field");
+            hideError();
         });
     });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-whatever"
+        crossorigin="anonymous"></script>
+
 </body>
 </html>

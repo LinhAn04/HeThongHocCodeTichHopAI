@@ -98,6 +98,7 @@ public class AuthService implements IAuthService {
     }
 
     // Quên mật khẩu -> gửi mã reset mật khẩu
+    @Override
     public void sendResetPasswordCode(String email) {
         TKDoiTuongSuDung tk = tkDoiTuongSuDungRepository.findByTenDangNhap(email)
                 .orElseThrow(() -> new RuntimeException("Account not found with email: " + email));
@@ -106,7 +107,7 @@ public class AuthService implements IAuthService {
         emailService.sendResetPasswordEmail(email, code);
     }
 
-    // Xác thực mã và reset mật khẩu
+    @Override
     public void resetPassword(String email, String code, String newPassword) {
         boolean valid = emailService.verify(email, code);
         if (!valid) throw new RuntimeException("The verification code is incorrect or has expired!");
@@ -116,5 +117,10 @@ public class AuthService implements IAuthService {
 
         tk.setMatKhau(encoder.encode(newPassword));
         tkDoiTuongSuDungRepository.save(tk);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return tkDoiTuongSuDungRepository.findByTenDangNhap(email).isPresent();
     }
 }

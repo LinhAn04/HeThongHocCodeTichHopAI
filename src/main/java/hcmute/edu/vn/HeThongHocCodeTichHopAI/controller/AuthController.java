@@ -3,7 +3,7 @@ package hcmute.edu.vn.HeThongHocCodeTichHopAI.controller;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.LoaiDoiTuongSuDung;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.TKDoiTuongSuDung;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.IAuthService;
-import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.IEmailService;
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.email.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,20 +29,31 @@ public class AuthController {
     ) {
         ModelAndView mv = new ModelAndView();
 
-        if (!email.endsWith("@gmail.com")) {
+        // 1. Check email format
+        if (!email.contains("@")) {
             mv.setViewName("register");
-            mv.addObject("error",
-                    "Email format is incorrect. Please re-enter.");
+            mv.addObject("error", "Invalid email format.");
+            return mv;
+        }
+
+        // 2. Check email already exists
+        if (authService.existsByEmail(email)) {
+            mv.setViewName("register");
+            mv.addObject("error", "Email already exists!");
             return mv;
         }
 
         try {
+            // 3. Register
             authService.register(fullName, email, password, role);
-            mv.setViewName("verify");
+
+            mv.setViewName("otp_verify");
             mv.addObject("email", email);
+            mv.addObject("mode", "register");
             mv.addObject("message",
                     "Registration successful! Please check your email for verification code.");
             return mv;
+
         } catch (RuntimeException e) {
             mv.setViewName("register");
             mv.addObject("error", e.getMessage());
@@ -63,8 +74,9 @@ public class AuthController {
                 String code = emailService.createCode(email);
                 emailService.sendVerificationCode(email, code);
 
-                mv.setViewName("verify");
+                mv.setViewName("otp_verify");
                 mv.addObject("email", email);
+                mv.addObject("mode", "register");
                 mv.addObject("message", "Account not activated. New verification code has been sent to your email.");
                 return mv;
             }
@@ -83,6 +95,11 @@ public class AuthController {
         } catch (RuntimeException e) {
             mv.setViewName("login");
             mv.addObject("error", e.getMessage());
+
+            if (e.getMessage().equals("Account email not verified!")) {
+                mv.addObject("unverifiedEmail", email); // Gửi lại email xuống FE
+            }
+
             return mv;
         }
     }
@@ -94,8 +111,9 @@ public class AuthController {
         boolean valid = emailService.verify(email, code);
 
         if (!valid) {
-            mv.setViewName("verify");
+            mv.setViewName("otp_verify");
             mv.addObject("email", email);
+            mv.addObject("mode", "register");
             mv.addObject("error", "The verification code is incorrect or has expired!");
             return mv;
         }
@@ -103,7 +121,106 @@ public class AuthController {
         authService.activateUser(email);
         mv.setViewName("dashboard_customer");
         mv.addObject("role", "STUDENT");
+        mv.addObject("mode", "register");
         mv.addObject("message", "Account has been activated successfully!");
+        return mv;
+    }
+
+    @GetMapping("/resend-verify")
+    public ModelAndView resendVerify(@RequestParam String email) {
+        ModelAndView mv = new ModelAndView();
+
+        String code = emailService.createCode(email);
+        emailService.sendVerificationCode(email, code);
+
+        mv.setViewName("otp_verify");
+        mv.addObject("email", email);
+        mv.addObject("mode", "register");
+        mv.addObject("message", "Verification code re-sent to your email.");
+
+        return mv;
+    }
+
+    @PostMapping("/forgot-password")
+    public ModelAndView sendResetPassword(@RequestParam String email) {
+        ModelAndView mv = new ModelAndView();
+
+        if (email == null || email.trim().isEmpty()) {
+            mv.setViewName("forgot_password");
+            mv.addObject("error", "Email cannot be empty.");
+            return mv;
+        }
+
+        if (!email.contains("@")) {
+            mv.setViewName("forgot_password");
+            mv.addObject("error", "Invalid email format.");
+            return mv;
+        }
+
+        if (!authService.existsByEmail(email)) {
+            mv.setViewName("forgot_password");
+            mv.addObject("error", "Email does not exist.");
+            return mv;
+        }
+
+        String code = emailService.createCode(email);
+        emailService.sendResetPasswordEmail(email, code);
+
+        mv.setViewName("otp_verify");
+        mv.addObject("mode", "reset");
+        mv.addObject("email", email);
+        return mv;
+    }
+
+    @PostMapping("/verify-reset")
+    public ModelAndView verifyResetCode(
+            @RequestParam String email,
+            @RequestParam String d1,
+            @RequestParam String d2,
+            @RequestParam String d3,
+            @RequestParam String d4,
+            @RequestParam String d5,
+            @RequestParam String d6
+    ) {
+        ModelAndView mv = new ModelAndView();
+
+        String code = d1+d2+d3+d4+d5+d6;
+
+        if (code.trim().isEmpty()) {
+            mv.setViewName("otp_verify");
+            mv.addObject("mode", "reset");
+            mv.addObject("email", email);
+            mv.addObject("error", "OTP cannot be empty.");
+            return mv;
+        }
+
+        boolean ok = emailService.verify(email, code);
+
+        if (!ok) {
+            mv.setViewName("otp_verify");
+            mv.addObject("mode", "reset");
+            mv.addObject("email", email);
+            mv.addObject("error", "Invalid or expired OTP.");
+            return mv;
+        }
+
+        mv.setViewName("reset_new_password");
+        mv.addObject("mode", "reset");
+        mv.addObject("email", email);
+        return mv;
+    }
+
+    @GetMapping("/resend-reset")
+    public ModelAndView resendReset(@RequestParam String email) {
+        ModelAndView mv = new ModelAndView();
+
+        String code = emailService.createCode(email);
+        emailService.sendResetPasswordEmail(email, code);
+
+        mv.setViewName("otp_verify");
+        mv.addObject("email", email);
+        mv.addObject("mode", "reset");
+        mv.addObject("message", "New reset OTP has been sent to your email.");
         return mv;
     }
 }
