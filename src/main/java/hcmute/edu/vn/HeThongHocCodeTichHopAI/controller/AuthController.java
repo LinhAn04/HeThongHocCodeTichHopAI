@@ -86,7 +86,7 @@ public class AuthController {
                 mv.addObject("role", "ADMIN");
 
             } else {
-                mv.setViewName("dashboard_customer");
+                mv.setViewName("redirect:/customer/account-setting");
                 mv.addObject("role", "STUDENT");
             }
             return mv;
@@ -133,15 +133,12 @@ public class AuthController {
                 return mv;
             }
 
-            mv.setViewName("customer_account_setting");
+            mv.setViewName("redirect:/customer/account-setting");
             mv.addObject("user", tk.getDoiTuongSuDung());
             mv.addObject("role", "STUDENT");
             return mv;
 
         } catch (Exception e) {
-            System.out.println("🔥 ERROR in verify-register:");
-            e.printStackTrace();
-
             mv.setViewName("otp_verify");
             mv.addObject("email", email);
             mv.addObject("mode", "register");
@@ -177,7 +174,7 @@ public class AuthController {
 
         if (tk == null) {
             mv.setViewName("forgot_password");
-            mv.addObject("error", "Email does not exist.");
+            mv.addObject("error", "Account does not exist.");
             return mv;
         }
 

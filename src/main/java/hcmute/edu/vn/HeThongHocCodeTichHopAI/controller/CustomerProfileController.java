@@ -30,18 +30,14 @@ public class CustomerProfileController {
     @GetMapping("/account-setting")
     public ModelAndView viewProfile(HttpServletRequest request) {
         String email = (String) request.getSession().getAttribute("email");
+        System.out.println("Session email = " + email);
 
         ModelAndView mv = new ModelAndView("customer_account_setting");
 
-        if (email == null) {
-            mv.setViewName("login");
-            mv.addObject("error", "Session expired. Please log in again.");
-            return mv;
-        }
-
         DoiTuongSuDung user = doiTuongService.findByEmail(email);
-        mv.addObject("user", user);
+        System.out.println("User loaded = " + user);
 
+        mv.addObject("user", user);
         return mv;
     }
 

@@ -8,55 +8,60 @@
 <body>
 
 <aside th:fragment="sidebar" id="sidebar" class="sidebar">
-
-  <!-- Logo (chỉ hiện khi expanded) -->
-  <div class="sidebar-header">
-    <span class="sidebar-title">Codemy Menu</span>
-
-    <!-- Nút thu nhỏ -->
-    <button id="toggleSidebarBtn" class="toggle-btn">&lt;&lt;</button>
-  </div>
-
-  <!-- Menu list -->
   <ul class="menu-list">
 
-    <li class="menu-item" th:classappend="${activePage=='dashboard'?'active':''}">
-      <a href="/dashboard">
-        <img src="/images/icon_dashboard.png" class="menu-icon">
-        <span class="menu-text">Dashboard</span>
-      </a>
-    </li>
-
-    <li class="menu-item has-sub"
-        th:classappend="${activePage=='courses'?'active':''}">
+    <!-- ACCOUNT -->
+    <li class="menu-title has-sub open">
       <a href="#" class="submenu-toggle">
-        <img src="/images/icon_course.png" class="menu-icon">
-        <span class="menu-text">My Courses</span>
-        <img src="/images/icon_arrow.png" class="submenu-arrow">
+        <img src="/images/icon_account.png" class="menu-icon">
+        <span class="menu-text">Account</span>
+        <span class="submenu-arrow">▲</span>
       </a>
 
       <ul class="submenu">
-        <li><a href="/courses/enrolled">Enrolled</a></li>
-        <li><a href="/courses/learning">Learning progress</a></li>
-        <li><a href="/courses/completed">Completed</a></li>
+        <li class="submenu-item active">
+          <a href="/customer/account-setting">Profile Info</a>
+        </li>
+
+        <li class="submenu-item">
+          <a href="#">My Courses</a>
+        </li>
       </ul>
     </li>
 
-    <li class="menu-item" th:classappend="${activePage=='settings'?'active':''}">
-      <a href="/customer/account-setting">
-        <img src="/images/icon_settings.png" class="menu-icon">
-        <span class="menu-text">Account settings</span>
+    <!-- OVERVIEW -->
+    <li class="menu-title has-sub">
+      <a href="#" class="submenu-toggle">
+        <img src="/images/icon_overview.png" class="menu-icon">
+        <span class="menu-text">Overview</span>
+        <span class="submenu-arrow">▲</span>
       </a>
+
+      <ul class="submenu">
+        <li class="submenu-item"><a href="#">Courses</a></li>
+        <li class="submenu-item"><a href="#">Blogs</a></li>
+      </ul>
     </li>
 
-    <li class="menu-item" th:classappend="${activePage=='billing'?'active':''}">
-      <a href="/billing">
-        <img src="/images/icon_billing.png" class="menu-icon">
-        <span class="menu-text">Billing</span>
+
+    <!-- TOOLS -->
+    <li class="menu-title has-sub">
+      <a href="#" class="submenu-toggle">
+        <img src="/images/icon_tools.png" class="menu-icon">
+        <span class="menu-text">Tools</span>
+        <span class="submenu-arrow">▲</span>
       </a>
+
+      <ul class="submenu">
+        <li class="submenu-item"><a href="#">Chat bot</a></li>
+      </ul>
     </li>
 
   </ul>
+
+  <div class="toggle-container">
+    <button id="toggleSidebarBtn" class="toggle-btn"></button>
+  </div>
 
 </aside>
 

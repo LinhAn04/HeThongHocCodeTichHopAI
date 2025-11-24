@@ -1,4 +1,4 @@
-// Detect unsaved changes
+// Detect form changes
 const form = document.getElementById("accountForm");
 const saveBtn = document.getElementById("saveBtn");
 
@@ -14,7 +14,6 @@ function getFormData() {
     };
 }
 
-// Track changes
 window.addEventListener("load", () => {
     initialData = getFormData();
 
@@ -34,17 +33,35 @@ window.addEventListener("load", () => {
     });
 });
 
-// Avatar popup logic
-const avatarBtn = document.getElementById("avatarEditBtn");
-const avatarPopup = document.getElementById("avatarPopup");
+// Avatar Upload
+const avatarClickArea = document.getElementById("avatarClickArea");
+const avatarInput = document.getElementById("avatarInput");
+const avatarImg = document.getElementById("avatarImg");
 
-avatarBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    avatarPopup.classList.toggle("hidden");
+// Click avatar -> open file dialog
+avatarClickArea.addEventListener("click", () => {
+    avatarInput.click();
 });
 
-document.addEventListener("click", (e) => {
-    if (!avatarPopup.contains(e.target) && e.target !== avatarBtn) {
-        avatarPopup.classList.add("hidden");
-    }
+// When user selects file -> upload instantly
+avatarInput.addEventListener("change", () => {
+    const file = avatarInput.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    fetch("/customer/avatar", {
+        method: "POST",
+        body: formData
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                avatarImg.src = data.avatar; // update preview
+            } else {
+                alert("Upload failed: " + data.error);
+            }
+        })
+        .catch(err => console.error(err));
 });

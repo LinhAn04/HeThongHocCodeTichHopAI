@@ -1,112 +1,177 @@
-/* ==== SIDEBAR MAIN ==== */
+@import url("https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&display=swap");
+
+html, body {
+    font-family: "Inria Sans", sans-serif;
+}
+
+/* ===== SIDEBAR BASE ===== */
 .sidebar {
     position: fixed;
-    top: 70px; /* must match header height */
+    top: 70px;
     left: 0;
+    bottom: 0;
     width: 240px;
-    height: calc(100vh - 70px);
-    background: #1d1d1d;
+    background: linear-gradient(180deg, #1c1c1c, #202020);
     color: #fff;
-    transition: width 0.25s ease;
-    border-right: 2px solid rgba(255,255,255,0.08);
     overflow: hidden;
+    transition: width 0.25s ease;
+    border-right: 1px solid rgba(255,255,255,0.05);
     z-index: 999;
 }
 
-/* When collapsed */
 .sidebar.collapsed {
     width: 72px;
 }
 
-/* ===== HEADER ===== */
-.sidebar-header {
+/* ===== LIST STYLE ===== */
+.menu-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* ===== GROUP TITLE ===== */
+.menu-title > a {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 14px 18px;
-}
-
-.sidebar.collapsed .sidebar-title {
-    display: none;
-}
-
-/* Collapse button */
-.toggle-btn {
-    background: none;
-    border: none;
+    font-weight: 700;
+    text-decoration: none;
     color: #fff;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 1rem;
-    padding: 4px 8px;
 }
 
-.sidebar.collapsed .toggle-btn {
+/* icon + text sát nhau */
+.menu-title > a img.menu-icon {
+    margin-right: 6px;
+}
+
+/* mũi tên sát lề phải */
+.submenu-arrow {
+    margin-left: auto;
+    padding-right: 2px;
+    opacity: 0.7;
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
+}
+
+.submenu {
+    list-style: none;
+}
+
+.menu-title .group-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu-title .menu-icon {
+    width: 20px;
+}
+
+/* Arrow icon */
+.submenu-arrow {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    transition: transform 0.2s ease;
+}
+
+/* Arrow rotates DOWN when closed */
+.menu-title:not(.open) .submenu-arrow {
     transform: rotate(180deg);
 }
 
-/* ===== MENU ===== */
-.menu-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.menu-item a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 12px 18px;
-    color: #fff;
-    text-decoration: none;
-    font-size: 1rem;
-    transition: background .2s;
-}
-
-.menu-item:hover {
-    background: rgba(255,255,255,0.12);
-}
-
-.menu-item.active {
-    background: rgba(255,255,255,0.18);
-}
-
-/* Icons */
-.menu-icon {
-    width: 22px;
-}
-
-/* Hide menu text when collapsed */
-.sidebar.collapsed .menu-text {
-    display: none;
-}
-
-.sidebar.collapsed .submenu-arrow {
-    display: none;
-}
-
 /* ===== SUBMENU ===== */
-.has-sub .submenu {
-    list-style: none;
-    padding-left: 55px;
+.submenu {
     display: none;
+    padding-left: 38px;
+    padding-bottom: 6px;
 }
 
-.has-sub.open .submenu {
+.menu-title.open .submenu {
     display: block;
 }
 
-.submenu a {
-    padding: 10px 0;
+.submenu-item a {
+    display: block;
+    padding: 8px 0;
     color: #ddd;
-    font-size: 0.9rem;
+    text-decoration: none;
+    transition: 0.2s ease;
 }
 
-.submenu a:hover {
+.submenu-item a:hover {
     color: #fff;
 }
 
-/* Hide submenu entirely when collapsed */
-.sidebar.collapsed .submenu {
+/* ACTIVE submenu item */
+.submenu-item.active a {
+    background: #fff;
+    color: #000;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+/* ===== NORMAL MENU ITEM ===== */
+.menu-item > a {
+    display: block;
+    padding: 12px 18px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.menu-item:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+/* ===== COLLAPSED MODE ===== */
+.sidebar.collapsed .menu-text,
+.sidebar.collapsed .submenu,
+.sidebar.collapsed .submenu-arrow {
     display: none !important;
+}
+
+.sidebar.collapsed .menu-title > a {
+    justify-content: center;
+}
+
+/* ===== TOGGLE BUTTON ===== */
+.toggle-container {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+}
+
+.toggle-btn {
+    width: 34px;
+    height: 34px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Two triangles - pointing left by default */
+.toggle-btn::before,
+.toggle-btn::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    border-right: 14px solid white;
+}
+
+.toggle-btn::before {
+    left: 6px;
+}
+.toggle-btn::after {
+    left: 14px;
+}
+
+/* When collapsed — triangles point right */
+.sidebar.collapsed .toggle-btn::before,
+.sidebar.collapsed .toggle-btn::after {
+    border-right: none;
+    border-left: 14px solid white;
 }
