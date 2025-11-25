@@ -65,3 +65,15 @@ avatarInput.addEventListener("change", () => {
         })
         .catch(err => console.error(err));
 });
+
+// Toggle password visibility
+document.getElementById("togglePassword")?.addEventListener("click", function() {
+    const pwd = document.getElementById("password");
+    if (pwd.type === "password") {
+        pwd.type = "text";
+        this.textContent = "Hide";
+    } else {
+        pwd.type = "password";
+        this.textContent = "View";
+    }
+});
