@@ -24,15 +24,19 @@ html, body {
 }
 
 .settings-card {
+    position: relative;
     width: 100%;
+    height: 70%;
+    border: 1px solid rgba(255,255,255,0.1);
     max-width: 960px;
     padding: 50px 60px;
-    background: rgba(30, 30, 30, 0.75);
     border-radius: 24px;
-    backdrop-filter: blur(15px);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    box-shadow: 0 0 25px rgba(0,0,0,0.5);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     display: grid;
-    grid-template-columns: 220px auto;
+    grid-template-columns: 260px auto;
     gap: 60px;
     margin: 20px 0;
 }
@@ -43,23 +47,23 @@ html, body {
     gap: 70px;
 }
 
-/* Avatar */
 .avatar-section {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    justify-content: center;
 }
 
 .avatar-wrapper {
-    width: 180px;
-    height: 180px;
+    width: 300px;
+    height: 300px;
     border-radius: 50%;
     overflow: hidden;
-    cursor: pointer;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    transition: all 0.3s ease;
-    border: 5px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.05);
+    margin-bottom: 10px;
 }
 
 .avatar-wrapper:hover {
@@ -68,6 +72,12 @@ html, body {
 }
 
 .avatar-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#avatarImg {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -82,7 +92,6 @@ html, body {
 
 .change-avatar-text:hover { opacity: 1; }
 
-/* Form */
 .settings-form label {
     font-size: 0.95rem;
     font-weight: 600;
@@ -95,13 +104,16 @@ html, body {
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 32px;
+    gap: 24px;
+    align-items: center;
     margin-bottom: 24px;
 }
 
 .form-group input,
 .form-group select {
     height: 48px;
+    line-height: 48px;
+    appearance: none;
     padding: 0 16px;
     border-radius: 12px;
     border: none;
@@ -123,25 +135,24 @@ html, body {
     cursor: not-allowed;
 }
 
-/* Password field */
-.password-wrapper {
+.form-group {
     position: relative;
 }
 
-.eye-icon {
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    font-size: 0.9rem;
-    color: #666;
-    user-select: none;
+.settings-form .full-width {
+    grid-column: span 2; /* Chiếm 2 cột */
 }
 
-.eye-icon:hover { color: #000; }
+.settings-form input[type="text"] {
+    width: 100%;
+}
 
-/* Save button */
+.settings-form input,
+.settings-form select {
+    width: 100%;
+    box-sizing: border-box;
+}
+
 .save-row {
     margin-top: 30px;
     text-align: right;
@@ -160,13 +171,68 @@ html, body {
 }
 
 .save-btn.enabled {
-    background: #6c5ce7;
+    background: #000000;
     color: white;
     cursor: pointer;
-    box-shadow: 0 8px 25px rgba(108, 92, 231, 0.4);
+    box-shadow: 0 8px 25px rgba(24, 24, 24, 0.4);
 }
 
 .save-btn.enabled:hover {
-    background: #5f4bdb;
+    background: #000000;
     transform: translateY(-2px);
+}
+
+.input-error {
+    border: 2px solid #ff4d4d !important;
+}
+
+.error-text {
+    position: absolute;
+    bottom: -18px;
+    left: 0;
+    font-size: 12px;
+    color: #ff4d4d;
+}
+
+.toast {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: #E8F5E9 !important;
+    color: #2E7D32 !important;
+    padding: 12px 20px !important;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    z-index: 999;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.toast.error {
+    background: #FFEBEE !important;
+    color: #C62828 !important;
+}
+
+.toast-blur {
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(6px);
+    background: rgba(58, 58, 58, 0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s ease;
+    z-index: 10;
+}
+
+.toast-blur.show {
+    opacity: 1;
 }

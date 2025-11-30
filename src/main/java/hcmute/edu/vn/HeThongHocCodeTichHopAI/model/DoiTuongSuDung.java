@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,7 +19,7 @@ public class DoiTuongSuDung {
 
     private LoaiDoiTuongSuDung loaiDoiTuongSuDung = LoaiDoiTuongSuDung.STUDENT;
 
-    private LocalDateTime ngaySinh;
+    private LocalDate ngaySinh;
 
     private String soDienThoai;
 
@@ -64,8 +64,8 @@ public class DoiTuongSuDung {
     public LoaiDoiTuongSuDung getLoaiDoiTuongSuDung() { return loaiDoiTuongSuDung; }
     public void setLoaiDoiTuongSuDung(LoaiDoiTuongSuDung loaiDoiTuongSuDung) { this.loaiDoiTuongSuDung = loaiDoiTuongSuDung; }
 
-    public LocalDateTime getNgaySinh() { return ngaySinh; }
-    public void setNgaySinh(LocalDateTime ngaySinh) { this.ngaySinh = ngaySinh; }
+    public LocalDate getNgaySinh() { return ngaySinh; }
+    public void setNgaySinh(LocalDate ngaySinh) { this.ngaySinh = ngaySinh; }
 
     public String getSoDienThoai() { return soDienThoai; }
     public void setSoDienThoai(String soDienThoai) { this.soDienThoai = soDienThoai; }

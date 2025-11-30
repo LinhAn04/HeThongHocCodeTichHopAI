@@ -21,7 +21,6 @@
         <form th:action="@{/api/auth/login}" method="post" autocomplete="off"
               onsubmit="return validateLoginForm(event)">
 
-            <!-- Email -->
             <div class="mb-3">
                 <input type="text"
                        id="email"
@@ -31,7 +30,6 @@
                        autocomplete="new-password">
             </div>
 
-            <!-- Password + eye icon -->
             <div class="mb-3 position-relative password-wrapper">
                 <input type="password"
                        id="password"
@@ -81,22 +79,18 @@
 </div>
 
 <script>
-    // Toggle show/hide password
     const togglePassword = document.getElementById('togglePassword');
     const passwordInput = document.getElementById('password');
 
     togglePassword.addEventListener('click', () => {
         const isHidden = passwordInput.getAttribute('type') === 'password';
 
-        // Đổi type input
         passwordInput.setAttribute('type', isHidden ? 'text' : 'password');
 
-        // Đổi icon
         const img = togglePassword.querySelector('img');
         img.src = isHidden ? '/images/eye_seepass.png' : '/images/eye_hidepass.png';
     });
 
-    // Validate
     function showError(msg) {
         const popup = document.getElementById("login-error-popup");
         popup.textContent = msg;
