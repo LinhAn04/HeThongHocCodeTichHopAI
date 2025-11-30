@@ -1,27 +1,26 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="avatarPopup" id="avatarPopup" class="avatar-popup hidden">
 
-<body>
-
-<div th:fragment="avatarPopup"
-     id="avatarPopup"
-     class="popup-container hidden">
-
-  <div class="popup-box avatar-box">
-
-    <img src="/images/avatar_user.png" class="avatar-big">
-
-    <div class="avatar-name">User Name</div>
-    <div class="avatar-email">username@gmail.com</div>
-
-    <a href="/customer/account-setting" class="btn-manage">
-      Manage your account
-    </a>
-
-    <a href="/logout" class="logout-link">Log out</a>
+  <div class="avatar-popup-header">
+    <img class="avatar-popup-img"
+         th:src="@{${user.avatar != null ? user.avatar : '/images/avatar_user_default.png'}(v=${#dates.createNow().getTime()})}"
+         alt="User avatar">
   </div>
 
-</div>
+  <div class="avatar-popup-info">
+    <div class="avatar-popup-name" th:text="${user.hoTen}">Full Name</div>
+    <div class="avatar-popup-email" th:text="${user.email}">email@example.com</div>
+  </div>
 
-</body>
-</html>
+  <a class="avatar-popup-btn manage" th:href="@{/customer/account-setting}">
+    Manage your account
+  </a>
+
+  <a class="avatar-popup-btn change" th:href="@{/customer/change-password}">
+    Change password
+  </a>
+
+  <a class="avatar-popup-logout" th:href="@{/login}">
+    Log out
+  </a>
+
+</div>

@@ -1,9 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&display=swap");
 
+* {
+    font-family: "Inria Sans", sans-serif;
+}
+
 html, body {
     margin: 0;
     padding: 0;
-    font-family: "Inria Sans", sans-serif;
     background: url("../images/BackGround.jpg") no-repeat center center fixed;
     background-size: cover;
     color: #fff;
@@ -52,6 +55,7 @@ html, body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
 }
 
 .avatar-wrapper {
@@ -63,7 +67,7 @@ html, body {
     align-items: center;
     justify-content: center;
     background: rgba(255,255,255,0.05);
-    margin-bottom: 10px;
+    margin-left: 20px;
 }
 
 .avatar-wrapper:hover {
@@ -86,11 +90,7 @@ html, body {
 .change-avatar-text {
     margin-top: 12px;
     font-size: 0.9rem;
-    opacity: 0.8;
-    cursor: pointer;
 }
-
-.change-avatar-text:hover { opacity: 1; }
 
 .settings-form label {
     font-size: 0.95rem;
@@ -121,6 +121,15 @@ html, body {
     font-size: 1rem;
     color: #000;
     transition: all 0.2s;
+}
+
+.form-group select {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='black'><path d='M4 6l4 4 4-4'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 14px;
+    padding-right: 40px;
+    cursor: pointer;
 }
 
 .form-group input:focus,

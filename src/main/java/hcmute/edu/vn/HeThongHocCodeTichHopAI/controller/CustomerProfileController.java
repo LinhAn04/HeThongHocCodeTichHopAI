@@ -139,9 +139,6 @@ public class CustomerProfileController {
     ) {
         try {
             String email = (String) request.getSession().getAttribute("email");
-            if (email == null)
-                return ResponseEntity.status(401).body(Map.of("error", "Not logged in"));
-
             DoiTuongSuDung user = doiTuongService.findByEmail(email);
             if (user == null)
                 return ResponseEntity.status(404).body(Map.of("error", "User not found"));
@@ -150,7 +147,7 @@ public class CustomerProfileController {
                 return ResponseEntity.badRequest().body(Map.of("error", "File is empty"));
 
             // Folder upload
-            String uploadDir = "src/main/resources/static/uploads/avatars/";
+            String uploadDir = "uploads/avatars/";
             File folder = new File(uploadDir);
             if (!folder.exists()) folder.mkdirs();
 
@@ -181,11 +178,13 @@ public class CustomerProfileController {
 
             return ResponseEntity.ok(Map.of(
                     "success", true,
-                    "avatar", user.getAvatar()
+                    "avatar", path
             ));
 
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.internalServerError().body(Map.of(
+                    "success", false,
                     "error", e.getMessage()
             ));
         }
@@ -196,16 +195,13 @@ public class CustomerProfileController {
     public ResponseEntity<?> removeAvatar(HttpServletRequest request) {
 
         String email = (String) request.getSession().getAttribute("email");
-        if (email == null)
-            return ResponseEntity.status(401).body(Map.of("error", "Not logged in"));
-
         DoiTuongSuDung user = doiTuongService.findByEmail(email);
         if (user == null)
             return ResponseEntity.status(404).body(Map.of("error", "User not found"));
 
         // Xóa file vật lý
         if (user.getAvatar() != null) {
-            File old = new File("src/main/resources/static" + user.getAvatar());
+            File old = new File("uploads" + user.getAvatar().replace("/uploads", ""));
             if (old.exists()) old.delete();
         }
 
@@ -219,7 +215,7 @@ public class CustomerProfileController {
         return ResponseEntity.ok(Map.of("success", true));
     }
 
-    @PutMapping("/password")
+    @PutMapping("/change-password")
     @ResponseBody
     public ResponseEntity<?> updatePassword(
             HttpServletRequest request,
@@ -240,10 +236,10 @@ public class CustomerProfileController {
 
         String newPass = body.get("newPassword");
         if (newPass == null || newPass.length() < 6)
-            return ResponseEntity.badRequest().body(Map.of("error", "Password must be at least 6 characters"));
-
+            return ResponseEntity.badRequest().body(Map.of("error",
+                    "Password must be at least 8 characters long, contain at least one uppercase letter, " +
+                            "one number, and one special character"));
         tk.setMatKhau(newPass);
-
         tkDoiTuongSuDungService.save(tk);
 
         return ResponseEntity.ok(Map.of("success", true, "message", "Password updated"));

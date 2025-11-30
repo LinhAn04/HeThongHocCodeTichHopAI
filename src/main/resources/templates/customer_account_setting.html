@@ -11,8 +11,8 @@
 
 <body>
 
-<header th:replace="fragments/layout_header :: header"></header>
-<aside th:replace="fragments/layout_sidebar :: sidebar"></aside>
+<header th:replace="fragments/header :: header(user=${user})"></header>
+<aside th:replace="fragments/sidebar :: sidebar"></aside>
 
 <div class="main-content-padding">
     <div class="settings-card">
@@ -23,7 +23,8 @@
         <div class="avatar-section">
             <div class="avatar-wrapper" id="avatarClickArea">
                 <img id="avatarImg"
-                     th:src="${user.avatar != null} ? @{${user.avatar}} : @{/images/avatar_user_default.png}">
+                     th:src="@{${user.avatar != null ? user.avatar : '/images/avatar_user_default.png'}(v=${#dates.createNow().getTime()})}"
+                     th:alt="'Avatar of ' + ${user.hoTen}">
             </div>
             <input type="file" id="avatarInput" accept="image/*" hidden>
             <small class="change-avatar-text">Click to change avatar</small>
@@ -32,33 +33,33 @@
         <form id="accountForm" class="settings-form" autocomplete="off">
             <div class="form-row">
                 <div class="form-group">
-                    <label>Fullname <span class="required">*</span></label>
-                    <input type="text" id="fullName" name="hoTen" th:value="${user.hoTen}">
+                    <label for="fullName">Full Name <span class="required">*</span></label>
+                    <input type="text" id="fullName" name="hoTen" th:value="${user.hoTen}" placeholder="Full Name">
                 </div>
                 <div class="form-group">
-                    <label>Date of birth</label>
+                    <label for="birthday">Date of birth</label>
                     <input type="date" id="birthday" name="ngaySinh"
                            th:value="${user.ngaySinh != null} ? ${#temporals.format(user.ngaySinh, 'yyyy-MM-dd')}">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <label>Email Address <span class="required">*</span></label>
+                    <label for="email">Email Address <span class="required">*</span></label>
                     <input type="email" id="email" th:value="${user.email}" disabled>
                 </div>
                 <div class="form-group">
-                    <label>Phone number</label>
+                    <label for="phone">Phone number</label>
                     <input type="text" id="phone" name="soDienThoai" th:value="${user.soDienThoai}" placeholder="Enter phone number">
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <label>Role</label>
-                    <input type="text" th:value="${user.loaiDoiTuongSuDung.name() == 'STUDENT' ? 'Student' : 'Instructor'}" disabled>
+                    <label for="role">Role</label>
+                    <input type="text" id="role" th:value="${user.loaiDoiTuongSuDung.name() == 'STUDENT' ? 'Student' : 'Instructor'}" disabled>
                 </div>
                 <div class="form-group">
-                    <label>Gender</label>
+                    <label for="gender">Gender</label>
                     <select id="gender" name="gioiTinh">
                         <option value="NAM" th:selected="${user.gioiTinh?.name() == 'NAM'}">Male</option>
                         <option value="NU" th:selected="${user.gioiTinh?.name() == 'NU'}">Female</option>
@@ -68,7 +69,7 @@
             </div>
 
             <div class="form-group full-width">
-                <label>Address</label>
+                <label for="address">Address</label>
                 <input type="text" id="address" name="diaChi" th:value="${user.diaChi}" placeholder="Enter your address">
             </div>
 

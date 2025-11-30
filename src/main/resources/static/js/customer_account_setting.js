@@ -53,6 +53,7 @@ avatarInput.addEventListener("change", () => {
         .then(data => {
             if (data.success) {
                 showToast("Avatar updated!");
+                setTimeout(() => location.reload(), 1000);
             } else {
                 showToast("Upload failed!", "error");
             }
@@ -100,7 +101,10 @@ function validateForm() {
     }
 
     const phone = phoneInput.value.trim();
-    if (phone.length < 9 || phone.length > 11) {
+    if (phone === "") {
+        showError("phone", "Phone cannot be empty");
+        ok = false;
+    } else if (phone.length < 9 || phone.length > 11) {
         showError("phone", "Phone must be 9–11 digits");
         ok = false;
     }

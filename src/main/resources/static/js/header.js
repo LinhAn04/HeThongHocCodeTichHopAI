@@ -16,7 +16,7 @@ avatarBtn?.addEventListener("click", () => {
     notifyPopup.classList.add("hidden");
 });
 
-// Click outside to close
+// Click outside to close both
 document.addEventListener("click", (event) => {
     if (!notifyBtn.contains(event.target) &&
         !notifyPopup.contains(event.target)) {
