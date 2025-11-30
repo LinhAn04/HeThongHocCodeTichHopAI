@@ -14,32 +14,25 @@
 
         <form th:action="@{/api/auth/register}" method="post"
               onsubmit="return validateRegisterForm(event)">
-        <div class="form-grid">
+            <div class="form-grid">
                 <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input id="email" name="email" type="text" placeholder="Email address">
+                    <label for="email">Email address <span class="required">*</span></label>
+                    <input id="email" name="email" type="text" placeholder="Email address" autocomplete="new-password">
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="fullName">Full name <span class="required">*</span></label>
+                    <input id="fullName" name="fullName" type="text"  placeholder="Full name" autocomplete="new-password">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password <span class="required">*</span></label>
                     <div class="password-wrapper">
-                        <input id="password" name="password" type="password" placeholder="Password">
+                        <input id="password" name="password" type="password" placeholder="Password" autocomplete="new-password">
                         <span class="toggle-password" id="togglePassword">
                             <img src="/images/eye_hidepass.png" alt="Toggle password">
                         </span>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="fullName">Full name</label>
-                    <input id="fullName" name="fullName" type="text"  placeholder="Full name">
-                </div>
-
-                <div class="form-group">
-                    <label for="role">Role</label>
-                    <select id="role" name="role">
-                        <option value="">Student</option>
-                    </select>
                 </div>
             </div>
 

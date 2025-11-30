@@ -23,7 +23,7 @@
         <div class="avatar-section">
             <div class="avatar-wrapper" id="avatarClickArea">
                 <img id="avatarImg"
-                     th:src="${user.avatar != null} ? @{${user.avatar}} : @{/images/avatar_user.png}">
+                     th:src="${user.avatar != null} ? @{${user.avatar}} : @{/images/avatar_user_default.png}">
             </div>
             <input type="file" id="avatarInput" accept="image/*" hidden>
             <small class="change-avatar-text">Click to change avatar</small>

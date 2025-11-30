@@ -27,7 +27,7 @@ body.register-page {
     backdrop-filter: blur(10px);
     padding: 40px;
     border-radius: 12px;
-    max-width: 720px;
+    max-width: 28vw;
     width: 100%;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
@@ -48,6 +48,8 @@ input, select {
     font-size: 1rem;
     box-sizing: border-box;
 }
+
+.required { color: #ff6b6b; }
 
 .sign-in-link {
     text-decoration: none;
@@ -116,7 +118,7 @@ button:hover {
 
 .form-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 20px 20px;
     width: 100%;
 }
