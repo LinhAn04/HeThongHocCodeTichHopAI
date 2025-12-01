@@ -21,11 +21,14 @@
         <div class="toast-blur"></div>
 
         <div class="avatar-section">
-            <div class="avatar-wrapper" id="avatarClickArea">
+            <div class="avatar-wrapper" id="avatarClickArea"
+                 th:with="avatarUrl = ${user.avatar != null} ? ${user.avatar} : '/images/avatar_user_default.png'">
+
                 <img id="avatarImg"
-                     th:src="@{${user.avatar != null ? user.avatar : '/images/avatar_user_default.png'}(v=${#dates.createNow().getTime()})}"
-                     th:alt="'Avatar of ' + ${user.hoTen}">
+                     th:src="@{${avatarUrl}(v=${#dates.createNow().getTime()})}"
+                     alt="Avatar">
             </div>
+
             <input type="file" id="avatarInput" accept="image/*" hidden>
             <small class="change-avatar-text">Click to change avatar</small>
         </div>

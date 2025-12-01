@@ -5,16 +5,45 @@
   <title th:text="${status} + ' - That’s an error.'">Error</title>
   <link rel="stylesheet" th:href="@{/css/error.css}">
 </head>
+
 <body>
 <div class="container">
+
   <div class="content">
-    <h1><span class="logo">Oops</span>. <span th:text="${status}">500</span> - That’s an error.</h1>
-    <p th:text="${error}">An unexpected error occurred.</p>
-    <p class="note">It should not be retried. <span class="muted">That’s all we know.</span></p>
+    <h1>
+      <span class="logo">Oops</span>.
+      <span th:text="${status}">500</span> - Something went wrong.
+    </h1>
+
+    <p class="main-msg">
+      <span th:text="${error}">An unexpected error occurred.</span>
+    </p>
+
+    <p class="note">
+      We're truly sorry — this issue shouldn't have happened.
+      <span class="muted">Please don't retry the request.</span>
+    </p>
+
+    <!-- FEEDBACK BOX -->
+<!--    <div class="feedback-box">-->
+<!--      <label for="feedback">Any feedback for us?</label>-->
+<!--      <textarea id="feedback" placeholder="Tell us what happened..."></textarea>-->
+
+<!--      <button class="feedback-btn" onclick="alert('Feedback sent (UI demo only).')">-->
+<!--        Send feedback to admin-->
+<!--      </button>-->
+<!--    </div>-->
+
+    <!-- BACK LINK -->
+    <div class="back-home">
+      <a href="/login">Back to Home</a>
+    </div>
   </div>
+
   <div class="robot">
     <img src="/images/robot_broken.png" alt="Broken robot">
   </div>
+
 </div>
 </body>
 </html>

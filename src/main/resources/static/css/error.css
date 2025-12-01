@@ -58,3 +58,55 @@ p {
     max-width: 300px;
     filter: brightness(1.2);
 }
+
+.feedback-box {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+}
+
+.feedback-box label {
+    margin-bottom: 6px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.feedback-box textarea {
+    width: 100%;
+    height: 90px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    resize: vertical;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.feedback-btn {
+    width: 180px;
+    padding: 10px;
+    background: #4f8cff;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.feedback-btn:hover {
+    background: #3a6cd9;
+}
+
+.back-home {
+    margin-top: 18px;
+}
+
+.back-home a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.back-home a:hover {
+    text-decoration: underline;
+}

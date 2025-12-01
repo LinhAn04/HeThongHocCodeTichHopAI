@@ -153,7 +153,7 @@ public class CustomerProfileController {
 
             // Xóa file cũ
             if (user.getAvatar() != null) {
-                File old = new File("src/main/resources/static" + user.getAvatar());
+                File old = new File("." + user.getAvatar());
                 if (old.exists()) old.delete();
             }
 
@@ -243,5 +243,75 @@ public class CustomerProfileController {
         tkDoiTuongSuDungService.save(tk);
 
         return ResponseEntity.ok(Map.of("success", true, "message", "Password updated"));
+    }
+
+    // chatbot
+    @GetMapping("/chatbot")
+    public ModelAndView chatbotPage(HttpServletRequest request) {
+        String email = (String) request.getSession().getAttribute("email");
+        if (email == null) {
+            return new ModelAndView("redirect:/login");
+        }
+
+        DoiTuongSuDung user = doiTuongService.findByEmail(email);
+
+        ModelAndView mv = new ModelAndView("chatbot");
+        mv.addObject("user", user);
+        return mv;
+    }
+
+    private String generateBotReply(String message) {
+        message = message.toLowerCase();
+
+        if (message.contains("hello") || message.contains("hi")) {
+            return "Hello! How can I help you today? 😊";
+        }
+
+        if (message.contains("course") || message.contains("learn")) {
+            return "You can find your courses in the *My Courses* section in the sidebar.";
+        }
+
+        if (message.contains("profile")) {
+            return "You can update your profile in the *Account → Profile Info* section.";
+        }
+
+        if (message.contains("error")) {
+            return "If you encounter any errors, please describe them and I’ll do my best to assist!";
+        }
+
+        // Default reply
+        return "You said: " + message;
+    }
+
+    @PutMapping("/chatbot")
+    @ResponseBody
+    public ResponseEntity<?> chatbot(
+            HttpServletRequest request,
+            @RequestBody Map<String, String> body) {
+
+        String email = (String) request.getSession().getAttribute("email");
+        if (email == null) {
+            return ResponseEntity.status(401).body(Map.of(
+                    "success", false,
+                    "message", "Not logged in"
+            ));
+        }
+
+        String userMessage = body.get("message");
+
+        if (userMessage == null || userMessage.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "message", "Message is empty"
+            ));
+        }
+
+        //
+        String botReply = generateBotReply(userMessage);
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "reply", botReply
+        ));
     }
 }
