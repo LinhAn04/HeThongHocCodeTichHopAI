@@ -9,9 +9,13 @@
 <body>
 
 <aside th:fragment="sidebar" id="sidebar" class="sidebar">
+
   <ul class="menu-list">
 
-    <li class="menu-title has-sub open">
+    <!-- ACCOUNT -->
+    <li class="menu-title has-sub"
+        th:classappend="${activeMenu == 'profile' or activeMenu == 'mycourses'} ? ' open'">
+
       <a href="#" class="submenu-toggle">
         <img src="/images/icon_account.png" class="menu-icon">
         <span class="menu-text">Account</span>
@@ -19,17 +23,22 @@
       </a>
 
       <ul class="submenu">
-        <li class="submenu-item active">
-          <a href="/customer/account-setting">Profile Info</a>
+        <li class="submenu-item"
+            th:classappend="${activeMenu == 'profile'} ? ' active'">
+          <a th:href="@{/customer/account-setting}">Profile Info</a>
         </li>
 
-        <li class="submenu-item">
-          <a href="#">My Courses</a>
+        <li class="submenu-item"
+            th:classappend="${activeMenu == 'mycourses'} ? ' active'">
+          <a th:href="@{/my-courses}">My Courses</a>
         </li>
       </ul>
     </li>
 
-    <li class="menu-title has-sub">
+    <!-- OVERVIEW -->
+    <li class="menu-title has-sub"
+        th:classappend="${activeMenu == 'courses' or activeMenu == 'blogs'} ? ' open'">
+
       <a href="#" class="submenu-toggle">
         <img src="/images/icon_overview.png" class="menu-icon">
         <span class="menu-text">Overview</span>
@@ -37,12 +46,22 @@
       </a>
 
       <ul class="submenu">
-        <li class="submenu-item"><a href="#">Courses</a></li>
-        <li class="submenu-item"><a href="#">Blogs</a></li>
+        <li class="submenu-item"
+            th:classappend="${activeMenu == 'courses'} ? ' active'">
+          <a th:href="@{/courses}">Courses</a>
+        </li>
+
+        <li class="submenu-item"
+            th:classappend="${activeMenu == 'blogs'} ? ' active'">
+          <a th:href="@{/blogs}">Blogs</a>
+        </li>
       </ul>
     </li>
 
-    <li class="menu-title has-sub">
+    <!-- TOOLS -->
+    <li class="menu-title has-sub"
+        th:classappend="${activeMenu == 'chatbot'} ? ' open'">
+
       <a href="#" class="submenu-toggle">
         <img src="/images/icon_tools.png" class="menu-icon">
         <span class="menu-text">Tools</span>
@@ -50,8 +69,9 @@
       </a>
 
       <ul class="submenu">
-        <li class="submenu-item active">
-          <a href="/customer/chatbot">Chat bot</a>
+        <li class="submenu-item"
+            th:classappend="${activeMenu == 'chatbot'} ? ' active'">
+          <a th:href="@{/customer/chatbot}">Chat bot</a>
         </li>
       </ul>
     </li>

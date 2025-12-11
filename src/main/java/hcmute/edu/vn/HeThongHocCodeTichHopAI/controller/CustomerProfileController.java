@@ -43,6 +43,7 @@ public class CustomerProfileController {
         System.out.println("User loaded = " + user);
 
         mv.addObject("user", user);
+        mv.addObject("activeMenu", "profile");
         return mv;
     }
 
@@ -257,6 +258,7 @@ public class CustomerProfileController {
 
         ModelAndView mv = new ModelAndView("chatbot");
         mv.addObject("user", user);
+        mv.addObject("activeMenu", "chatbot");
         return mv;
     }
 

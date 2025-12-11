@@ -20,6 +20,7 @@
     padding: 0 28px;
     color: #fff;
     border-bottom: 2px solid rgba(255,255,255,0.08);
+    z-index: 10;
 }
 
 .header-left {

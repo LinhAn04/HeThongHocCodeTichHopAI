@@ -1,10 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Courses - Codemy</title>
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/courses.css}">
 </head>
+
 <body>
+
+<!-- HEADER -->
+<header th:if="${loggedIn}" th:replace="fragments/header :: header(user=${user})"></header>
+
+<header th:if="${!loggedIn}" class="header-container">
+    <div class="header-left">
+        <img src="/images/logo.png" class="header-logo">
+        <div class="header-title-group">
+            <div class="header-title">Codemy</div>
+            <div class="header-subtitle">Your own code academy</div>
+        </div>
+    </div>
+
+    <nav class="guest-nav">
+        <a href="/courses">Courses</a>
+        <a href="/blogs">Blogs</a>
+        <a href="/login" class="sign-in-btn">Sign in</a>
+    </nav>
+</header>
+
+<div class="page-container">
+
+    <!-- Banner course highlight -->
+    <section class="banner">
+
+        <div class="banner-slider"
+             th:each="c, idx : ${bannerCourses}"
+             th:classappend="${idx.index == 0} ? 'active' : ''">
+
+            <img th:src="${c.anhBiaKhoaHoc}" class="banner-bg">
+
+            <div class="banner-content">
+                <h1 th:text="${c.tenKhoaHoc}"></h1>
+                <p th:text="${c.moTa}"></p>
+
+                <a class="btn-primary"
+                   th:href="@{'/course/' + ${c.idKhoaHoc}}">
+                    Learn now
+                </a>
+            </div>
+        </div>
+
+        <!-- Indicator dots -->
+        <div class="banner-dots">
+        <span class="dot"
+              th:each="c, idx : ${bannerCourses}"
+              th:data-index="${idx.index}"
+              th:classappend="${idx.index == 0} ? 'active' : ''"></span>
+        </div>
+
+    </section>
+
+    <!-- only if u logged in -->
+    <section th:if="${loggedIn}">
+        <h2>Recently</h2>
+
+        <div class="course-grid">
+
+            <div class="course-card" th:each="c : ${courses}">
+                <img th:src="${c.anhBiaKhoaHoc}" class="course-thumb">
+                <div class="course-name" th:text="${c.tenKhoaHoc}"></div>
+                <div class="course-author">Codemy team</div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Courses list -->
+    <section>
+        <h2>Courses</h2>
+
+        <div class="course-grid">
+
+            <div class="course-card" th:each="c : ${courses}">
+                <img th:src="@{${c.anhBiaKhoaHoc}}" class="course-thumb">
+                <div class="course-name" th:text="${c.tenKhoaHoc}"></div>
+                <div class="course-author">Codemy team</div>
+            </div>
+
+        </div>
+    </section>
+
+</div>
+
+<script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/courses.js}"></script>
 
 </body>
 </html>
