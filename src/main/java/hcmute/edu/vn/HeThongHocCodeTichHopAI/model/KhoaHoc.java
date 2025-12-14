@@ -17,7 +17,7 @@ public class KhoaHoc {
 
     private String tenKhoaHoc;
 
-    private String moTa;
+    private String moTaKhoaHoc;
 
     private double giaBan;
 
@@ -52,11 +52,11 @@ public class KhoaHoc {
         this.tenKhoaHoc = tenKhoaHoc;
     }
 
-    public String getMoTa() {
-        return moTa;
+    public String getMoTaKhoaHoc() {
+        return  moTaKhoaHoc;
     }
-    public void setMoTa(String moTa) {
-        this.moTa = moTa;
+    public void setMoTaKhoaHoc(String moTaKhoaHoc) {
+        this.moTaKhoaHoc = moTaKhoaHoc;
     }
 
     public double getGiaBan() {

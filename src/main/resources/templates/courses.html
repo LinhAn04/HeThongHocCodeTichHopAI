@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Courses - Codemy</title>
-
-<!--    <link rel="stylesheet" th:href="@{/css/header.css}">-->
     <link rel="stylesheet" th:href="@{/css/courses.css}">
 </head>
 
 <body>
-
-<!-- HEADER -->
 <header th:replace="fragments/header :: header(loggedIn=${loggedIn}, user=${user})"></header>
 
 <div class="page-container">
@@ -26,26 +22,41 @@
 
             <div class="banner-content">
                 <h1 th:text="${c.tenKhoaHoc}"></h1>
-                <p th:text="${c.moTa}"></p>
+                <p th:text="${c.moTaKhoaHoc}"></p>
 
-                <a class="btn-primary"
+                <!-- CHUA_DANG_KY -->
+                <a th:if="${c.trangThaiKhoaHoc.name() == 'CHUADANGKY'}"
+                   class="btn-primary"
                    th:href="@{'/course/' + ${c.idKhoaHoc}}">
-                    Learn now
+                    Start this course
+                </a>
+
+                <a th:if="${c.trangThaiKhoaHoc.name() == 'CHUADANGKY'}"
+                   class="btn-primary"
+                   th:href="@{'/course/' + ${c.idKhoaHoc}}">
+                    Try this out
+                </a>
+
+                <!-- DANG_HOC -->
+                <a th:if="${c.trangThaiKhoaHoc.name() == 'DANGHOC'}"
+                   class="btn-primary"
+                   th:href="@{'/course/' + ${c.idKhoaHoc}}">
+                    Continue your journey
                 </a>
             </div>
         </div>
 
         <!-- Indicator dots -->
         <div class="banner-dots">
-        <span class="dot"
-              th:each="c, idx : ${bannerCourses}"
-              th:data-index="${idx.index}"
-              th:classappend="${idx.index == 0} ? 'active' : ''"></span>
+            <span class="dot"
+                  th:each="c, idx : ${bannerCourses}"
+                  th:data-index="${idx.index}"
+                  th:classappend="${idx.index == 0} ? 'active' : ''">
+            </span>
         </div>
-
     </section>
 
-    <!-- only if u logged in -->
+    <!-- only if u logged in -> show recent accessed courses -->
     <section th:if="${loggedIn}">
         <h2>Recently</h2>
 
