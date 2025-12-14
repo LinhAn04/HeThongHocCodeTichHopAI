@@ -86,7 +86,7 @@ public class AuthController {
                 mv.addObject("role", "ADMIN");
 
             } else {
-                mv.setViewName("redirect:/customer/account-setting");
+                mv.setViewName("redirect:/courses");
                 mv.addObject("role", "STUDENT");
             }
             return mv;

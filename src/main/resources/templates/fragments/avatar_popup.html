@@ -1,4 +1,7 @@
-<div th:fragment="avatarPopup" id="avatarPopup" class="avatar-popup hidden">
+<div th:fragment="avatarPopup(user, loggedIn)"
+     th:if="${loggedIn}"
+     id="avatarPopup"
+     class="avatar-popup hidden">
 
   <div class="avatar-popup-header">
     <img class="avatar-popup-img"

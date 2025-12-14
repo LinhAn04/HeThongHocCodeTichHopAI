@@ -11,7 +11,7 @@
 
 <body>
 
-<header th:replace="fragments/header :: header(user=${user})"></header>
+<header th:replace="~{fragments/header :: header(loggedIn=${loggedIn}, user=${user})}"></header>
 <aside th:replace="fragments/sidebar :: sidebar"></aside>
 
 <div class="main-content-padding">

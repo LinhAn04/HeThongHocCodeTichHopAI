@@ -34,16 +34,22 @@ public class CustomerProfileController {
 
     @GetMapping("/account-setting")
     public ModelAndView viewProfile(HttpServletRequest request) {
+
         String email = (String) request.getSession().getAttribute("email");
-        System.out.println("Session email = " + email);
+
+        // chưa login thì redirect
+        if (email == null) {
+            return new ModelAndView("redirect:/login");
+        }
 
         ModelAndView mv = new ModelAndView("customer_account_setting");
 
         DoiTuongSuDung user = doiTuongService.findByEmail(email);
-        System.out.println("User loaded = " + user);
 
         mv.addObject("user", user);
+        mv.addObject("loggedIn", true);
         mv.addObject("activeMenu", "profile");
+
         return mv;
     }
 

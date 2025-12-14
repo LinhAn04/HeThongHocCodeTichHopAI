@@ -1,28 +1,52 @@
-<header th:fragment="header(user)" class="header-container">
+<header th:fragment="header(loggedIn, user)"
+        class="header-container">
 
+  <head>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/avatar_popup.css}">
+    <link rel="stylesheet" th:href="@{/css/avatar_popup.css}">
+  </head>
+
+  <!-- LEFT -->
   <div class="header-left">
-    <img src="/images/logo.png" class="header-logo" alt="logo for website">
+    <img src="/images/logo.png" class="header-logo">
     <div class="header-title-group">
       <div class="header-title">Codemy</div>
       <div class="header-subtitle">Your own code academy</div>
     </div>
+    <nav class="guest-nav-right">
+      <a href="/courses"
+         th:classappend="${activeMenu == 'courses'} ? 'active'">
+        Courses
+      </a>
+      <a href="/blogs"
+         th:classappend="${activeMenu == 'blogs'} ? 'active'">
+        Blogs
+      </a>
+    </nav>
+
   </div>
 
-  <div class="header-actions">
+  <nav class="guest-nav-left" th:if="${!loggedIn}">
+    <a href="/login" class="sign-in-btn">Sign in</a>
+  </nav>
+
+  <!-- Logged in -->
+  <div class="header-actions" th:if="${loggedIn}">
 
     <div class="header-icon-wrapper" id="notifyBtn">
-      <img src="/images/icon_bell.png" class="header-icon" alt="notification popup">
+      <img src="/images/icon_bell.png" class="header-icon">
     </div>
 
     <div class="header-icon-wrapper" id="avatarBtn">
       <img th:src="@{${user.avatar != null ? user.avatar : '/images/avatar_user_default.png'}(v=${#dates.createNow().getTime()})}"
-           class="header-avatar"
-           alt="account popup">
+           class="header-avatar">
     </div>
 
   </div>
 
-</header>
+  <div th:replace="~{fragments/notification_popup :: notifyPopup(user=${user}, loggedIn=${loggedIn})}"></div>
 
-<div th:replace="fragments/notification_popup :: notifyPopup(user=${user})"></div>
-<div th:replace="fragments/avatar_popup :: avatarPopup(user=${user})"></div>
+  <div th:replace="~{fragments/avatar_popup :: avatarPopup(user=${user}, loggedIn=${loggedIn})}"></div>
+
+</header>

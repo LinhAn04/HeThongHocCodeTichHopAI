@@ -4,30 +4,14 @@
     <meta charset="UTF-8">
     <title>Courses - Codemy</title>
 
-    <link rel="stylesheet" th:href="@{/css/header.css}">
+<!--    <link rel="stylesheet" th:href="@{/css/header.css}">-->
     <link rel="stylesheet" th:href="@{/css/courses.css}">
 </head>
 
 <body>
 
 <!-- HEADER -->
-<header th:if="${loggedIn}" th:replace="fragments/header :: header(user=${user})"></header>
-
-<header th:if="${!loggedIn}" class="header-container">
-    <div class="header-left">
-        <img src="/images/logo.png" class="header-logo">
-        <div class="header-title-group">
-            <div class="header-title">Codemy</div>
-            <div class="header-subtitle">Your own code academy</div>
-        </div>
-    </div>
-
-    <nav class="guest-nav">
-        <a href="/courses">Courses</a>
-        <a href="/blogs">Blogs</a>
-        <a href="/login" class="sign-in-btn">Sign in</a>
-    </nav>
-</header>
+<header th:replace="fragments/header :: header(loggedIn=${loggedIn}, user=${user})"></header>
 
 <div class="page-container">
 

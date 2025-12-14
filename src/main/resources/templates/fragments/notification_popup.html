@@ -3,7 +3,8 @@
 
 <body>
 
-<div th:fragment="notifyPopup"
+<div th:fragment="notifyPopup(user, loggedIn)"
+     th:if="${loggedIn}"
      id="notifyPopup"
      class="popup-container hidden">
 

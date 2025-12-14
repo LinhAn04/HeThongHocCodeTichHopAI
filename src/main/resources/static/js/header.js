@@ -1,30 +1,33 @@
-const notifyBtn = document.getElementById("notifyBtn");
-const notifyPopup = document.getElementById("notifyPopup");
+document.addEventListener("DOMContentLoaded", () => {
 
-const avatarBtn = document.getElementById("avatarBtn");
-const avatarPopup = document.getElementById("avatarPopup");
+    const notifyBtn = document.getElementById("notifyBtn");
+    const notifyPopup = document.getElementById("notifyPopup");
 
-// Toggle Notification popup
-notifyBtn?.addEventListener("click", () => {
-    notifyPopup.classList.toggle("hidden");
-    avatarPopup.classList.add("hidden");
-});
+    const avatarBtn = document.getElementById("avatarBtn");
+    const avatarPopup = document.getElementById("avatarPopup");
 
-// Toggle Avatar popup
-avatarBtn?.addEventListener("click", () => {
-    avatarPopup.classList.toggle("hidden");
-    notifyPopup.classList.add("hidden");
-});
+    // Toggle notification popup
+    notifyBtn?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        notifyPopup?.classList.toggle("hidden");
+        avatarPopup?.classList.add("hidden");
+    });
 
-// Click outside to close both
-document.addEventListener("click", (event) => {
-    if (!notifyBtn.contains(event.target) &&
-        !notifyPopup.contains(event.target)) {
-        notifyPopup.classList.add("hidden");
-    }
+    // Toggle avatar popup
+    avatarBtn?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        avatarPopup?.classList.toggle("hidden");
+        notifyPopup?.classList.add("hidden");
+    });
 
-    if (!avatarBtn.contains(event.target) &&
-        !avatarPopup.contains(event.target)) {
-        avatarPopup.classList.add("hidden");
-    }
+    // Click inside popups → không đóng
+    avatarPopup?.addEventListener("click", e => e.stopPropagation());
+    notifyPopup?.addEventListener("click", e => e.stopPropagation());
+
+    // Click ngoài → đóng hết
+    document.addEventListener("click", () => {
+        avatarPopup?.classList.add("hidden");
+        notifyPopup?.classList.add("hidden");
+    });
+
 });

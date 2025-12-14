@@ -5,10 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class DashBoardController {
-    // Mặc định chạy vào trang login
     @GetMapping("/")
     public String home() {
-        return "login";
+        return "redirect:/courses";
     }
 
     @GetMapping("/login")
@@ -23,12 +22,12 @@ public class DashBoardController {
 
     @GetMapping("/dashboard-admin")
     public String dashboardAdmin() {
-        return "dashboard_admin";
+        return "redirect:dashboard_admin";
     }
 
     @GetMapping("/dashboard-customer")
     public String dashboardCustomer() {
-        return "dashboard_customer";
+        return "redirect:dashboard_customer";
     }
 
     @GetMapping("/forgot-password")

@@ -101,10 +101,7 @@ function validateForm() {
     }
 
     const phone = phoneInput.value.trim();
-    if (phone === "") {
-        showError("phone", "Phone cannot be empty");
-        ok = false;
-    } else if (phone.length < 9 || phone.length > 11) {
+    if (phone !== "" && (phone.length < 9 || phone.length > 11)) {
         showError("phone", "Phone must be 9–11 digits");
         ok = false;
     }

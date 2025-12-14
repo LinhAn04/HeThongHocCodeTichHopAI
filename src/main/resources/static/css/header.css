@@ -34,6 +34,60 @@
     border-radius: 50%;
 }
 
+/* ===== GUEST NAV RIGHT (Courses, Blogs) ===== */
+.guest-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-left: 32px; /* cách logo */
+}
+
+.guest-nav-right a {
+    position: relative;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding-bottom: 4px;
+    opacity: 0.85;
+}
+
+.guest-nav-right a:hover {
+    opacity: 1;
+}
+
+/* underline active */
+.guest-nav-right a.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #fff;
+}
+
+/* ===== GUEST NAV LEFT (Sign in) ===== */
+.guest-nav-left {
+    display: flex;
+    align-items: center;
+}
+
+.sign-in-btn {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.35);
+    transition: all 0.2s ease;
+}
+
+.sign-in-btn:hover {
+    background: rgba(255,255,255,0.15);
+}
+
 .header-title-group {
     margin-left: 12px;
 }

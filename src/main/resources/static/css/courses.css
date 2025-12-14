@@ -7,7 +7,8 @@
 html, body {
     margin: 0;
     padding: 0;
-    background: url("../images/BackGround.jpg") no-repeat center bottom fixed;
+    background: url("../images/BackGround.jpg") no-repeat center center fixed;
+    background-size: cover;
 }
 
 .page-container {
