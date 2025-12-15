@@ -24,25 +24,34 @@
                 <h1 th:text="${c.tenKhoaHoc}"></h1>
                 <p th:text="${c.moTaKhoaHoc}"></p>
 
-                <!-- CHUA_DANG_KY -->
-                <a th:if="${c.trangThaiKhoaHoc.name() == 'CHUADANGKY'}"
-                   class="btn-primary"
-                   th:href="@{'/course/' + ${c.idKhoaHoc}}">
-                    Start this course
-                </a>
-
-                <a th:if="${c.trangThaiKhoaHoc.name() == 'CHUADANGKY'}"
+                <!-- CHƯA ĐĂNG NHẬP -->
+                <a th:if="${!loggedIn}"
                    class="btn-primary"
                    th:href="@{'/course/' + ${c.idKhoaHoc}}">
                     Try this out
                 </a>
 
-                <!-- DANG_HOC -->
-                <a th:if="${c.trangThaiKhoaHoc.name() == 'DANGHOC'}"
+                <!-- ĐÃ ĐĂNG NHẬP + ĐANG HỌC -->
+                <a th:if="${loggedIn
+                and courseStatusMap[c.idKhoaHoc] != null}"
                    class="btn-primary"
                    th:href="@{'/course/' + ${c.idKhoaHoc}}">
                     Continue your journey
                 </a>
+
+                <!-- ĐÃ ĐĂNG NHẬP + CHƯA HỌC -->
+                <div th:if="${loggedIn
+                and courseStatusMap[c.idKhoaHoc] == null}">
+                    <a class="btn-primary"
+                       th:href="@{'/course/' + ${c.idKhoaHoc}}">
+                        Start this course
+                    </a>
+                    <a class="btn-primary"
+                       th:href="@{'/course/' + ${c.idKhoaHoc}}">
+                        Try this out
+                    </a>
+                </div>
+
             </div>
         </div>
 

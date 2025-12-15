@@ -25,7 +25,7 @@ public class LichSuTruyCapKhoaHoc {
     public String getIdLichSuTruyCapKhoaHoc() {
         return idLichSuTruyCapKhoaHoc;
     }
-    void setIdLichSuTruyCapKhoaHoc(String idLichSuTruyCapKhoaHoc) {
+    public void setIdLichSuTruyCapKhoaHoc(String idLichSuTruyCapKhoaHoc) {
         this.idLichSuTruyCapKhoaHoc = idLichSuTruyCapKhoaHoc;
     }
 

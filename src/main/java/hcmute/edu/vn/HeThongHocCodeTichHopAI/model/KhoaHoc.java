@@ -21,12 +21,6 @@ public class KhoaHoc {
 
     private double giaBan;
 
-    private TrangThaiKhoaHoc trangThaiKhoaHoc;
-
-    private LocalDateTime thoiGianDangKy;
-
-    private LocalDateTime thoiGianKetThuc;
-
     @DBRef // tham chiếu sang collection "bai_hoc"
     private Set<BaiHoc> dsBaiHoc = new HashSet<>();
 
@@ -64,27 +58,6 @@ public class KhoaHoc {
     }
     public void setGiaBan(double giaBan) {
         this.giaBan = giaBan;
-    }
-
-    public TrangThaiKhoaHoc getTrangThaiKhoaHoc() {
-        return trangThaiKhoaHoc;
-    }
-    public void setTrangThaiKhoaHoc(TrangThaiKhoaHoc trangThaiKhoaHoc) {
-        this.trangThaiKhoaHoc = trangThaiKhoaHoc;
-    }
-
-    public LocalDateTime getThoiGianDangKy() {
-        return thoiGianDangKy;
-    }
-    public void setThoiGianDangKy(LocalDateTime thoiGianDangKy) {
-        this.thoiGianDangKy = thoiGianDangKy;
-    }
-
-    public LocalDateTime getThoiGianKetThuc() {
-        return thoiGianKetThuc;
-    }
-    public void setThoiGianKetThuc(LocalDateTime thoiGianKetThuc) {
-        this.thoiGianKetThuc = thoiGianKetThuc;
     }
 
     public Set<BaiHoc> getDsBaiHoc() {

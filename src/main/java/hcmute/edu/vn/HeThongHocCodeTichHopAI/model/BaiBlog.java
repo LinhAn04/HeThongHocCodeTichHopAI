@@ -11,6 +11,8 @@ public class BaiBlog {
     @Id
     private String idBaiBlog;
 
+    private String anhBiaBaiBlog;
+
     private String tieuDeBaiBlog;
 
     private String noiDungBaiBlog;
@@ -24,6 +26,9 @@ public class BaiBlog {
 
     public String getIdBaiBlog() { return idBaiBlog; }
     public void setIdBaiBlog(String idBaiBlog) { this.idBaiBlog = idBaiBlog; }
+
+    public String getAnhBiaBaiBlog() { return anhBiaBaiBlog; }
+    public void setAnhBiaBaiBlog(String anhBiaBaiBlog) { this.anhBiaBaiBlog = anhBiaBaiBlog; }
 
     public String getTieuDeBaiBlog() { return tieuDeBaiBlog; }
     public void setTieuDeBaiBlog(String tieuDeBaiBlog) { this.tieuDeBaiBlog = tieuDeBaiBlog; }
