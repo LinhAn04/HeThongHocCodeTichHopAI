@@ -10,10 +10,8 @@
 <header th:replace="fragments/header :: header(loggedIn=${loggedIn}, user=${user})"></header>
 
 <div class="page-container">
-
-    <!-- Banner course highlight -->
+    <!-- Banner course -->
     <section class="banner">
-
         <div class="banner-slider"
              th:each="c, idx : ${bannerCourses}"
              th:classappend="${idx.index == 0} ? 'active' : ''">
@@ -24,26 +22,26 @@
                 <h1 th:text="${c.tenKhoaHoc}"></h1>
                 <p th:text="${c.moTaKhoaHoc}"></p>
 
-                <!-- CHƯA ĐĂNG NHẬP -->
+                <!-- Hiển thị các nút trong banner theo trường hợp -->
+                <!-- Chưa học -->
                 <a th:if="${!loggedIn}"
                    class="btn-primary"
-                   th:href="@{'/course/' + ${c.idKhoaHoc}}">
+                   th:href="@{'/course/' + ${c.idKhoaHoc} + '?intent=try'}">
                     Try this out
                 </a>
 
-                <!-- ĐÃ ĐĂNG NHẬP + ĐANG HỌC -->
-                <a th:if="${loggedIn
-                and courseStatusMap[c.idKhoaHoc] != null}"
+                <!-- Đã đănng nhập + Đang học -->
+                <a th:if="${continueLessonId != null}"
                    class="btn-primary"
-                   th:href="@{'/course/' + ${c.idKhoaHoc}}">
+                   th:href="@{'/lesson/' + ${continueLessonId}}">
                     Continue your journey
                 </a>
 
-                <!-- ĐÃ ĐĂNG NHẬP + CHƯA HỌC -->
+                <!-- Đã đănng nhập + Chưa học -->
                 <div th:if="${loggedIn
                 and courseStatusMap[c.idKhoaHoc] == null}">
                     <a class="btn-primary"
-                       th:href="@{'/course/' + ${c.idKhoaHoc}}">
+                       th:href="@{'/course/' + ${c.idKhoaHoc} + '?intent=start'}">
                         Start this course
                     </a>
                     <a class="btn-primary"
@@ -51,7 +49,6 @@
                         Try this out
                     </a>
                 </div>
-
             </div>
         </div>
 
@@ -65,18 +62,31 @@
         </div>
     </section>
 
-    <!-- only if u logged in -> show recent accessed courses -->
-    <section th:if="${loggedIn}">
+    <!-- only if u logged in & has recently access courses -->
+    <section th:if="${loggedIn and not #lists.isEmpty(recentCourses)}">
         <h2>Recently</h2>
 
         <div class="course-grid">
+            <!-- CHUAHOC -->
+            <a class="course-card"
+               th:each="c : ${recentCourses}"
+               th:if="${courseStatusMap[c.idKhoaHoc]?.name() != 'DANGHOC'}"
+               th:href="@{'/course/' + ${c.idKhoaHoc} + '?intent=start'}">
 
-            <div class="course-card" th:each="c : ${courses}">
                 <img th:src="${c.anhBiaKhoaHoc}" class="course-thumb">
                 <div class="course-name" th:text="${c.tenKhoaHoc}"></div>
                 <div class="course-author">Codemy team</div>
-            </div>
+            </a>
 
+            <!-- DANG_HOC / HOAN_THANH -->
+            <a class="course-card"
+               th:each="c : ${recentCourses}"
+               th:if="${courseStatusMap[c.idKhoaHoc] != null and courseStatusMap[c.idKhoaHoc]?.name() == 'DANGHOC'}"
+               th:href="@{'/course/' + ${c.idKhoaHoc} + '?intent=continue'}">
+                <img th:src="${c.anhBiaKhoaHoc}" class="course-thumb">
+                <div class="course-name" th:text="${c.tenKhoaHoc}"></div>
+                <div class="course-author">Codemy team</div>
+            </a>
         </div>
     </section>
 
@@ -85,13 +95,50 @@
         <h2>Courses</h2>
 
         <div class="course-grid">
+            <!-- Chưa đăng nhập -->
+            <a class="course-card"
+               th:each="c : ${courses}"
+               th:if="${!loggedIn}"
+               th:href="@{'/course/' + ${c.idKhoaHoc} + '?intent=try'}">
 
-            <div class="course-card" th:each="c : ${courses}">
-                <img th:src="@{${c.anhBiaKhoaHoc}}" class="course-thumb">
+                <img th:src="${c.anhBiaKhoaHoc}" class="course-thumb">
                 <div class="course-name" th:text="${c.tenKhoaHoc}"></div>
                 <div class="course-author">Codemy team</div>
-            </div>
+            </a>
 
+            <!-- Đã đăng nhập + Chưa đăng ký -->
+            <a class="course-card"
+               th:each="c : ${courses}"
+               th:if="${loggedIn and courseStatusMap[c.idKhoaHoc] == null}"
+               th:href="@{'/course/' + ${c.idKhoaHoc} + '?intent=try'}">
+
+                <img th:src="${c.anhBiaKhoaHoc}" class="course-thumb">
+                <div class="course-name" th:text="${c.tenKhoaHoc}"></div>
+                <div class="course-author">Codemy team</div>
+            </a>
+
+            <!-- Đã đăng nhập + Chưa học -->
+            <a class="course-card"
+               th:each="c : ${courses}"
+               th:if="${loggedIn and courseStatusMap[c.idKhoaHoc]?.name() != 'DANGHOC'}"
+               th:href="@{'/course/' + ${c.idKhoaHoc} + '?intent=start'}">
+
+                <img th:src="${c.anhBiaKhoaHoc}" class="course-thumb">
+                <div class="course-name" th:text="${c.tenKhoaHoc}"></div>
+                <div class="course-author">Codemy team</div>
+            </a>
+
+            <!-- Đã đăng nhập + Đang học -->
+            <a class="course-card"
+               th:each="c : ${courses}"
+               th:if="${loggedIn and courseStatusMap[c.idKhoaHoc] != null
+           and courseStatusMap[c.idKhoaHoc]?.name() == 'DANGHOC'}"
+               th:href="@{'/course/' + ${c.idKhoaHoc} + '?intent=continue'}">
+
+                <img th:src="${c.anhBiaKhoaHoc}" class="course-thumb">
+                <div class="course-name" th:text="${c.tenKhoaHoc}"></div>
+                <div class="course-author">Codemy team</div>
+            </a>
         </div>
     </section>
 

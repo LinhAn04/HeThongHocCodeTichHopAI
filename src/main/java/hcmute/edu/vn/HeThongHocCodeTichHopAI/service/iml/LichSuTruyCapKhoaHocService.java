@@ -42,14 +42,20 @@ public class LichSuTruyCapKhoaHocService implements ILichSuTruyCapKhoaHocService
     @Override
     public void saveOrUpdate(DoiTuongSuDung user, KhoaHoc khoaHoc) {
 
-        Optional<LichSuTruyCapKhoaHoc> opt =
-                lichSuTruyCapKhoaHocRepository.findByUserAndKhoaHoc(user, khoaHoc);
+        if (user == null || khoaHoc == null) return;
 
         LichSuTruyCapKhoaHoc ls =
-                opt.orElse(new LichSuTruyCapKhoaHoc());
+                lichSuTruyCapKhoaHocRepository.findByUser_IdDoiTuongAndKhoaHoc_IdKhoaHoc(
+                    user.getIdDoiTuong(),
+                    khoaHoc.getIdKhoaHoc()
+                );
 
-        ls.setUser(user);
-        ls.setKhoaHoc(khoaHoc);
+        if (ls == null) {
+            ls = new LichSuTruyCapKhoaHoc();
+            ls.setUser(user);
+            ls.setKhoaHoc(khoaHoc);
+        }
+
         ls.setThoiGianTruyCapGanNhat(LocalDateTime.now());
 
         lichSuTruyCapKhoaHocRepository.save(ls);

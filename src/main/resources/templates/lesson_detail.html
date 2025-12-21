@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${lesson.tieuDeBaiHoc} + ' - Codemy'">Lesson</title>
+    <link rel="stylesheet" th:href="@{/css/lesson_detail.css}">
+</head>
+<body>
+
+<header th:replace="fragments/header :: header(loggedIn=${loggedIn}, user=${user})"></header>
+
+<div class="page-container">
+
+    <div class="topbar">
+        <div class="breadcrumb">
+            <a th:href="@{/courses}">Courses</a>
+            <span>›</span>
+            <a th:href="@{'/course/' + ${course.idKhoaHoc}}"
+               th:text="${course.tenKhoaHoc}"></a>
+            <span>›</span>
+            <span th:text="${lesson.tieuDeBaiHoc}"></span>
+        </div>
+
+        <div class="nav">
+            <a class="btn-secondary" th:if="${prevLesson != null}" th:href="@{'/lesson/' + ${prevLesson.idBaiHoc}}">‹ Prev</a>
+            <a class="btn-secondary" th:if="${nextLesson != null}" th:href="@{'/lesson/' + ${nextLesson.idBaiHoc}}">Next ›</a>
+        </div>
+    </div>
+
+    <section class="lesson-card">
+        <div class="lesson-head">
+            <div class="type-pill" th:text="${lesson.loai}"></div>
+            <div>
+                <h1 th:text="${lesson.tieuDeBaiHoc}"></h1>
+                <p th:text="${lesson.moTaBaiHoc}"></p>
+            </div>
+        </div>
+
+        <form th:if="${loggedIn}"
+              th:action="@{'/lesson/' + ${lesson.idBaiHoc} + '/complete'}"
+              method="post">
+
+            <button class="btn-primary" type="submit">
+                Mark as done ✔
+            </button>
+        </form>
+
+        <!-- TYPE 1: THEORY -->
+        <div th:if="${lesson.loai == 1}">
+            <div class="content" th:utext="${lesson.noiDungBaiHoc}"></div>
+
+            <div class="mini-quiz">
+                <h3>Quick check</h3>
+                <p class="muted">Một câu nhỏ để check ý chính (placeholder UI).</p>
+                <div class="quiz-box">
+                    <p><b>Question:</b> ...</p>
+                    <button class="btn-primary" type="button">Show answer</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TYPE 2: QUIZ -->
+        <div th:if="${lesson.loai == 2}">
+            <h3>Quiz</h3>
+            <p class="muted">Render câu hỏi từ dsBaiKiemTra của bài học (nối data sau).</p>
+            <div class="quiz-box">
+                <p><b>Question:</b> ...</p>
+                <label><input type="radio" name="q1"> A</label><br/>
+                <label><input type="radio" name="q1"> B</label><br/>
+                <label><input type="radio" name="q1"> C</label><br/>
+                <label><input type="radio" name="q1"> D</label><br/>
+                <button class="btn-primary" type="button">Submit</button>
+            </div>
+        </div>
+
+        <!-- TYPE 3: VIDEO -->
+        <div th:if="${lesson.loai == 3}">
+            <h3>Video</h3>
+
+            <div class="video-wrap" th:if="${lesson.videoUrl != null}">
+                <iframe th:src="${lesson.videoUrl}" allow="autoplay" allowfullscreen></iframe>
+            </div>
+
+            <div class="mini-quiz">
+                <h3>Quick check</h3>
+                <p class="muted">Một câu nhỏ sau video (placeholder UI).</p>
+                <div class="quiz-box">
+                    <p><b>Question:</b> ...</p>
+                    <button class="btn-primary" type="button">Submit</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TYPE 4: CODE -->
+        <div th:if="${lesson.loai == 4}">
+            <h3>Code practice</h3>
+
+            <div class="code-grid">
+                <div class="panel">
+                    <h4>Problem</h4>
+                    <div class="content" th:text="${lesson.codeDeBai}"></div>
+
+                    <h4>Expected output</h4>
+                    <pre class="code" th:text="${lesson.codeOutputMau}"></pre>
+
+                    <h4>Hints</h4>
+                    <div class="content muted" th:text="${lesson.codeGoiY}"></div>
+                </div>
+
+                <div class="panel">
+                    <h4>Your code</h4>
+                    <textarea id="codeInput" th:text="${lesson.starterCode}"></textarea>
+                    <button class="btn-primary" id="btnGrade" type="button">Grade with AI</button>
+
+                    <div class="result" id="gradeResult">
+                        <div class="muted">Khu trả kết quả chấm điểm (backend AI nối sau).</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+
+<script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/lesson_detail.js}"></script>
+</body>
+</html>

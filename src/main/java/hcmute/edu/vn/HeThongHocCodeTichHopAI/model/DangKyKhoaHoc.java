@@ -33,7 +33,7 @@ public class DangKyKhoaHoc {
     public KhoaHoc getKhoaHoc() { return khoaHoc; }
     public void setKhoaHoc(KhoaHoc khoaHoc) { this.khoaHoc = khoaHoc; }
 
-    public TrangThaiKhoaHoc getTrangThai() { return trangThaiKhoaHoc; }
+    public TrangThaiKhoaHoc getTrangThaiKhoaHoc() { return trangThaiKhoaHoc; }
     public void setTrangThaiKhoaHoc(TrangThaiKhoaHoc trangThaiKhoaHoc) { this.trangThaiKhoaHoc = trangThaiKhoaHoc; }
 
     public LocalDateTime getThoiGianDangKy() { return thoiGianDangKy; }

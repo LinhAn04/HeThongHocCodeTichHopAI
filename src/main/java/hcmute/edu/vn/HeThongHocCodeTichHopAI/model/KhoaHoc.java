@@ -15,6 +15,10 @@ public class KhoaHoc {
 
     private String anhBiaKhoaHoc;
 
+    private String tacGia;
+
+    private LocalDateTime ngayTao;
+
     private String tenKhoaHoc;
 
     private String moTaKhoaHoc;
@@ -37,7 +41,16 @@ public class KhoaHoc {
     }
 
     public String getAnhBiaKhoaHoc() { return anhBiaKhoaHoc; }
+
     public void setAnhBiaKhoaHoc(String anhBiaKhoaHoc) { this.anhBiaKhoaHoc = anhBiaKhoaHoc; }
+
+    public String getTacGia() { return tacGia; }
+
+    public void setTacGia(String tacGia) { this.tacGia = tacGia; }
+
+    public LocalDateTime getNgayTao() { return ngayTao; }
+
+    public void setNgayTao(LocalDateTime ngayTao) { this.ngayTao = ngayTao; }
 
     public String getTenKhoaHoc() {
         return tenKhoaHoc;

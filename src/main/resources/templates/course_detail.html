@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${course.tenKhoaHoc} + ' - Codemy'">Course Detail</title>
+    <link rel="stylesheet" th:href="@{/css/course_detail.css}">
+    <link rel="stylesheet" th:href="@{/css/comments.css}">
+</head>
+<body>
+
+<header th:replace="fragments/header :: header(loggedIn=${loggedIn}, user=${user})"></header>
+
+<div class="page-container">
+    <!-- banner -->
+    <section class="hero">
+        <img class="hero-bg" th:src="${course.anhBiaKhoaHoc}" alt="bg">
+        <div class="hero-content">
+            <h1 th:text="${course.tenKhoaHoc}"></h1>
+            <p th:text="${course.moTaKhoaHoc}"></p>
+
+            <div class="meta">
+                <div><b>Author:</b> <span th:text="${course.tacGia != null ? course.tacGia : 'Codemy team'}"></span></div>
+                <div><b>Created:</b> <span th:text="${course.ngayTao != null ? #temporals.format(course.ngayTao, 'dd/MM/yyyy') : '—'}"></span></div>
+                <div><b>Price:</b> <span th:text="${course.giaBan}"></span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- tabs -->
+    <div class="tabs">
+        <button class="tab-btn" data-tab="lessons" th:classappend="${openTab=='lessons'} ? 'active' : ''">Lessons</button>
+        <button class="tab-btn"
+                data-tab="comments"
+                th:classappend="${openTab=='comments'} ? 'active' : ''">
+            Comments
+        </button>
+        <button class="tab-btn"
+                data-tab="enroll"
+                th:if="${intent != 'continue'}"
+                th:classappend="${openTab=='enroll'} ? 'active' : ''">
+            Enroll & Unlock Course
+        </button>
+
+    </div>
+
+    <!-- Lessons -->
+    <section id="lessons" class="tab-panel" th:classappend="${openTab=='lessons'} ? 'active' : ''">
+        <h2>Lessons</h2>
+
+        <div class="lesson-list">
+            <a class="lesson-item"
+               th:each="l : ${lessons}"
+               th:classappend="
+                 ${tienDo != null and tienDo.baiHocDaHoanThanhIds.contains(l.idBaiHoc)}
+                    ? 'done' :
+                 (${tienDo != null and tienDo.baiHocHienTai != null
+                    and tienDo.baiHocHienTai.idBaiHoc == l.idBaiHoc}
+                    ? 'current' : '')
+               "
+               th:href="@{'/lesson/' + ${l.idBaiHoc}}">
+
+                <div class="lesson-left">
+                    <div class="lesson-type" th:text="${l.loai}">1</div>
+                    <div>
+                        <div class="lesson-title" th:text="${l.tieuDeBaiHoc}">Lesson title</div>
+                        <div class="lesson-desc" th:text="${l.moTaBaiHoc}">desc</div>
+                    </div>
+                </div>
+
+                <div class="lesson-right">
+                    <span class="badge" th:if="${l.loai == 1}">Theory</span>
+                    <span class="badge" th:if="${l.loai == 2}">Quiz</span>
+                    <span class="badge" th:if="${l.loai == 3}">Video</span>
+                    <span class="badge" th:if="${l.loai == 4}">Code</span>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Comments -->
+    <div th:replace="fragments/comments :: comments(
+        ${comments},
+        ${repliesMap},
+        ${course},
+        ${loggedIn}
+    )"></div>
+
+    <!-- AI + PAYMENT placeholder -->
+    <section id="enroll"
+             class="tab-panel"
+             th:if="${intent == 'start'}"
+             th:classappend="${openTab=='enroll'} ? 'active' : ''">
+
+        <h2>Enroll & Unlock Course</h2>
+
+        <p class="muted">
+            Answer a few questions to check your readiness,
+            then unlock the full course.
+        </p>
+
+        <!-- AI CHAT -->
+        <div class="ai-chat">
+            <div id="aiMessages" class="ai-messages"></div>
+
+            <textarea id="aiInput"
+                      placeholder="Type your answer..."></textarea>
+
+            <button class="btn-primary"
+                    id="btnAskAI">
+                Answer
+            </button>
+        </div>
+
+        <!-- PAYMENT -->
+        <div class="payment-box">
+            <h3>Unlock full course</h3>
+
+            <div class="price">
+                Price: <b th:text="${course.giaBan}"></b>
+            </div>
+
+            <button class="btn-primary"
+                    id="btnPayMomo">
+                Pay with MoMo
+            </button>
+
+            <button class="btn-primary"
+                    id="btnPayBank">
+                Pay with Bank
+            </button>
+        </div>
+    </section>
+</div>
+
+<div id="editHistoryOverlay" class="overlay hidden">
+    <div class="edit-history-popup">
+        <div class="popup-header">
+            <span>Edit history</span>
+            <button id="closeHistory">✕</button>
+        </div>
+
+        <div id="editHistoryContent" class="popup-content">
+
+        </div>
+
+        <div class="popup-footer">
+            Edits to comments are visible to everyone who can see this comment.
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/course_detail.js}"></script>
+<script th:src="@{/js/comments.js}"></script>
+
+</body>
+</html>

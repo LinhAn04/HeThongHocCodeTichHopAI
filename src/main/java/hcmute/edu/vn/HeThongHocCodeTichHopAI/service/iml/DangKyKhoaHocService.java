@@ -41,6 +41,15 @@ public class DangKyKhoaHocService implements IDangKyKhoaHocService {
     public DangKyKhoaHoc findByUserAndCourse(
             DoiTuongSuDung user,
             KhoaHoc khoaHoc) {
-        return dangKyKhoaHocRepository.findByNguoiHocAndKhoaHoc(user, khoaHoc);
+
+        if (user == null || khoaHoc == null) {
+            return null;
+        }
+
+        return dangKyKhoaHocRepository
+                .findByNguoiHoc_IdDoiTuongAndKhoaHoc_IdKhoaHoc(
+                        user.getIdDoiTuong(),
+                        khoaHoc.getIdKhoaHoc()
+                );
     }
 }

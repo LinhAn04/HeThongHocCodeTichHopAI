@@ -1,70 +1,192 @@
 package hcmute.edu.vn.HeThongHocCodeTichHopAI.controller;
 
-import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.DoiTuongSuDung;
-import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.KhoaHoc;
-import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.LichSuTruyCapKhoaHoc;
-import hcmute.edu.vn.HeThongHocCodeTichHopAI.repository.LichSuTruyCapKhoaHocRepository;
-import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.IDoiTuongSuDungService;
-import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.IKhoaHocService;
-import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.ILichSuTruyCapKhoaHocService;
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.*;
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.repository.*;
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.*;
+
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
-@RequestMapping("/course")
 public class CourseDetailController {
 
     private final IKhoaHocService khoaHocService;
     private final IDoiTuongSuDungService doiTuongSuDungService;
-    private final ILichSuTruyCapKhoaHocService lichSuTruyCapKhoaHocService;
-    private final LichSuTruyCapKhoaHocRepository lichSuTruyCapKhoaHocRepository;
 
-    public CourseDetailController(IKhoaHocService khoaHocService, IDoiTuongSuDungService doiTuongSuDungService,
-                                  ILichSuTruyCapKhoaHocService lichSuTruyCapKhoaHocService,
-                                  LichSuTruyCapKhoaHocRepository lichSuTruyCapKhoaHocRepository) {
+    private final BaiHocRepository baiHocRepository;
+    private final DanhGiaRepository danhGiaRepository;
+    private final PhanHoiDanhGiaRepository phanHoiDanhGiaRepository;
+    private final DangKyKhoaHocRepository dangKyKhoaHocRepository;
+    private final LichSuTruyCapKhoaHocRepository lichSuTruyCapKhoaHocRepository;
+    private final LoTrinhHocRepository loTrinhHocRepository;
+
+    public CourseDetailController(
+            IKhoaHocService khoaHocService,
+            IDoiTuongSuDungService doiTuongSuDungService,
+            BaiHocRepository baiHocRepository,
+            DanhGiaRepository danhGiaRepository,
+            PhanHoiDanhGiaRepository phanHoiDanhGiaRepository,
+            DangKyKhoaHocRepository dangKyKhoaHocRepository,
+            LichSuTruyCapKhoaHocRepository lichSuTruyCapKhoaHocRepository,
+            LoTrinhHocRepository loTrinhHocRepository
+    ) {
         this.khoaHocService = khoaHocService;
         this.doiTuongSuDungService = doiTuongSuDungService;
-        this.lichSuTruyCapKhoaHocService = lichSuTruyCapKhoaHocService;
+        this.baiHocRepository = baiHocRepository;
+        this.danhGiaRepository = danhGiaRepository;
+        this.phanHoiDanhGiaRepository = phanHoiDanhGiaRepository;
+        this.dangKyKhoaHocRepository = dangKyKhoaHocRepository;
         this.lichSuTruyCapKhoaHocRepository = lichSuTruyCapKhoaHocRepository;
+        this.loTrinhHocRepository = loTrinhHocRepository;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/course/{idKhoaHoc}")
     public ModelAndView courseDetail(
-            @PathVariable String id,
-            HttpServletRequest request) {
+            @PathVariable String idKhoaHoc,
+            @RequestParam(name = "intent", required = false, defaultValue = "try") String intent,
+            HttpServletRequest request
+    ) {
+        ModelAndView mv = new ModelAndView("course_detail");
 
         String email = (String) request.getSession().getAttribute("email");
+        boolean loggedIn = (email != null);
+        mv.addObject("loggedIn", loggedIn);
 
-        if (email != null) {
-            DoiTuongSuDung user = doiTuongSuDungService.findByEmail(email);
-            KhoaHoc khoaHoc = khoaHocService.findById(id);
-
-            lichSuTruyCapKhoaHocService.saveOrUpdate(user, khoaHoc);
+        DoiTuongSuDung user = null;
+        if (loggedIn) {
+            user = doiTuongSuDungService.findByEmail(email);
+            mv.addObject("user", user);
         }
 
-        ModelAndView mv = new ModelAndView("course-detail");
-        mv.addObject("course", khoaHocService.findById(id));
+        KhoaHoc khoaHoc = khoaHocService.findById(idKhoaHoc); // bạn có thể đổi sang Optional
+        if (khoaHoc == null) {
+            mv.setViewName("redirect:/courses");
+            return mv;
+        }
+        mv.addObject("course", khoaHoc);
+
+        // list bài học theo thứ tự
+        List<BaiHoc> lessons = baiHocRepository.findByKhoaHoc_IdKhoaHocOrderByThuTuAsc(idKhoaHoc);
+        mv.addObject("lessons", lessons);
+
+        // trạng thái đăng ký
+        DangKyKhoaHoc dk = null;
+        TrangThaiKhoaHoc status = null;
+        if (loggedIn) {
+            dk = dangKyKhoaHocRepository.findByNguoiHoc_IdDoiTuongAndKhoaHoc_IdKhoaHoc(user.getIdDoiTuong(), idKhoaHoc);
+            if (dk != null) status = dk.getTrangThaiKhoaHoc();
+        }
+        mv.addObject("dangKy", dk);
+        mv.addObject("courseStatus", status);
+
+        // ghi lịch sử truy cập khóa học (chỉ khi logged in)
+        if (loggedIn) {
+            upsertCourseAccess(user, khoaHoc);
+        }
+
+        // comment + reply
+        List<DanhGia> comments = danhGiaRepository.findByKhoaHoc_IdKhoaHocOrderByThoiGianDanhGiaDesc(idKhoaHoc);
+        for (DanhGia c : comments) {
+            if (c.getNguoiDung() != null) {
+                DoiTuongSuDung fullUser =
+                        doiTuongSuDungService.findById(
+                                c.getNguoiDung().getIdDoiTuong()
+                        );
+                c.setNguoiDung(fullUser);
+            }
+        }
+        mv.addObject("comments", comments);
+
+
+        Map<String, List<PhanHoiDanhGia>> repliesMap = new HashMap<>();
+        for (DanhGia dg : comments) {
+            List<PhanHoiDanhGia> replies =
+                    phanHoiDanhGiaRepository
+                            .findByDanhGia_IdDanhGiaOrderByThoiGianPhanHoiAsc(dg.getIdDanhGia());
+            for (PhanHoiDanhGia r : replies) {
+                if (r.getNguoiDung() != null) {
+                    DoiTuongSuDung fullUser =
+                            doiTuongSuDungService.findById(
+                                    r.getNguoiDung().getIdDoiTuong()
+                            );
+                    r.setNguoiDung(fullUser);
+                }
+                if (loggedIn && r.getNguoiDung() != null) {
+                    boolean canEdit =
+                            r.getNguoiDung().getIdDoiTuong().equals(user.getIdDoiTuong())
+                                    && r.getThoiGianPhanHoi()
+                                    .plusHours(24)
+                                    .isAfter(LocalDateTime.now());
+
+                    r.setCanEdit(canEdit);
+                }
+            }
+            if (loggedIn && dg.getNguoiDung() != null) {
+                boolean canEdit =
+                        dg.getNguoiDung().getIdDoiTuong().equals(user.getIdDoiTuong())
+                                && dg.getThoiGianDanhGia()
+                                .plusHours(24)
+                                .isAfter(LocalDateTime.now());
+
+                dg.setCanEdit(canEdit);
+            }
+            repliesMap.put(dg.getIdDanhGia(), replies);
+        }
+        mv.addObject("repliesMap", repliesMap);
+
+        // intent: try / start / continue
+        mv.addObject("intent", intent);
+
+        LoTrinhHoc loTrinh = null;
+        TienDoHoc tienDo = null;
+
+        if (loggedIn) {
+            loTrinh = loTrinhHocRepository
+                    .findByNguoiDung_IdDoiTuongAndKhoaHoc_IdKhoaHoc(
+                            user.getIdDoiTuong(),
+                            idKhoaHoc
+                    );
+            if (loTrinh != null) {
+                tienDo = loTrinh.getTienDoHoc();
+            }
+        }
+
+        if (tienDo != null && tienDo.getBaiHocHienTai() != null) {
+            mv.addObject("continueLessonId",
+                    tienDo.getBaiHocHienTai().getIdBaiHoc());
+        }
+
+        if ("start".equals(intent)) {
+            mv.addObject("openTab", "enroll");
+        } else {
+            mv.addObject("openTab", "lessons");
+        }
+
+        mv.addObject("tienDo", tienDo);
+
         return mv;
     }
 
-//    @Override
-    public void saveOrUpdate(DoiTuongSuDung user, KhoaHoc khoaHoc) {
+    private void upsertCourseAccess(DoiTuongSuDung user, KhoaHoc course) {
+        LichSuTruyCapKhoaHoc ls = lichSuTruyCapKhoaHocRepository
+                .findByUser_IdDoiTuongAndKhoaHoc_IdKhoaHoc(user.getIdDoiTuong(), course.getIdKhoaHoc());
 
-        Optional<LichSuTruyCapKhoaHoc> opt =
-                lichSuTruyCapKhoaHocRepository.findByUserAndKhoaHoc(user, khoaHoc);
-
-        LichSuTruyCapKhoaHoc ls = opt.orElse(new LichSuTruyCapKhoaHoc());
-        ls.setUser(user);
-        ls.setKhoaHoc(khoaHoc);
+        if (ls == null) {
+            ls = new LichSuTruyCapKhoaHoc();
+            ls.setUser(user);
+            ls.setKhoaHoc(course);
+        }
         ls.setThoiGianTruyCapGanNhat(LocalDateTime.now());
-
         lichSuTruyCapKhoaHocRepository.save(ls);
     }
 }
