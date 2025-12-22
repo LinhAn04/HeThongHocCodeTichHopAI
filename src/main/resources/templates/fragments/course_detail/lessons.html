@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+
+</head>
+
 <body>
 
 <section id="lessons"
@@ -29,10 +34,25 @@
       </div>
 
       <div class="lesson-right">
-        <span class="badge" th:if="${l.loai == 1}">Theory</span>
-        <span class="badge" th:if="${l.loai == 2}">Quiz</span>
-        <span class="badge" th:if="${l.loai == 3}">Video</span>
-        <span class="badge" th:if="${l.loai == 4}">Code</span>
+        <img class="lesson-icon"
+             th:if="${l.loai == 1}"
+             th:src="@{/images/theory.png}"
+             alt="Theory"/>
+
+        <img class="lesson-icon"
+             th:if="${l.loai == 2}"
+             th:src="@{/images/quiz.png}"
+             alt="Quiz"/>
+
+        <img class="lesson-icon"
+             th:if="${l.loai == 3}"
+             th:src="@{/images/video.png}"
+             alt="Video"/>
+
+        <img class="lesson-icon"
+             th:if="${l.loai == 4}"
+             th:src="@{/images/code.png}"
+             alt="Code Practice"/>
       </div>
     </a>
   </div>

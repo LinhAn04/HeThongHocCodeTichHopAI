@@ -102,49 +102,6 @@ h2 {
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
-.lesson-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.lesson-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 14px;
-    padding: 14px;
-    border-radius: 12px;
-    text-decoration: none;
-    background: rgba(255,255,255,0.08);
-    transition: 0.2s;
-}
-
-.lesson-item:hover { transform: scale(1.01); }
-
-.lesson-left { display: flex; gap: 12px; align-items: center; }
-.lesson-type {
-    width: 34px; height: 34px;
-    border-radius: 10px;
-    display: grid; place-items: center;
-    background: rgba(255,255,255,0.15);
-    color: white;
-    font-weight: 700;
-}
-
-.lesson-title { color: white; font-weight: 700; }
-.lesson-desc { color: white; opacity: .8; margin-top: 4px; font-size: .92rem; }
-
-.badge {
-    color: white;
-    opacity: .9;
-    padding: 6px 10px;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.12);
-    font-weight: 700;
-    font-size: .85rem;
-}
-
 .ai-card {
     margin-top: 14px;
     padding: 14px;

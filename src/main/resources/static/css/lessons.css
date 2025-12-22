@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&display=swap");
+
+* { font-family: "Inria Sans", sans-serif; }
+
+.lesson-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.lesson-icon {
+    font-size: 18px;
+    color: #cfd8dc;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+}
+
+.lesson-item:hover .lesson-icon {
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+}
+
+.lesson-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    padding: 14px;
+    border-radius: 12px;
+    text-decoration: none;
+    background: rgba(255,255,255,0.08);
+    transition: 0.2s;
+}
+
+.lesson-item:hover { transform: scale(1.01); }
+
+.lesson-left { display: flex; gap: 12px; align-items: center; }
+.lesson-type {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    display: grid; place-items: center;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-weight: 700;
+}
+
+.lesson-title { color: white; font-weight: 700; }
+.lesson-desc { color: white; opacity: .8; margin-top: 4px; font-size: .92rem; }
+
+.lesson-right {
+    display: flex;
+    align-items: center;
+}
+
+.lesson-icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    opacity: 0.9;
+}
+
+.lesson-item:hover .lesson-icon {
+    opacity: 1;
+}
