@@ -2,7 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${lesson.tieuDeBaiHoc} + ' - Codemy'">Lesson</title>
+    <title th:text="${lesson.tieuDeBaiHoc} + ' - ' + ${course.tenKhoaHoc}">Lesson</title>
+
+    <link rel="stylesheet" th:href="@{/css/course_detail.css}">
     <link rel="stylesheet" th:href="@{/css/lesson_detail.css}">
 </head>
 <body>
@@ -11,119 +13,135 @@
 
 <div class="page-container">
 
-    <div class="topbar">
-        <div class="breadcrumb">
-            <a th:href="@{/courses}">Courses</a>
-            <span>›</span>
-            <a th:href="@{'/course/' + ${course.idKhoaHoc}}"
-               th:text="${course.tenKhoaHoc}"></a>
-            <span>›</span>
-            <span th:text="${lesson.tieuDeBaiHoc}"></span>
+    <div class="lesson-top">
+        <a class="back-link"
+           th:href="@{'/course/' + ${course.idKhoaHoc}}">
+            &lt; Back to
+            <span th:text="${course.tenKhoaHoc}"></span>
+        </a>
+
+        <div class="lesson-header">
+            <h1 th:text="${lesson.tieuDeBaiHoc}"></h1>
+            <p class="muted" th:text="${lesson.moTaBaiHoc}"></p>
+
+            <div class="pill-row">
+                <span class="pill" th:text="'Lesson ' + ${lesson.thuTu}"></span>
+            </div>
         </div>
 
-        <div class="nav">
-            <a class="btn-secondary" th:if="${prevLesson != null}" th:href="@{'/lesson/' + ${prevLesson.idBaiHoc}}">‹ Prev</a>
-            <a class="btn-secondary" th:if="${nextLesson != null}" th:href="@{'/lesson/' + ${nextLesson.idBaiHoc}}">Next ›</a>
+        <div class="nav-row">
+            <a class="nav-btn" th:if="${prevLesson != null}" th:href="@{'/lesson/' + ${prevLesson.idBaiHoc}}">&lt;&lt; Prev</a>
+            <a class="nav-btn primary" th:if="${nextLesson != null}" th:href="@{'/lesson/' + ${nextLesson.idBaiHoc}}">Next &gt;&gt;</a>
+            <a class="nav-btn lock" th:if="${nextLesson == null and trialMode}" th:href="@{'/course/' + ${course.idKhoaHoc} + '?intent=start#enroll'}">Unlock full course</a>
         </div>
     </div>
 
-    <section class="lesson-card">
-        <div class="lesson-head">
-            <div class="type-pill" th:text="${lesson.loai}"></div>
-            <div>
-                <h1 th:text="${lesson.tieuDeBaiHoc}"></h1>
-                <p th:text="${lesson.moTaBaiHoc}"></p>
-            </div>
+    <!-- TYPE 1: THEORY -->
+    <section class="lesson-card" th:if="${lesson.loai == 1}">
+        <h2>Theory</h2>
+        <div class="content" th:text="${lesson.noiDungBaiHoc}">
+            Lesson content...
         </div>
 
-        <form th:if="${loggedIn}"
-              th:action="@{'/lesson/' + ${lesson.idBaiHoc} + '/complete'}"
-              method="post">
-
-            <button class="btn-primary" type="submit">
-                Mark as done ✔
-            </button>
+        <form th:if="${!trialMode}" method="post" th:action="@{'/lesson/' + ${lesson.idBaiHoc} + '/complete'}">
+            <button class="btn-primary" type="submit">Finish lesson</button>
         </form>
+    </section>
 
-        <!-- TYPE 1: THEORY -->
-        <div th:if="${lesson.loai == 1}">
-            <div class="content" th:utext="${lesson.noiDungBaiHoc}"></div>
+    <!-- TYPE 2: QUIZ -->
+    <section class="lesson-card" th:if="${lesson.loai == 2}">
+        <h2>Quiz</h2>
 
-            <div class="mini-quiz">
-                <h3>Quick check</h3>
-                <p class="muted">Một câu nhỏ để check ý chính (placeholder UI).</p>
-                <div class="quiz-box">
-                    <p><b>Question:</b> ...</p>
-                    <button class="btn-primary" type="button">Show answer</button>
-                </div>
-            </div>
-        </div>
+        <div th:if="${quiz == null}" class="hint">Quiz data not found.</div>
 
-        <!-- TYPE 2: QUIZ -->
-        <div th:if="${lesson.loai == 2}">
-            <h3>Quiz</h3>
-            <p class="muted">Render câu hỏi từ dsBaiKiemTra của bài học (nối data sau).</p>
-            <div class="quiz-box">
-                <p><b>Question:</b> ...</p>
-                <label><input type="radio" name="q1"> A</label><br/>
-                <label><input type="radio" name="q1"> B</label><br/>
-                <label><input type="radio" name="q1"> C</label><br/>
-                <label><input type="radio" name="q1"> D</label><br/>
-                <button class="btn-primary" type="button">Submit</button>
-            </div>
-        </div>
+        <div th:if="${quiz != null}">
+            <div class="quiz-title" th:text="${quiz.tieuDe}"></div>
 
-        <!-- TYPE 3: VIDEO -->
-        <div th:if="${lesson.loai == 3}">
-            <h3>Video</h3>
+            <form id="quizForm" class="quiz-form">
+                <div class="q-block" th:each="q, stat : ${quiz.cauHoi}">
+                    <div class="q-text">
+                        <span class="q-num" th:text="${stat.index + 1}"></span>
+                        <span th:text="${q.noiDung}"></span>
+                    </div>
 
-            <div class="video-wrap" th:if="${lesson.videoUrl != null}">
-                <iframe th:src="${lesson.videoUrl}" allow="autoplay" allowfullscreen></iframe>
-            </div>
+                    <div class="q-options">
+                        <label class="opt" th:each="opt, oStat : ${q.luaChon}">
+                            <input type="radio"
+                                   th:name="${'q' + stat.index}"
+                                   th:value="${oStat.index}">
+                            <span th:text="${opt}"></span>
+                        </label>
+                    </div>
 
-            <div class="mini-quiz">
-                <h3>Quick check</h3>
-                <p class="muted">Một câu nhỏ sau video (placeholder UI).</p>
-                <div class="quiz-box">
-                    <p><b>Question:</b> ...</p>
-                    <button class="btn-primary" type="button">Submit</button>
-                </div>
-            </div>
-        </div>
+                    <div class="q-result hidden" th:attr="data-qindex=${stat.index}">
 
-        <!-- TYPE 4: CODE -->
-        <div th:if="${lesson.loai == 4}">
-            <h3>Code practice</h3>
-
-            <div class="code-grid">
-                <div class="panel">
-                    <h4>Problem</h4>
-                    <div class="content" th:text="${lesson.codeDeBai}"></div>
-
-                    <h4>Expected output</h4>
-                    <pre class="code" th:text="${lesson.codeOutputMau}"></pre>
-
-                    <h4>Hints</h4>
-                    <div class="content muted" th:text="${lesson.codeGoiY}"></div>
-                </div>
-
-                <div class="panel">
-                    <h4>Your code</h4>
-                    <textarea id="codeInput" th:text="${lesson.starterCode}"></textarea>
-                    <button class="btn-primary" id="btnGrade" type="button">Grade with AI</button>
-
-                    <div class="result" id="gradeResult">
-                        <div class="muted">Khu trả kết quả chấm điểm (backend AI nối sau).</div>
                     </div>
                 </div>
+
+                <button class="btn-primary" type="button" id="btnSubmitQuiz">Submit</button>
+                <button class="btn-secondary" type="button" id="btnRetryQuiz">Retry</button>
+            </form>
+
+            <div id="quizSummary" class="quiz-summary hidden"></div>
+        </div>
+    </section>
+
+    <!-- TYPE 3: VIDEO -->
+    <section class="lesson-card" th:if="${lesson.loai == 3}">
+        <h2>Video</h2>
+
+        <div class="video-wrap" th:if="${lesson.youtubeVideoId != null}">
+            <iframe
+                    th:src="${'https://www.youtube.com/embed/' + lesson.youtubeVideoId}"
+                    frameborder="0"
+                    allowfullscreen></iframe>
+        </div>
+
+        <div class="hint" th:if="${lesson.youtubeVideoId == null}">
+            Missing YouTube video id.
+        </div>
+
+        <form th:if="${!trialMode}" method="post" th:action="@{'/lesson/' + ${lesson.idBaiHoc} + '/complete'}">
+            <button class="btn-primary" type="submit">Finish lesson</button>
+        </form>
+    </section>
+
+    <!-- TYPE 4: CODE -->
+    <section class="lesson-card" th:if="${lesson.loai == 4}">
+        <h2>Code practice</h2>
+
+        <div class="problem">
+            <h3>Problem</h3>
+            <pre class="pre" th:text="${lesson.codeDeBai}"></pre>
+        </div>
+
+        <div class="editor">
+            <h3>Starter code</h3>
+            <textarea id="codeEditor" class="code-area" th:text="${lesson.starterCode}"></textarea>
+
+            <div class="hint-box" th:if="${lesson.codeGoiY != null}">
+                <button class="btn-secondary" type="button" id="btnToggleHint">Show hint</button>
+                <div id="hintContent" class="hidden">
+                    <pre class="pre" th:text="${lesson.codeGoiY}"></pre>
+                </div>
             </div>
         </div>
 
+        <div class="output">
+            <h3>Your output</h3>
+            <textarea id="userOutput" class="out-area" placeholder="Paste your program output here..."></textarea>
+
+            <button class="btn-primary" type="button" id="btnSubmitCode">Submit</button>
+            <div id="codeResult" class="hint hidden"></div>
+        </div>
     </section>
 
 </div>
 
-<script th:src="@{/js/header.js}"></script>
+<script>
+    window.__LESSON_ID__ = /*[[${lesson.idBaiHoc}]]*/ "";
+</script>
 <script th:src="@{/js/lesson_detail.js}"></script>
+
 </body>
 </html>

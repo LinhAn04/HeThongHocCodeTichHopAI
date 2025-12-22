@@ -5,9 +5,14 @@ import java.util.List;
 
 public class CauHoiTracNghiem {
     private String cauHoi;
+
     private List<String> luaChon = new ArrayList<>();
+
     private Integer dapAnDungIndex;
-    private String giaiThich;
+
+    private String giaiThichDung;                 // vì sao đáp án đúng đúng
+
+    private List<String> giaiThichSai = new ArrayList<>();
 
     public CauHoiTracNghiem() {}
 
@@ -20,6 +25,9 @@ public class CauHoiTracNghiem {
     public Integer getDapAnDungIndex() { return dapAnDungIndex;}
     public void setDapAnDungIndex(Integer dapAnDungIndex) {this.dapAnDungIndex = dapAnDungIndex;}
 
-    public String getGiaiThich() { return giaiThich;}
-    public void setGiaiThich(String GiaiThich) {this.giaiThich = giaiThich;}
+    public String getGiaiThichDung() { return giaiThichDung;}
+    public void setGiaiThichDung(String GiaiThich) {this.giaiThichDung = giaiThichDung;}
+
+    public List<String> getGiaiThichSai() { return giaiThichSai;}
+    public void setGiaiThichSai(List<String> giaiThichSai) {this.giaiThichSai = giaiThichSai;}
 }

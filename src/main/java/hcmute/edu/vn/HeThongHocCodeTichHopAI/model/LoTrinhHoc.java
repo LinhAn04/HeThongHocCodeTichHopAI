@@ -30,10 +30,5 @@ public class LoTrinhHoc {
     public void setNguoiDung(DoiTuongSuDung nguoiDung) { this.nguoiDung = nguoiDung; }
 
     public TienDoHoc getTienDoHoc() { return tienDoHoc; }
-    public void setTienDoHoc(TienDoHoc tienDoHoc) {
-        this.tienDoHoc = tienDoHoc;
-        if (tienDoHoc != null) {
-            tienDoHoc.setLoTrinhHoc(this);
-        }
-    }
+    public void setTienDoHoc(TienDoHoc tienDoHoc) { this.tienDoHoc = tienDoHoc; }
 }

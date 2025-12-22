@@ -5,43 +5,36 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Document(collection = "tien_do_hoc")
 public class TienDoHoc {
     @Id
     private String idTienDoHoc;
 
-    private Double tiLeHoanThanh = 0.0;
-
-    private LocalDateTime lanCuoiTruyCap;
-
     @DBRef
     private BaiHoc baiHocHienTai;
 
-    private Set<String> baiHocDaHoanThanhIds = new HashSet<>();
+    private double tiLeHoanThanh;
 
-    @DBRef
-    private LoTrinhHoc loTrinhHoc;
+    // chứa các idBaiHoc đã hoàn thành
+    private List<String> baiHocDaHoanThanhIds = new ArrayList<>();
 
-    public TienDoHoc() {}
+    private LocalDateTime capNhatLuc = LocalDateTime.now();
 
     public String getIdTienDoHoc() { return idTienDoHoc; }
     public void setIdTienDoHoc(String idTienDoHoc) { this.idTienDoHoc = idTienDoHoc; }
 
-    public Double getTiLeHoanThanh() { return tiLeHoanThanh; }
-    public void setTiLeHoanThanh(Double tiLeHoanThanh) { this.tiLeHoanThanh = tiLeHoanThanh; }
-
-    public LocalDateTime getLanCuoiTruyCap() { return lanCuoiTruyCap; }
-    public void setLanCuoiTruyCap(LocalDateTime lanCuoiTruyCap) { this.lanCuoiTruyCap = lanCuoiTruyCap; }
-
-    public LoTrinhHoc getLoTrinhHoc() { return loTrinhHoc; }
-    public void setLoTrinhHoc(LoTrinhHoc loTrinhHoc) { this.loTrinhHoc = loTrinhHoc; }
-
     public BaiHoc getBaiHocHienTai() { return baiHocHienTai; }
     public void setBaiHocHienTai(BaiHoc baiHocHienTai) { this.baiHocHienTai = baiHocHienTai; }
 
-    public Set<String> getBaiHocDaHoanThanhIds() { return baiHocDaHoanThanhIds; }
-    public void setBaiHocDaHoanThanhIds(Set<String> baiHocDaHoanThanhIds) {}
+    public double getTiLeHoanThanh() { return tiLeHoanThanh; }
+    public void setTiLeHoanThanh(double tiLeHoanThanh) { this.tiLeHoanThanh = tiLeHoanThanh; }
+
+    public List<String> getBaiHocDaHoanThanhIds() { return baiHocDaHoanThanhIds; }
+    public void setBaiHocDaHoanThanhIds(List<String> ids) { this.baiHocDaHoanThanhIds = ids; }
+
+    public LocalDateTime getCapNhatLuc() { return capNhatLuc; }
+    public void setCapNhatLuc(LocalDateTime capNhatLuc) { this.capNhatLuc = capNhatLuc; }
 }

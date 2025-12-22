@@ -71,3 +71,12 @@ a {
 .lesson-item:hover .lesson-icon {
     opacity: 1;
 }
+
+.lesson-item.done .lesson-type {
+    border: 2px solid rgba(46, 204, 113, 0.9);
+}
+
+.lesson-item.current .lesson-type {
+    background: rgba(13, 71, 161, 0.8);
+}
+

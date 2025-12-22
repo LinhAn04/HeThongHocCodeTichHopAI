@@ -1,142 +1,133 @@
-@import url("https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&display=swap");
-
-* { font-family: "Inria Sans", sans-serif; }
-
-html, body {
-    margin: 0;
-    padding: 0;
-    background: url("../images/BackGround.jpg") no-repeat center center fixed;
-    background-size: cover;
+.lesson-top {
+    margin: 18px 0;
 }
 
-.page-container { padding: 80px 20px 30px 20px; }
-
-a { color: white; text-decoration: none; opacity: .92; }
-
-.topbar {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 14px;
+.back-link {
+    color: rgba(255,255,255,.8);
+    text-decoration: none;
 }
 
-.breadcrumb { color: white; opacity: .9; }
-.breadcrumb span { margin: 0 8px; }
-
-.btn-secondary {
-    display: inline-block;
-    padding: 10px 14px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.08);
-    color: white;
-    font-weight: 700;
+.back-link:hover {
+    font-weight: bold;
 }
+
+.lesson-header h1 { color: #fff; margin-top: 10px; }
+
+.muted { color: rgba(255,255,255,.75); }
+
+.pill-row { display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
+.pill {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    font-size: .9rem;
+}
+
+.nav-row { display:flex; gap:10px; margin-top:14px; }
+
+.nav-btn {
+    display:inline-block;
+    padding:10px 12px;
+    border-radius:10px;
+    background: rgba(255,255,255,0.10);
+    color:#fff;
+    text-decoration:none;
+    font-size: .9rem;
+}
+.nav-btn:hover { background: rgba(255,255,255,0.16); }
+.nav-btn.primary { background:#0d47a1; }
+.nav-btn.primary:hover { background:#1565c0; }
+.nav-btn.lock { background: rgba(255, 193, 7, 0.18); }
 
 .lesson-card {
+    margin-top: 14px;
+    padding: 14px;
+    border-radius: 14px;
     background: rgba(255,255,255,0.08);
-    border-radius: 12px;
-    padding: 16px;
+    color: #fff;
 }
 
-.lesson-head {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-}
+.content { white-space: pre-wrap; line-height: 1.6; }
 
-.type-pill {
-    min-width: 36px;
-    height: 36px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.15);
-    color: white;
-    display: grid;
-    place-items: center;
-    font-weight: 800;
-}
-
-h1 { margin: 0; color: white; font-size: 2rem; }
-p { margin-top: 8px; color: white; opacity: .85; }
-
-.content {
-    color: white;
-    opacity: .92;
-    line-height: 1.6;
-    margin-top: 14px;
-}
-
-.muted { color: white; opacity: .8; }
-
-.btn-primary {
-    margin-top: 12px;
-    padding: 10px 16px;
+.btn-primary, .btn-secondary {
+    border: 0;
     border-radius: 10px;
-    border: 0;
+    padding: 10px 12px;
     cursor: pointer;
-    background: #0d47a1;
-    color: white;
-    font-weight: 700;
+    margin-top: 10px;
 }
+.btn-primary { background:#0d47a1; color:#fff; }
+.btn-primary:hover { background:#1565c0; }
+.btn-secondary { background: rgba(255,255,255,0.12); color:#fff; }
+.btn-secondary:hover { background: rgba(255,255,255,0.18); }
 
-.quiz-box {
-    margin-top: 12px;
-    padding: 14px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.06);
-    color: white;
-}
-
-.video-wrap {
-    margin-top: 14px;
-    border-radius: 12px;
-    overflow: hidden;
-    background: rgba(0,0,0,0.35);
-}
-
-.video-wrap iframe {
-    width: 100%;
-    height: 420px;
-    border: 0;
-}
-
-.code-grid {
-    margin-top: 14px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-}
-
-.panel {
-    padding: 14px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.06);
-    color: white;
-}
-
-pre.code {
+.pre {
+    white-space: pre-wrap;
     padding: 12px;
     border-radius: 12px;
     background: rgba(0,0,0,0.35);
     overflow: auto;
 }
 
-textarea#codeInput {
+.quiz-title { font-weight:700; margin: 10px 0; }
+
+.q-block { padding:12px; border-radius:12px; background: rgba(0,0,0,0.25); margin-top: 10px; }
+.q-text { display:flex; gap:10px; align-items:baseline; }
+.q-num {
+    width: 26px; height: 26px;
+    border-radius: 8px;
+    display:grid; place-items:center;
+    background: rgba(255,255,255,0.12);
+    font-weight:700;
+}
+.q-options { margin-top: 10px; display:flex; flex-direction:column; gap:8px; }
+.opt { display:flex; gap:10px; align-items:center; cursor:pointer; }
+.opt input { transform: scale(1.1); }
+
+.q-result { margin-top: 10px; padding: 10px; border-radius: 12px; background: rgba(255,255,255,0.06); }
+.q-meta { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom: 8px; }
+.tag { padding:4px 8px; border-radius:999px; font-weight:700; font-size:.85rem; }
+.tag.ok { background: rgba(46, 204, 113, 0.18); color: #b7ffcf; }
+.tag.bad { background: rgba(231, 76, 60, 0.18); color: #ffb7b7; }
+.meta { opacity: .85; font-size: .9rem; }
+
+.choice { padding: 10px; border-radius: 10px; margin-top: 8px; }
+.choice.correct { background: rgba(46, 204, 113, 0.12); }
+.choice.wrong { background: rgba(231, 76, 60, 0.10); }
+.choice-reason { margin-top: 6px; opacity: .9; font-size: .92rem; line-height: 1.5; }
+
+.quiz-summary { margin-top: 12px; padding: 10px; border-radius: 12px; background: rgba(0,0,0,0.28); }
+.saved { opacity:.9; }
+
+.video-wrap iframe {
     width: 100%;
-    min-height: 260px;
+    height: 480px;
     border-radius: 12px;
-    border: 0;
+}
+
+.code-area, .out-area {
+    width: 100%;
+    min-height: 180px;
+    border-radius: 12px;
+    border: none;
     outline: none;
     padding: 12px;
-    background: rgba(0,0,0,0.35);
-    color: white;
+    background: rgba(255,255,255,0.10);
+    color: #fff;
+    resize: vertical;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-.result {
-    margin-top: 12px;
-    padding: 12px;
+.hint {
+    margin-top: 10px;
+    padding: 10px;
     border-radius: 12px;
     background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,.9);
 }
+
+.hint.ok { border: 1px solid rgba(46,204,113,.45); }
+.hint.bad { border: 1px solid rgba(231,76,60,.45); }
+
+.hidden { display:none; }

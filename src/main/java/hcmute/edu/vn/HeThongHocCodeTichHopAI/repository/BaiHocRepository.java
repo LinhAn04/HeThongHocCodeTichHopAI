@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface BaiHocRepository extends MongoRepository<BaiHoc, String> {
     List<BaiHoc> findByKhoaHoc_IdKhoaHocOrderByThuTuAsc(String idKhoaHoc);
+    BaiHoc findFirstByKhoaHoc_IdKhoaHocOrderByThuTuAsc(String idKhoaHoc);
+    BaiHoc findFirstByKhoaHoc_IdKhoaHocAndThuTuGreaterThanOrderByThuTuAsc(String idKhoaHoc, int thuTu);
+    BaiHoc findFirstByKhoaHoc_IdKhoaHocAndThuTuLessThanOrderByThuTuDesc(String idKhoaHoc, int thuTu);
 }
