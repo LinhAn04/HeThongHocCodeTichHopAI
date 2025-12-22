@@ -108,8 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const btn = e.target.closest('.menu-item.delete');
         if (!btn) return;
 
-        console.log('DELETE CLICKED');
-
         e.preventDefault();
         e.stopImmediatePropagation();
 

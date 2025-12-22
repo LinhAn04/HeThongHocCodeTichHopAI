@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+
+<section id="lessons"
+         class="tab-panel"
+         th:fragment="lessons(lessons, tienDo)">
+
+  <h2>Lessons</h2>
+
+  <div class="lesson-list">
+    <a class="lesson-item"
+       th:each="l : ${lessons}"
+       th:classappend="
+             ${tienDo != null and tienDo.baiHocDaHoanThanhIds.contains(l.idBaiHoc)}
+                ? 'done' :
+             (${tienDo != null and tienDo.baiHocHienTai != null
+                and tienDo.baiHocHienTai.idBaiHoc == l.idBaiHoc}
+                ? 'current' : '')
+           "
+       th:href="@{'/lesson/' + ${l.idBaiHoc}}">
+
+      <div class="lesson-left">
+        <div class="lesson-type" th:text="${l.thuTu}"></div>
+        <div>
+          <div class="lesson-title" th:text="${l.tieuDeBaiHoc}"></div>
+          <div class="lesson-desc" th:text="${l.moTaBaiHoc}"></div>
+        </div>
+      </div>
+
+      <div class="lesson-right">
+        <span class="badge" th:if="${l.loai == 1}">Theory</span>
+        <span class="badge" th:if="${l.loai == 2}">Quiz</span>
+        <span class="badge" th:if="${l.loai == 3}">Video</span>
+        <span class="badge" th:if="${l.loai == 4}">Code</span>
+      </div>
+    </a>
+  </div>
+</section>
+</body>
+</html>

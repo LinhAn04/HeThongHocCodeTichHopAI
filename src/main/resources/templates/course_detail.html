@@ -28,57 +28,26 @@
 
     <!-- tabs -->
     <div class="tabs">
-        <button class="tab-btn" data-tab="lessons" th:classappend="${openTab=='lessons'} ? 'active' : ''">Lessons</button>
+        <button class="tab-btn"
+                data-tab="lessons"
+                th:classappend="${openTab=='lessons'} ? 'active' : ''">Lessons</button>
         <button class="tab-btn"
                 data-tab="comments"
-                th:classappend="${openTab=='comments'} ? 'active' : ''">
-            Comments
-        </button>
+                th:classappend="${openTab=='comments'} ? 'active' : ''">Comments</button>
         <button class="tab-btn"
                 data-tab="enroll"
                 th:if="${intent != 'continue'}"
-                th:classappend="${openTab=='enroll'} ? 'active' : ''">
-            Enroll & Unlock Course
-        </button>
-
+                th:classappend="${openTab=='enroll'} ? 'active' : ''">Enroll & Unlock Course</button>
     </div>
 
-    <!-- Lessons -->
-    <section id="lessons" class="tab-panel" th:classappend="${openTab=='lessons'} ? 'active' : ''">
-        <h2>Lessons</h2>
+    <!-- Lessons tab -->
+    <div th:replace="fragments/course_detail/lessons :: lessons(
+        ${lessons},
+        ${tienDo}
+    )"></div>
 
-        <div class="lesson-list">
-            <a class="lesson-item"
-               th:each="l : ${lessons}"
-               th:classappend="
-                 ${tienDo != null and tienDo.baiHocDaHoanThanhIds.contains(l.idBaiHoc)}
-                    ? 'done' :
-                 (${tienDo != null and tienDo.baiHocHienTai != null
-                    and tienDo.baiHocHienTai.idBaiHoc == l.idBaiHoc}
-                    ? 'current' : '')
-               "
-               th:href="@{'/lesson/' + ${l.idBaiHoc}}">
-
-                <div class="lesson-left">
-                    <div class="lesson-type" th:text="${l.loai}">1</div>
-                    <div>
-                        <div class="lesson-title" th:text="${l.tieuDeBaiHoc}">Lesson title</div>
-                        <div class="lesson-desc" th:text="${l.moTaBaiHoc}">desc</div>
-                    </div>
-                </div>
-
-                <div class="lesson-right">
-                    <span class="badge" th:if="${l.loai == 1}">Theory</span>
-                    <span class="badge" th:if="${l.loai == 2}">Quiz</span>
-                    <span class="badge" th:if="${l.loai == 3}">Video</span>
-                    <span class="badge" th:if="${l.loai == 4}">Code</span>
-                </div>
-            </a>
-        </div>
-    </section>
-
-    <!-- Comments -->
-    <div th:replace="fragments/comments :: comments(
+    <!-- Comments tab -->
+    <div th:replace="fragments/course_detail/comments :: comments(
         ${comments},
         ${repliesMap},
         ${course},
@@ -132,6 +101,7 @@
     </section>
 </div>
 
+<!-- Edit History Popup -->
 <div id="editHistoryOverlay" class="overlay hidden">
     <div class="edit-history-popup">
         <div class="popup-header">
@@ -149,6 +119,7 @@
     </div>
 </div>
 
+<!-- Delete comments/replies confirm popup -->
 <div id="deleteConfirmOverlay" class="overlay hidden">
     <div class="edit-history-popup" style="max-width:420px">
         <div class="popup-header">

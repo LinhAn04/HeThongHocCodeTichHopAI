@@ -39,9 +39,6 @@ public class BaiHoc {
     @DBRef // tham chiếu sang collection "khoa_hoc"
     private KhoaHoc khoaHoc;
 
-    @DBRef // tham chiếu sang collection "bai_kiem_tra"
-    private Set<BaiKiemTra> dsBaiKiemTra = new HashSet<>();
-
     public BaiHoc() {}
 
     public String getIdBaiHoc() { return idBaiHoc; }
@@ -79,7 +76,4 @@ public class BaiHoc {
 
     public KhoaHoc getKhoaHoc() { return khoaHoc; }
     public void setKhoaHoc(KhoaHoc khoaHoc) { this.khoaHoc = khoaHoc; }
-
-    public Set<BaiKiemTra> getDsBaiKiemTra() { return dsBaiKiemTra; }
-    public void setDsBaiKiemTra(Set<BaiKiemTra> dsBaiKiemTra) { this.dsBaiKiemTra = dsBaiKiemTra; }
 }
