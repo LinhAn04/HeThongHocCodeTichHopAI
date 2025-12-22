@@ -53,7 +53,7 @@ public class CourseCommentController {
 
         danhGiaRepository.save(dg);
 
-        return "redirect:/course/" + idKhoaHoc + "#comments.css";
+        return "redirect:/course/" + idKhoaHoc + "#comments";
     }
 
     @PostMapping("/comment/{idDanhGia}/reply")
@@ -77,7 +77,7 @@ public class CourseCommentController {
 
         phanHoiDanhGiaRepository.save(ph);
 
-        return "redirect:/course/" + dg.getKhoaHoc().getIdKhoaHoc() + "#comments.css";
+        return "redirect:/course/" + dg.getKhoaHoc().getIdKhoaHoc() + "#comments";
     }
 
     @PostMapping("/comment/{idDanhGia}/edit")
@@ -92,17 +92,17 @@ public class CourseCommentController {
         DanhGia dg = danhGiaRepository.findById(idDanhGia).orElse(null);
         if (dg == null) return "redirect:/courses";
 
-        // ❌ Không phải chủ
+        // Không phải người sở hữu thì không chỉnh được
         if (!dg.getNguoiDung().getIdDoiTuong().equals(user.getIdDoiTuong())) {
             return "redirect:/course/" + dg.getKhoaHoc().getIdKhoaHoc();
         }
 
-        // ❌ Quá 24h
+        // Quá 24h thì không được chỉnh sửa
         if (dg.getThoiGianDanhGia().plusHours(24).isBefore(LocalDateTime.now())) {
             return "redirect:/course/" + dg.getKhoaHoc().getIdKhoaHoc();
         }
 
-        // ⭐ LƯU LỊCH SỬ
+        // Lưu lịch sử chỉnh sửa
         LichSuChinhSua ls = new LichSuChinhSua();
         ls.setNoiDungCu(dg.getNoiDungDanhGia());
         ls.setThoiGianChinhSua(LocalDateTime.now());
@@ -116,7 +116,7 @@ public class CourseCommentController {
 
         danhGiaRepository.save(dg);
 
-        return "redirect:/course/" + dg.getKhoaHoc().getIdKhoaHoc() + "#comments.css";
+        return "redirect:/course/" + dg.getKhoaHoc().getIdKhoaHoc() + "#comments";
     }
 
     @PostMapping("/reply/{idPhanHoi}/edit")
@@ -151,6 +151,37 @@ public class CourseCommentController {
 
         phanHoiDanhGiaRepository.save(ph);
 
-        return "redirect:/course/" + ph.getDanhGia().getKhoaHoc().getIdKhoaHoc() + "#comments.css";
+        return "redirect:/course/" + ph.getDanhGia().getKhoaHoc().getIdKhoaHoc() + "#comments";
+    }
+
+    @PostMapping("/comment/{idDanhGia}/delete")
+    public String deleteComment(@PathVariable String idDanhGia,
+                                HttpServletRequest request) {
+
+        String email = (String) request.getSession().getAttribute("email");
+        if (email == null) return "redirect:/courses";
+
+        DanhGia dg = danhGiaRepository.findById(idDanhGia).orElse(null);
+        if (dg == null) return "redirect:/courses";
+
+        danhGiaRepository.delete(dg);
+
+        return "redirect:/course/" + dg.getKhoaHoc().getIdKhoaHoc() + "#comments";
+    }
+
+    @PostMapping("/reply/{idPhanHoi}/delete")
+    public String deleteReply(@PathVariable String idPhanHoi,
+                              HttpServletRequest request) {
+
+        String email = (String) request.getSession().getAttribute("email");
+        if (email == null) return "redirect:/courses";
+
+        PhanHoiDanhGia ph = phanHoiDanhGiaRepository.findById(idPhanHoi).orElse(null);
+        if (ph == null) return "redirect:/courses";
+
+        String courseId = ph.getDanhGia().getKhoaHoc().getIdKhoaHoc();
+        phanHoiDanhGiaRepository.delete(ph);
+
+        return "redirect:/course/" + courseId + "#comments";
     }
 }

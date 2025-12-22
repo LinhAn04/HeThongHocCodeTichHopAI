@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-
 <body>
 
 <section id="comments"
@@ -14,53 +13,106 @@
 
     <h2>Comments</h2>
 
+    <!-- POST COMMENT -->
     <div class="comment-box" th:if="${loggedIn}">
         <form method="post"
               th:action="@{'/course/' + ${course.idKhoaHoc} + '/comment'}">
+
+            <div class="comment-input-container">
             <textarea name="noiDung"
-                      placeholder="Write a comment..."></textarea>
-            <button class="btn-primary" type="submit">Post</button>
+                      placeholder="Write a comment..."
+                      required></textarea>
+
+                <button type="submit"
+                        class="send-btn"
+                        title="Post comment">
+                    ➤
+                </button>
+            </div>
         </form>
     </div>
 
+    <!-- COMMENT LIST -->
     <div class="comment" th:each="c : ${comments}">
+
+        <!-- HEADER -->
         <div class="comment-head">
             <img class="avatar"
-                 th:src="@{${c.nguoiDung != null and c.nguoiDung.avatar != null
-                   ? c.nguoiDung.avatar
-                   : '/images/avatar_user_default.png'}
-                   (v=${#dates.createNow().getTime()})}">
+                 th:src="@{${c.nguoiDung.avatar != null
+                     ? c.nguoiDung.avatar
+                     : '/images/avatar_user_default.png'}}"/>
 
             <div class="comment-meta">
                 <div class="name" th:text="${c.nguoiDung.hoTen}"></div>
+                <div class="time"
+                     th:text="${#temporals.format(c.thoiGianDanhGia,'dd/MM/yyyy HH:mm')}"></div>
+            </div>
 
-                <div class="time">
-                    <span th:text="${#temporals.format(c.thoiGianDanhGia,'dd/MM/yyyy HH:mm')}"></span>
+            <!-- MORE -->
+            <div class="comment-menu"
+                 th:if="${c.canEdit}"
+                 th:attr="data-id=${c.idDanhGia}">⋯
 
-                    <span class="edited-link"
-                          th:if="${c.soLanChinhSua > 0}"
-                          th:attr="data-id=${c.idDanhGia}">
-                        • edited
-                    </span>
+                <div class="menu-dropdown hidden">
 
-                    <span class="edit-btn"
-                          th:if="${c.canEdit}"
-                          th:attr="data-id=${c.idDanhGia}">
-                        • edit
-                    </span>
+                    <div class="menu-item edit-comment"
+                         th:attr="data-id=${c.idDanhGia}">
+                        Edit
+                    </div>
+
+                    <form method="post"
+                          class="delete-form"
+                          th:attr="data-type='comment'"
+                          th:action="@{'/comment/' + ${c.idDanhGia} + '/delete'}">
+                        <div class="menu-item delete">
+                            Delete
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
 
+        <!-- BODY -->
         <div class="comment-body"
              th:text="${c.noiDungDanhGia}"></div>
 
+        <form class="edit-form hidden"
+              th:attr="id='edit-comment-form-' + ${c.idDanhGia}"
+              method="post"
+              th:action="@{'/comment/' + ${c.idDanhGia} + '/edit'}">
+
+            <div class="reply-input-container">
+        <textarea name="noiDung"
+                  th:text="${c.noiDungDanhGia}"
+                  required></textarea>
+
+                <button type="submit" class="send-btn">➤</button>
+            </div>
+        </form>
+
+        <!-- ACTIONS -->
+        <div class="comment-actions">
+            <span class="edited-link"
+                  th:if="${c.soLanChinhSua > 0}"
+                  th:attr="data-id=${c.idDanhGia}">
+                edited
+            </span>
+
+            <span class="reply-toggle"
+                  th:if="${loggedIn}"
+                  th:attr="data-id=${c.idDanhGia}">
+                Reply
+            </span>
+        </div>
+
+        <!-- VIEW REPLIES -->
         <div class="view-replies"
              th:if="${#lists.size(repliesMap[c.idDanhGia]) > 0}"
              th:attr="data-id=${c.idDanhGia}">
             View all <span th:text="${#lists.size(repliesMap[c.idDanhGia])}"></span> replies
         </div>
 
+        <!-- REPLIES -->
         <div class="reply-list hidden"
              th:attr="id='replies-' + ${c.idDanhGia}">
 
@@ -68,30 +120,36 @@
                  th:each="r : ${repliesMap[c.idDanhGia]}">
 
                 <div class="reply-head">
-                    <img class="avatar"
-                         th:src="@{${r.nguoiDung != null and r.nguoiDung.avatar != null
-                           ? r.nguoiDung.avatar
-                           : '/images/avatar_user_default.png'}
-                           (v=${#dates.createNow().getTime()})}">
+                    <img class="avatar small"
+                         th:src="@{${r.nguoiDung.avatar != null
+                             ? r.nguoiDung.avatar
+                             : '/images/avatar_user_default.png'}}"/>
 
-                    <div>
-                        <div class="name"
-                             th:text="${r.nguoiDung.hoTen}"></div>
+                    <div class="reply-meta">
+                        <div class="name" th:text="${r.nguoiDung.hoTen}"></div>
+                        <div class="time"
+                             th:text="${#temporals.format(r.thoiGianPhanHoi,'dd/MM/yyyy HH:mm')}"></div>
+                    </div>
 
-                        <div class="time">
-                            <span th:text="${#temporals.format(r.thoiGianPhanHoi,'dd/MM/yyyy HH:mm')}"></span>
+                    <div class="comment-menu"
+                         th:if="${r.canEdit}"
+                         th:attr="data-id=${r.idPhanHoiDanhGia}">⋯
 
-                            <span class="edited-link"
-                                  th:if="${r.soLanChinhSua > 0}"
-                                  th:attr="data-id=${r.idPhanHoiDanhGia}">
-                                • edited
-                            </span>
+                        <div class="menu-dropdown hidden">
 
-                            <span class="edit-btn"
-                                  th:if="${r.canEdit}"
-                                  th:attr="data-id=${r.idPhanHoiDanhGia}">
-                                • edit
-                            </span>
+                            <div class="menu-item edit-reply"
+                                 th:attr="data-id=${r.idPhanHoiDanhGia}">
+                                Edit
+                            </div>
+
+                            <form method="post"
+                                  class="delete-form"
+                                  th:attr="data-type='reply'"
+                                  th:action="@{'/reply/' + ${r.idPhanHoiDanhGia} + '/delete'}">
+                                <div class="menu-item delete">
+                                    Delete
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -99,7 +157,29 @@
                 <div class="reply-body"
                      th:text="${r.noiDungPhanHoi}"></div>
 
-                <!-- history source for reply -->
+                <div class="comment-actions">
+                    <span class="edited-link"
+                          th:if="${r.soLanChinhSua > 0}"
+                          th:attr="data-id=${r.idPhanHoiDanhGia}">
+                        edited
+                    </span>
+                </div>
+
+                <form class="edit-form hidden"
+                      th:attr="id='edit-reply-form-' + ${r.idPhanHoiDanhGia}"
+                      method="post"
+                      th:action="@{'/reply/' + ${r.idPhanHoiDanhGia} + '/edit'}">
+
+                    <div class="reply-input-container">
+                    <textarea name="noiDung"
+                              th:text="${r.noiDungPhanHoi}"
+                              required></textarea>
+
+                        <button type="submit" class="send-btn">➤</button>
+                    </div>
+                </form>
+
+                <!-- REPLY EDIT HISTORY SOURCE -->
                 <div class="hidden"
                      th:id="'history-' + ${r.idPhanHoiDanhGia}">
                     <div th:each="h : ${r.lichSuChinhSua}">
@@ -114,15 +194,25 @@
             </div>
         </div>
 
-        <div class="reply-box" th:if="${loggedIn}">
-            <form method="post"
-                  th:action="@{'/comment/' + ${c.idDanhGia} + '/reply'}">
-                <input name="noiDung" placeholder="Reply..."/>
-                <button type="submit" class="btn-primary">Reply</button>
-            </form>
-        </div>
+        <!-- REPLY FORM -->
+        <form class="reply-form hidden"
+              th:if="${loggedIn}"
+              th:attr="id='reply-form-' + ${c.idDanhGia}"
+              method="post"
+              th:action="@{'/comment/' + ${c.idDanhGia} + '/reply'}">
 
-        <!-- history source -->
+            <div class="reply-input-container">
+                <textarea name="noiDung"
+                          placeholder="Write a reply..."
+                          required></textarea>
+
+                <button type="submit"
+                        class="send-btn"
+                        title="Send">➤</button>
+            </div>
+        </form>
+
+        <!-- COMMENT EDIT HISTORY SOURCE -->
         <div class="hidden"
              th:id="'history-' + ${c.idDanhGia}">
             <div th:each="h : ${c.lichSuChinhSua}">
@@ -134,9 +224,7 @@
                 </div>
             </div>
         </div>
-
     </div>
-
 </section>
 
 </body>
