@@ -6,6 +6,7 @@
 
     <link rel="stylesheet" th:href="@{/css/course_detail.css}">
     <link rel="stylesheet" th:href="@{/css/lesson_detail.css}">
+    <link rel="stylesheet" th:href="@{/css/quiz.css}">
 </head>
 <body>
 
@@ -30,81 +31,33 @@
         </div>
 
         <div class="nav-row">
-            <a class="nav-btn" th:if="${prevLesson != null}" th:href="@{'/lesson/' + ${prevLesson.idBaiHoc}}">&lt;&lt; Prev</a>
-            <a class="nav-btn primary" th:if="${nextLesson != null}" th:href="@{'/lesson/' + ${nextLesson.idBaiHoc}}">Next &gt;&gt;</a>
-            <a class="nav-btn lock" th:if="${nextLesson == null and trialMode}" th:href="@{'/course/' + ${course.idKhoaHoc} + '?intent=start#enroll'}">Unlock full course</a>
+            <a class="nav-btn"
+               th:if="${prevLesson != null}"
+               th:href="@{'/lesson/' + ${prevLesson.idBaiHoc}}">&lt;&lt; Prev</a>
+            <a class="nav-btn primary"
+               th:if="${nextLesson != null}"
+               th:href="@{'/lesson/' + ${nextLesson.idBaiHoc}}">Next &gt;&gt;</a>
+            <a class="nav-btn lock"
+               th:if="${nextLesson == null and trialMode}"
+               th:href="@{'/course/' + ${course.idKhoaHoc} + '?openChatbot=1'}">Unlock full course</a>
         </div>
     </div>
 
     <!-- TYPE 1: THEORY -->
     <section class="lesson-card" th:if="${lesson.loai == 1}">
-        <h2>Theory</h2>
         <div class="content" th:text="${lesson.noiDungBaiHoc}">
-            Lesson content...
-        </div>
-
-        <form th:if="${!trialMode}" method="post" th:action="@{'/lesson/' + ${lesson.idBaiHoc} + '/complete'}">
-            <button class="btn-primary" type="submit">Finish lesson</button>
-        </form>
-    </section>
-
-    <!-- TYPE 2: QUIZ -->
-    <section class="lesson-card" th:if="${lesson.loai == 2}">
-        <h2>Quiz</h2>
-
-        <div th:if="${quiz == null}" class="hint">Quiz data not found.</div>
-
-        <div th:if="${quiz != null}">
-            <div class="quiz-title" th:text="${quiz.tieuDe}"></div>
-
-            <form id="quizForm" class="quiz-form">
-                <div class="q-block" th:each="q, stat : ${quiz.cauHoi}">
-                    <div class="q-text">
-                        <span class="q-num" th:text="${stat.index + 1}"></span>
-                        <span th:text="${q.noiDung}"></span>
-                    </div>
-
-                    <div class="q-options">
-                        <label class="opt" th:each="opt, oStat : ${q.luaChon}">
-                            <input type="radio"
-                                   th:name="${'q' + stat.index}"
-                                   th:value="${oStat.index}">
-                            <span th:text="${opt}"></span>
-                        </label>
-                    </div>
-
-                    <div class="q-result hidden" th:attr="data-qindex=${stat.index}">
-
-                    </div>
-                </div>
-
-                <button class="btn-primary" type="button" id="btnSubmitQuiz">Submit</button>
-                <button class="btn-secondary" type="button" id="btnRetryQuiz">Retry</button>
-            </form>
-
-            <div id="quizSummary" class="quiz-summary hidden"></div>
         </div>
     </section>
 
     <!-- TYPE 3: VIDEO -->
-    <section class="lesson-card" th:if="${lesson.loai == 3}">
-        <h2>Video</h2>
+    <div th:if="${lesson.loai == 3}"
+         th:replace="~{fragments/lesson_detail/video :: video(${lesson}, ${trialMode})}">
+    </div>
 
-        <div class="video-wrap" th:if="${lesson.youtubeVideoId != null}">
-            <iframe
-                    th:src="${'https://www.youtube.com/embed/' + lesson.youtubeVideoId}"
-                    frameborder="0"
-                    allowfullscreen></iframe>
-        </div>
-
-        <div class="hint" th:if="${lesson.youtubeVideoId == null}">
-            Missing YouTube video id.
-        </div>
-
-        <form th:if="${!trialMode}" method="post" th:action="@{'/lesson/' + ${lesson.idBaiHoc} + '/complete'}">
-            <button class="btn-primary" type="submit">Finish lesson</button>
-        </form>
-    </section>
+    <!-- TYPE 1,2,3: QUIZ (nếu có) -->
+    <div th:if="${lesson.loai != 4}"
+         th:replace="~{fragments/lesson_detail/quiz :: quiz(${quiz})}">
+    </div>
 
     <!-- TYPE 4: CODE -->
     <section class="lesson-card" th:if="${lesson.loai == 4}">
@@ -136,11 +89,30 @@
         </div>
     </section>
 
+    <form th:if="${!trialMode}" method="post" th:action="@{'/lesson/' + ${lesson.idBaiHoc} + '/complete'}">
+        <button class="btn-primary" type="submit">Finish lesson</button>
+    </form>
 </div>
 
-<script>
-    window.__LESSON_ID__ = /*[[${lesson.idBaiHoc}]]*/ "";
+<div id="popup" class="overlay hidden">
+    <div class="popup-box" style="max-width:420px">
+        <div class="popup-header">
+            <span id="title"></span>
+            <button id="closePopup">✕</button>
+        </div>
+
+        <div class="popup-content">
+            <p id="message" style="line-height:1.5">
+                You haven't answered all the questions.
+            </p>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    window.__LESSON_ID__ = [[${lesson.idBaiHoc}]];
 </script>
+
 <script th:src="@{/js/lesson_detail.js}"></script>
 
 </body>

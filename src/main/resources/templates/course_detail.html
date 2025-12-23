@@ -28,6 +28,12 @@
                 <div><b>Price:</b> <span th:text="${course.giaBan}"></span></div>
             </div>
         </div>
+        <button class="btn-primary enroll-btn"
+                type="button"
+                onclick="openChatbot()"
+                th:if="${loggedIn and dangKy == null}">
+            Enroll this course
+        </button>
     </section>
 
     <!-- tabs -->
@@ -40,17 +46,13 @@
                 type="button"
                 data-tab="comments"
                 th:classappend="${openTab=='comments'} ? 'active' : ''">Comments</button>
-        <button class="tab-btn"
-                type="button"
-                data-tab="enroll"
-                th:if="${intent != 'continue'}"
-                th:classappend="${openTab=='enroll'} ? 'active' : ''">Enroll & Unlock Course</button>
     </div>
 
     <!-- Lessons tab -->
     <div th:replace="fragments/course_detail/lessons :: lessons(
         ${lessons},
-        ${tienDo}
+        ${tienDo},
+        ${unlockedLessonIds}
     )"></div>
 
     <!-- Comments tab -->
@@ -60,52 +62,6 @@
         ${course},
         ${loggedIn}
     )"></div>
-
-    <!-- AI + PAYMENT placeholder -->
-    <section id="enroll"
-             class="tab-panel"
-             th:if="${intent == 'start'}"
-             th:classappend="${openTab=='enroll'} ? 'active' : ''">
-
-        <h2>Enroll & Unlock Course</h2>
-
-        <p class="muted">
-            Answer a few questions to check your readiness,
-            then unlock the full course.
-        </p>
-
-        <!-- AI CHAT -->
-        <div class="ai-chat">
-            <div id="aiMessages" class="ai-messages"></div>
-
-            <textarea id="aiInput"
-                      placeholder="Type your answer..."></textarea>
-
-            <button class="btn-primary"
-                    id="btnAskAI">
-                Answer
-            </button>
-        </div>
-
-        <!-- PAYMENT -->
-        <div class="payment-box">
-            <h3>Unlock full course</h3>
-
-            <div class="price">
-                Price: <b th:text="${course.giaBan}"></b>
-            </div>
-
-            <button class="btn-primary"
-                    id="btnPayMomo">
-                Pay with MoMo
-            </button>
-
-            <button class="btn-primary"
-                    id="btnPayBank">
-                Pay with Bank
-            </button>
-        </div>
-    </section>
 </div>
 
 <!-- Edit History Popup -->
@@ -152,6 +108,31 @@
                     class="menu-item delete">
                 Delete
             </button>
+        </div>
+    </div>
+</div>
+
+<!-- CHATBOT POPUP -->
+<div id="chatbotOverlay" class="overlay hidden">
+    <div class="chatbot-box">
+        <div class="popup-header">
+            <span></span>
+            <button onclick="closeChatbot()">✕</button>
+        </div>
+
+        <div id="chatMessages" class="chat-messages">
+            <div class="chat-msg bot">
+                Hi 👋
+                I’ll help you check your readiness before enrolling.
+            </div>
+        </div>
+
+        <div class="chat-input">
+            <textarea id="chatInput"
+                      placeholder="Type your answer...">
+            </textarea>
+            <button class="chatbot-send-btn"
+                    title="Send">➤</button>
         </div>
     </div>
 </div>

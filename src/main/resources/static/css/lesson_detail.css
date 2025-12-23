@@ -40,13 +40,7 @@
 .nav-btn.primary:hover { background:#1565c0; }
 .nav-btn.lock { background: rgba(255, 193, 7, 0.18); }
 
-.lesson-card {
-    margin-top: 14px;
-    padding: 14px;
-    border-radius: 14px;
-    background: rgba(255,255,255,0.08);
-    color: #fff;
-}
+
 
 .content { white-space: pre-wrap; line-height: 1.6; }
 
@@ -69,36 +63,6 @@
     background: rgba(0,0,0,0.35);
     overflow: auto;
 }
-
-.quiz-title { font-weight:700; margin: 10px 0; }
-
-.q-block { padding:12px; border-radius:12px; background: rgba(0,0,0,0.25); margin-top: 10px; }
-.q-text { display:flex; gap:10px; align-items:baseline; }
-.q-num {
-    width: 26px; height: 26px;
-    border-radius: 8px;
-    display:grid; place-items:center;
-    background: rgba(255,255,255,0.12);
-    font-weight:700;
-}
-.q-options { margin-top: 10px; display:flex; flex-direction:column; gap:8px; }
-.opt { display:flex; gap:10px; align-items:center; cursor:pointer; }
-.opt input { transform: scale(1.1); }
-
-.q-result { margin-top: 10px; padding: 10px; border-radius: 12px; background: rgba(255,255,255,0.06); }
-.q-meta { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom: 8px; }
-.tag { padding:4px 8px; border-radius:999px; font-weight:700; font-size:.85rem; }
-.tag.ok { background: rgba(46, 204, 113, 0.18); color: #b7ffcf; }
-.tag.bad { background: rgba(231, 76, 60, 0.18); color: #ffb7b7; }
-.meta { opacity: .85; font-size: .9rem; }
-
-.choice { padding: 10px; border-radius: 10px; margin-top: 8px; }
-.choice.correct { background: rgba(46, 204, 113, 0.12); }
-.choice.wrong { background: rgba(231, 76, 60, 0.10); }
-.choice-reason { margin-top: 6px; opacity: .9; font-size: .92rem; line-height: 1.5; }
-
-.quiz-summary { margin-top: 12px; padding: 10px; border-radius: 12px; background: rgba(0,0,0,0.28); }
-.saved { opacity:.9; }
 
 .video-wrap iframe {
     width: 100%;
@@ -131,3 +95,28 @@
 .hint.bad { border: 1px solid rgba(231,76,60,.45); }
 
 .hidden { display:none; }
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.popup-box {
+    background: #1b1b1b;
+    padding: 20px;
+    border-radius: 14px;
+    width: 320px;
+    text-align: center;
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    font-weight: 600;
+}

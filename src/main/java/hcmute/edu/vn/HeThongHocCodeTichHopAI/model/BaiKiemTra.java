@@ -12,8 +12,6 @@ public class BaiKiemTra {
     @Id
     private String idBaiKiemTra;
 
-    private String tieuDe;
-
     private List<CauHoiTracNghiem> cauHoi = new ArrayList<>();
 
     @DBRef
@@ -23,9 +21,6 @@ public class BaiKiemTra {
 
     public String getIdBaiKiemTra() { return idBaiKiemTra; }
     public void setIdBaiKiemTra(String idBaiKiemTra) { this.idBaiKiemTra = idBaiKiemTra; }
-
-    public String getTieuDe() { return tieuDe; }
-    public void setTieuDe(String tieuDe) { this.tieuDe = tieuDe; }
 
     public List<CauHoiTracNghiem> getCauHoi() {return cauHoi;}
     public void setCauHoi(List<CauHoiTracNghiem> cauHoi) { this.cauHoi = cauHoi;}

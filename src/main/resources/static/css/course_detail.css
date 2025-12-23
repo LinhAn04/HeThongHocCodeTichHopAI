@@ -141,3 +141,87 @@ h2 {
 .lesson-item.current {
     outline: 2px solid #0d47a1;
 }
+
+.enroll-btn {
+    position:absolute;
+    right:24px;
+    bottom:24px;
+}
+
+.chatbot-box {
+    width: 80%;
+    min-height: 50%;
+    height: 600px;
+    background: #1b1b1b;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-messages {
+    padding: 14px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.chat-msg {
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.chat-msg.bot {
+    background: rgba(255,255,255,0.08);
+    color: white;
+}
+
+.chat-msg.user {
+    background: #0d47a1;
+    align-self: flex-end;
+}
+
+.chat-input {
+    position: relative;
+    padding: 12px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.chat-input textarea {
+    width: 100%;
+    min-height: 44px;
+    resize: none;
+    border-radius: 10px;
+    padding: 10px 44px 10px 12px;
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+    border: none;
+    outline: none;
+}
+
+.chatbot-send-btn {
+    position: absolute;
+    right: 20px;
+    bottom: 25px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #0d47a1;
+    border: none;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-size: 14px;
+    transition: background .2s ease, transform .1s ease;
+}
+
+.send-btn:hover {
+    background: #1565c0;
+}
+
+.send-btn:active {
+    transform: scale(0.92);
+}

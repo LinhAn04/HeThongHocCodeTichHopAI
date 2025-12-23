@@ -77,17 +77,10 @@ public class LessonDetailController {
             enrolled = (dk != null);
         }
 
-        boolean trialAllowed = (!enrolled && lesson.getThuTu() <= 4);
-        if (!enrolled && !trialAllowed) {
-            // khóa bài >=5 nếu chưa đăng ký
-            mv.setViewName("redirect:/course/" + course.getIdKhoaHoc() + "?intent=start#enroll");
-            return mv;
-        }
-
         mv.addObject("course", course);
         mv.addObject("lesson", lesson);
         mv.addObject("enrolled", enrolled);
-        mv.addObject("trialMode", !enrolled); // trial nếu chưa đăng ký (và đã pass gate)
+        mv.addObject("trialMode", !enrolled);
 
         // prev/next
         BaiHoc next = baiHocRepository.findFirstByKhoaHoc_IdKhoaHocAndThuTuGreaterThanOrderByThuTuAsc(
@@ -108,12 +101,11 @@ public class LessonDetailController {
         }
         mv.addObject("tienDo", tienDo);
 
-        // quiz data (loai=2)
-        if (lesson.getLoai() == 2) {
-            BaiKiemTra quiz = baiKiemTraRepository.findByBaiHoc_IdBaiHoc(lesson.getIdBaiHoc());
+        // quiz data (loai=1,2,3 - có thể có quiz)
+        if (lesson.getLoai() != 4) {
+            BaiKiemTra quiz = baiKiemTraRepository.findByBaiHoc(lesson);
             mv.addObject("quiz", quiz);
         }
-
         return mv;
     }
 
@@ -157,7 +149,7 @@ public class LessonDetailController {
         }
 
         KhoaHoc course = khoaHocService.findById(lesson.getKhoaHoc().getIdKhoaHoc());
-        BaiKiemTra quiz = baiKiemTraRepository.findByBaiHoc_IdBaiHoc(idBaiHoc);
+        BaiKiemTra quiz = baiKiemTraRepository.findByBaiHoc(lesson);
         if (quiz == null) {
             return ResponseEntity.badRequest().body(Map.of("ok", false, "message", "Quiz not found"));
         }
@@ -187,6 +179,11 @@ public class LessonDetailController {
 
         for (int i = 0; i < total; i++) {
             CauHoiTracNghiem q = quiz.getCauHoi().get(i);
+            if (q.getDapAnDungIndex() == null) {
+                return ResponseEntity.badRequest().body(
+                        Map.of("ok", false, "message", "Quiz data is invalid (missing correct answer)")
+                );
+            }
             int correctIndex = q.getDapAnDungIndex();
             Integer picked = req.answers.get(i);
 
@@ -218,7 +215,7 @@ public class LessonDetailController {
 
             details.add(Map.of(
                     "questionIndex", i,
-                    "question", q.getCauHoi(),
+                    "question", q.getNoiDung(),
                     "picked", picked,
                     "correctIndex", correctIndex,
                     "isCorrect", isCorrect,

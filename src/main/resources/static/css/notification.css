@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&display=swap");
+
+* { font-family: "Inria Sans", sans-serif; }
+
+#deleteConfirmOverlay .popup-content p {
+    font-size: 15px;
+    color: #ddd;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.overlay.hidden {
+    display: none;
+}
+
+.edit-history-popup {
+    width: 520px;
+    background: #2c2c2c;
+    border-radius: 12px;
+    padding: 16px;
+    color: #fff;
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.popup-content {
+    margin-top: 12px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.popup-footer {
+    margin-top: 10px;
+    font-size: 12px;
+    opacity: 0.6;
+}

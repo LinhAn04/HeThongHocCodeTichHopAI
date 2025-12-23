@@ -1,0 +1,169 @@
+.lesson-card {
+    margin-top: 14px;
+    padding: 14px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+}
+
+.btn-primary {
+    background: #0d47a1;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #1565c0;
+}
+
+.btn-secondary {
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,0.18);
+}
+
+.opt input[type="radio"] {
+    display: none;
+}
+
+.q-block {
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(0,0,0,0.25);
+}
+
+.q-text {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+}
+
+.q-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    background: rgba(255,255,255,0.12);
+    font-weight: 700;
+}
+
+.q-options {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.opt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.04);
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.opt input {
+    transform: scale(1.1);
+}
+
+.opt:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+.opt.selected {
+    background: rgba(255,255,255,0.14);
+    border-color: rgba(255,255,255,0.35);
+}
+
+.opt.correct {
+    background: rgba(46,204,113,0.22);
+    border-color: #2ecc71;
+}
+
+.opt.wrong {
+    background: rgba(231,76,60,0.22);
+    border-color: #e74c3c;
+}
+
+.opt-letter {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.15);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+}
+
+.q-result {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.06);
+}
+
+.q-meta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.tag {
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: .85rem;
+}
+
+.tag.ok {
+    background: rgba(46,204,113,0.18);
+    color: #b7ffcf;
+}
+
+.tag.bad {
+    background: rgba(231,76,60,0.18);
+    color: #ffb7b7;
+}
+
+.meta {
+    opacity: .85;
+    font-size: .9rem;
+}
+
+.choice {
+    margin-top: 8px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.choice.correct {
+    background: rgba(46,204,113,0.12);
+}
+
+.choice.wrong {
+    background: rgba(231,76,60,0.10);
+}
+
+.choice-reason {
+    margin-top: 6px;
+    opacity: .9;
+    font-size: .92rem;
+    line-height: 1.5;
+}
+
+.quiz-summary {
+    margin-top: 12px;
+    padding: 10px;
+    border-radius: 12px;
+    background: rgba(0,0,0,0.28);
+}

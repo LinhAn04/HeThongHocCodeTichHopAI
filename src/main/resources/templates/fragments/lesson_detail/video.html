@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<section class="lesson-card"
+         th:fragment="video(lesson, trialMode)"
+         th:if="${lesson.youtubeVideoId != null}">
+
+    <div class="video-wrap">
+        <iframe
+                th:src="${'https://www.youtube.com/embed/' + lesson.youtubeVideoId}"
+                frameborder="0"
+                allowfullscreen>
+        </iframe>
+    </div>
+</section>
+
+</body>
+</html>

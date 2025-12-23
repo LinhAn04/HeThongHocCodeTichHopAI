@@ -18,9 +18,46 @@ tabBtns.forEach(btn => {
 
 // Load tab from hash (NO SCROLL)
 window.addEventListener("load", () => {
-    const hash = window.location.hash.replace("#", "");
-    if (!hash) return;
+    let hash = window.location.hash.replace("#", "");
 
-    const targetBtn = [...tabBtns].find(b => b.dataset.tab === hash);
+    // nếu không có hash → set mặc định là lessons (không scroll)
+    if (!hash) {
+        history.replaceState(null, "", "#lessons");
+        hash = "lessons";
+    }
+
+    // active tab tương ứng (không scroll)
+    const targetBtn = [...tabBtns].find(
+        b => b.dataset.tab === hash
+    );
+
     targetBtn?.click();
 });
+
+// chatbot for enroll courses
+function openChatbot() {
+    document.getElementById("chatbotOverlay")
+        ?.classList.remove("hidden");
+}
+
+function closeChatbot() {
+    document.getElementById("chatbotOverlay")
+        ?.classList.add("hidden");
+}
+
+/* auto open if from lesson */
+document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("openChatbot") === "1") {
+        openChatbot();
+    }
+});
+
+// Shift enter để xuống dòng
+chatInput.addEventListener("keydown", e => {
+    if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+    }
+});
+

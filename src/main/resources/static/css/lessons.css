@@ -80,3 +80,15 @@ a {
     background: rgba(13, 71, 161, 0.8);
 }
 
+.lesson-item.locked {
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+.lesson-locked {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: not-allowed;
+    color: #bbb;
+}

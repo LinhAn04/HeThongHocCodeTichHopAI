@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<section class="lesson-card"
+         th:fragment="quiz(quiz)"
+         th:if="${quiz != null}">
+
+    <div>
+        <form id="quizForm" class="quiz-form">
+            <div class="q-block" th:each="q, stat : ${quiz.cauHoi}">
+                <div class="q-text">
+                    <span class="q-num" th:text="${stat.index + 1}"></span>
+                    <span th:text="${q.noiDung}"></span>
+                </div>
+
+                <div class="q-options">
+                    <label class="opt"
+                           th:each="opt, oStat : ${q.luaChon}"
+                           th:attr="data-qindex=${stat.index},data-oindex=${oStat.index}">
+                        <input type="radio"
+                               th:name="${'q' + stat.index}"
+                               th:value="${oStat.index}">
+                        <span class="opt-letter"
+                              th:text="${T(java.lang.Character).toString(65 + oStat.index)} + '.'"></span>
+                        <span th:text="${opt}"></span>
+                    </label>
+                </div>
+
+                <div class="q-result hidden" th:attr="data-qindex=${stat.index}">
+
+                </div>
+            </div>
+
+            <button class="btn-primary" type="button" id="btnSubmitQuiz">Submit</button>
+            <button class="btn-secondary" type="button" id="btnRetryQuiz">Retry</button>
+        </form>
+
+        <div id="quizSummary" class="quiz-summary hidden"></div>
+    </div>
+</section>
+
+</body>
+</html>

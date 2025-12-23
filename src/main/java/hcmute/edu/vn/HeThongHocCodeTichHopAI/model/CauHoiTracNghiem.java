@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CauHoiTracNghiem {
-    private String cauHoi;
+    private String noiDung;
 
     private List<String> luaChon = new ArrayList<>();
 
@@ -16,8 +16,8 @@ public class CauHoiTracNghiem {
 
     public CauHoiTracNghiem() {}
 
-    public String getCauHoi() { return cauHoi;}
-    public void setCauHoi(String cauHoi) {this.cauHoi = cauHoi;}
+    public String getNoiDung() { return noiDung;}
+    public void setNoiDung(String noiDung) {this.noiDung = noiDung;}
 
     public List<String> getLuaChon() { return luaChon;}
     public void setLuaChon(List<String> luaChon) {this.luaChon = luaChon;}

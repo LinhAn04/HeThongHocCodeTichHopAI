@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class CourseDetailController {
@@ -107,7 +105,6 @@ public class CourseDetailController {
         }
         mv.addObject("comments", comments);
 
-
         Map<String, List<PhanHoiDanhGia>> repliesMap = new HashMap<>();
         for (DanhGia dg : comments) {
             List<PhanHoiDanhGia> replies =
@@ -166,12 +163,36 @@ public class CourseDetailController {
                     tienDo.getBaiHocHienTai().getIdBaiHoc());
         }
 
-        if ("start".equals(intent)) {
-            mv.addObject("openTab", "enroll");
+        Set<String> unlockedLessonIds = new HashSet<>();
+
+        if (!loggedIn) {
+            // chưa đăng nhập → mở 4 bài đầu
+            for (BaiHoc l : lessons) {
+                if (l.getThuTu() <= 4) {
+                    unlockedLessonIds.add(l.getIdBaiHoc());
+                }
+            }
         } else {
-            mv.addObject("openTab", "lessons");
+            // đã đăng nhập
+            if (tienDo != null && tienDo.getBaiHocHienTai() != null) {
+                int currentOrder = tienDo.getBaiHocHienTai().getThuTu();
+
+                for (BaiHoc l : lessons) {
+                    // mở các bài đã học + bài kế tiếp
+                    if (l.getThuTu() <= currentOrder) {
+                        unlockedLessonIds.add(l.getIdBaiHoc());
+                    }
+                }
+            } else {
+                // logged in nhưng chưa có tiến độ → cho mở bài đầu tiên
+                if (!lessons.isEmpty()) {
+                    unlockedLessonIds.add(lessons.get(0).getIdBaiHoc());
+                }
+            }
         }
 
+        mv.addObject("unlockedLessonIds", unlockedLessonIds);
+        mv.addObject("openTab", "lessons");
         mv.addObject("tienDo", tienDo);
 
         return mv;
