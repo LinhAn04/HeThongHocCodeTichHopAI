@@ -3,12 +3,10 @@ package hcmute.edu.vn.HeThongHocCodeTichHopAI.controller;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.*;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.repository.*;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.IDoiTuongSuDungService;
-import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.IHoaDonService;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.email.*;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.iml.*;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
@@ -59,8 +57,10 @@ public class EnrollController {
 
     // Thanh toán MoMo (mock)
     @PostMapping("/payment")
-    public String momoPayment(
+    public String payment(
             @RequestParam String courseId,
+            @RequestParam String paymentMethod,
+            Model model,
             HttpServletRequest request
     ) {
         String email = (String) request.getSession().getAttribute("email");
@@ -68,6 +68,13 @@ public class EnrollController {
             return "redirect:/login";
         }
 
+        DoiTuongSuDung user = doiTuongSuDungService.findByEmail(email);
+
+        model.addAttribute("user", user);
+
+        if ("banking".equals(paymentMethod)) {
+            return "redirect:/enroll/banking?courseId=" + courseId;
+        }
         return "redirect:/enroll/momo?courseId=" + courseId;
     }
 
@@ -75,10 +82,38 @@ public class EnrollController {
     @GetMapping("/momo")
     public String momoPage(
             @RequestParam String courseId,
-            Model model
+            Model model,
+            HttpServletRequest request
+
     ) {
+        String email = (String) request.getSession().getAttribute("email");
+        if (email == null) {
+            return "redirect:/login";
+        }
+
+        DoiTuongSuDung user = doiTuongSuDungService.findByEmail(email);
+
+        model.addAttribute("user", user);
         model.addAttribute("courseId", courseId);
         return "momo";
+    }
+
+    @PostMapping("/banking")
+    public String banking(
+            @RequestParam String courseId,
+            Model model,
+            HttpServletRequest request
+    ) {
+        String email = (String) request.getSession().getAttribute("email");
+        if (email == null) {
+            return "redirect:/login";
+        }
+
+        DoiTuongSuDung user = doiTuongSuDungService.findByEmail(email);
+
+        model.addAttribute("user", user);
+        model.addAttribute("courseId", courseId);
+        return "banking";
     }
 
     // Callback thanh toán thành công

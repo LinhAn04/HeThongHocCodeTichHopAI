@@ -7,48 +7,61 @@
 </head>
 <body>
 
+<header th:replace="fragments/header :: header(
+    loggedIn=${user != null},
+    user=${user}
+)"></header>
+
 <div class="checkout-wrapper">
 
-    <!-- LEFT: PAYMENT METHOD -->
     <div class="checkout-left">
         <h2>How would you like to pay?</h2>
 
-        <div class="payment-method active">
+        <div class="payment-method active" data-method="momo">
             <img src="/images/momo-logo.png" alt="MoMo">
             <span>MoMo E-Wallet</span>
         </div>
+
+        <div class="payment-method" data-method="banking">
+            <img src="/images/bank-logo.png" alt="Banking">
+            <span>Banking QR Scanner</span>
+        </div>
     </div>
 
-    <!-- RIGHT: ORDER SUMMARY -->
-    <div class="checkout-right">
-        <h3>Order Summary</h3>
+    <!-- RIGHT -->
+    <form method="post" th:action="@{/enroll/payment}" id="paymentForm">
+        <input type="hidden" name="courseId" th:value="${course.idKhoaHoc}">
+        <input type="hidden" name="paymentMethod" id="paymentMethod" value="momo">
 
-        <div class="order-item">
-            <div>
-                <strong th:text="${course.tenKhoaHoc}"></strong>
-                <div class="muted">Online course</div>
-            </div>
-            <div class="price" th:text="${course.giaBan}"></div>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="order-total">
-            <span>Total</span>
-            <span th:text="${course.giaBan}"></span>
-        </div>
-
-        <form method="post" th:action="@{/enroll/payment}">
-            <input type="hidden" name="courseId" th:value="${course.idKhoaHoc}">
-            <button class="btn-primary full">
-                Continue to secure payment
-            </button>
-        </form>
-
-        <a href="/courses" class="cancel-link">Cancel payment</a>
-    </div>
+        <button class="btn-primary full">
+            Continue to secure payment
+        </button>
+    </form>
 
 </div>
+
+<script>
+    const methods = document.querySelectorAll(".payment-method");
+    const paymentInput = document.getElementById("paymentMethod");
+
+    methods.forEach(m => {
+        m.addEventListener("click", () => {
+            methods.forEach(x => x.classList.remove("active"));
+            m.classList.add("active");
+            paymentInput.value = m.dataset.method;
+        });
+    });
+
+    document.getElementById("paymentForm").addEventListener("submit", function (e) {
+        const method = paymentInput.value;
+
+        if (method === "banking") {
+            this.action = "/enroll/banking";
+        } else {
+            this.action = "/enroll/payment"; // momo
+        }
+    });
+</script>
 
 </body>
 </html>
