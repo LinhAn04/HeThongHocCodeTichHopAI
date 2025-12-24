@@ -1,5 +1,6 @@
 package hcmute.edu.vn.HeThongHocCodeTichHopAI.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.*;
 
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.AI.*;
@@ -224,6 +225,72 @@ public class ChatbotController {
             default -> {
                 return Map.of("reply", "Session ended.");
             }
+        }
+    }
+
+    @PostMapping("/code-evaluate")
+    public CodeEvaluationResponse evaluateCode(
+            @RequestBody Map<String, String> req
+    ) {
+        String problem = req.get("problem");
+        String expected = req.get("expected");
+        String code = req.get("code");
+
+        if (code == null || code.isBlank()) {
+            return new CodeEvaluationResponse(
+                    0,
+                    "Code is empty.",
+                    List.of("Please write a solution before submitting.")
+            );
+        }
+
+        String systemPrompt = """
+        You are Codemy AI, a strict but fair coding evaluator.
+
+        Evaluate the student's code.
+
+        Output STRICTLY in this JSON format:
+        {
+          "score": number (0-100),
+          "evaluation": "short paragraph",
+          "improvements": ["item 1", "item 2", "item 3"]
+        }
+
+        Rules:
+        - Score must be realistic
+        - Be constructive and beginner-friendly
+        - Improvements must be concrete
+        - DO NOT add extra text outside JSON
+        """;
+
+        String userPrompt = """
+        Problem:
+        %s
+
+        Expected output:
+        %s
+
+        Student code:
+        %s
+        """.formatted(problem, expected, code);
+
+        String aiRawResponse = openAIService.chat(systemPrompt, userPrompt);
+
+        // Parse JSON từ AI
+        return parseAIResponse(aiRawResponse);
+    }
+
+    private CodeEvaluationResponse parseAIResponse(String json) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(json, CodeEvaluationResponse.class);
+        } catch (Exception e) {
+            // fallback nếu AI trả sai format
+            return new CodeEvaluationResponse(
+                    60,
+                    "Your solution works but needs improvement.",
+                    List.of("Improve readability", "Handle edge cases")
+            );
         }
     }
 }

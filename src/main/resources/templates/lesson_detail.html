@@ -7,6 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/course_detail.css}">
     <link rel="stylesheet" th:href="@{/css/lesson_detail.css}">
     <link rel="stylesheet" th:href="@{/css/quiz.css}">
+    <link rel="stylesheet" th:href="@{/css/code_challenge.css}">
 </head>
 <body>
 
@@ -22,8 +23,8 @@
         </a>
 
         <div class="lesson-header">
-            <h1 th:text="${lesson.tieuDeBaiHoc}"></h1>
-            <p class="muted" th:text="${lesson.moTaBaiHoc}"></p>
+            <h1 th:text="${lesson.tieuDeBaiHoc}" th:if="${lesson.loai != 4}"></h1>
+            <p class="muted" th:text="${lesson.moTaBaiHoc}" th:if="${lesson.loai != 4}"></p>
 
             <div class="pill-row">
                 <span class="pill" th:text="'Lesson ' + ${lesson.thuTu}"></span>
@@ -60,34 +61,9 @@
     </div>
 
     <!-- TYPE 4: CODE -->
-    <section class="lesson-card" th:if="${lesson.loai == 4}">
-        <h2>Code practice</h2>
-
-        <div class="problem">
-            <h3>Problem</h3>
-            <pre class="pre" th:text="${lesson.codeDeBai}"></pre>
-        </div>
-
-        <div class="editor">
-            <h3>Starter code</h3>
-            <textarea id="codeEditor" class="code-area" th:text="${lesson.starterCode}"></textarea>
-
-            <div class="hint-box" th:if="${lesson.codeGoiY != null}">
-                <button class="btn-secondary" type="button" id="btnToggleHint">Show hint</button>
-                <div id="hintContent" class="hidden">
-                    <pre class="pre" th:text="${lesson.codeGoiY}"></pre>
-                </div>
-            </div>
-        </div>
-
-        <div class="output">
-            <h3>Your output</h3>
-            <textarea id="userOutput" class="out-area" placeholder="Paste your program output here..."></textarea>
-
-            <button class="btn-primary" type="button" id="btnSubmitCode">Submit</button>
-            <div id="codeResult" class="hint hidden"></div>
-        </div>
-    </section>
+    <div th:if="${lesson.loai == 4}"
+         th:replace="fragments/course_detail/code :: code(${lesson})">
+    </div>
 
     <form th:if="${!trialMode}" method="post" th:action="@{'/lesson/' + ${lesson.idBaiHoc} + '/complete'}">
         <button class="btn-primary" type="submit">Finish lesson</button>
@@ -114,6 +90,7 @@
 </script>
 
 <script th:src="@{/js/lesson_detail.js}"></script>
+<script th:src="@{/js/code_challenge.js}"></script>
 
 </body>
 </html>

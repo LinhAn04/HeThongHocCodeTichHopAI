@@ -1,0 +1,97 @@
+@import url("https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&display=swap");
+
+* {
+    font-family: "Inria Sans", sans-serif;
+    color: white;
+}
+
+.code-challenge-card {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.challenge-left {
+    width: 35%;
+    background: rgba(255,255,255,0.08);
+    padding: 18px;
+    border-radius: 12px;
+}
+
+.challenge-right {
+    width: 65%;
+    background: rgba(0,0,0,0.35);
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.editor-header {
+    /*display: flex;*/
+    /*align-items: flex-end;*/
+    margin-bottom: 10px;
+    gap: 10px;
+    /*margin-right: auto;*/
+}
+
+.btn-submit, .btn-run {
+    background: linear-gradient(to right, #0b1e3f, #0050f0);
+    padding: 6px 12px;
+    border-radius: 5px;
+    margin-right: auto;
+}
+
+.code-editor {
+    width: 100%;
+    min-height: 220px;
+    background: #0f172a;
+    color: #e5e7eb;
+    border-radius: 10px;
+    padding: 12px;
+    border: none;
+    outline: none;
+    font-family: monospace;
+}
+
+.output-tabs {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.output-tab {
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.1);
+    cursor: pointer;
+}
+
+.output-tab.active {
+    background: rgba(255,255,255,0.25);
+}
+
+.output-panel {
+    display: none;
+    margin-top: 10px;
+    background: rgba(255,255,255,0.08);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.output-panel.active {
+    display: block;
+}
+
+/* AI Popup */
+.ai-review-box {
+    background: #111827;
+    width: 520px;
+    border-radius: 14px;
+    padding: 18px;
+    color: white;
+}
+
+.ai-score {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin: 10px 0;
+}

@@ -1,0 +1,66 @@
+<!-- TYPE 4: CODE CHALLENGE -->
+<section class="code-challenge-card"
+         th:if="${lesson.loai == 4}"
+         th:fragment="code(lesson)">
+
+    <!-- LEFT: Description -->
+    <div class="challenge-left">
+        <h3 th:text="${lesson.tieuDeBaiHoc}"></h3>
+        <div class="challenge-desc"
+             th:text="${lesson.noiDungBaiHoc}">
+        </div>
+    </div>
+
+    <!-- RIGHT: Editor -->
+    <div class="challenge-right">
+        <div class="editor-header">
+            <a class="btn-run" onclick="runCode()">Run</a>
+            <a class="btn-submit" onclick="submitCode()">Submit</a>
+        </div>
+
+        <textarea id="codeEditor"
+                  class="code-editor"
+                  placeholder="Write your code here..."></textarea>
+
+        <div class="output-tabs">
+            <button class="output-tab active"
+                    data-tab="testcases">Test Cases</button>
+            <button class="output-tab"
+                    data-tab="console">Console</button>
+        </div>
+
+        <div class="output-panel active" id="testcases">
+            <div id="testcaseResult">
+                Waiting for submission...
+            </div>
+        </div>
+
+        <div class="output-panel" id="console">
+            <pre id="consoleOutput"></pre>
+        </div>
+    </div>
+</section>
+
+<!-- AI REVIEW POPUP -->
+<div id="aiReviewOverlay" class="overlay hidden">
+    <div class="ai-review-box">
+        <div class="popup-header">
+            <span>🤖 AI Code Review</span>
+            <button onclick="closeAIReview()">✕</button>
+        </div>
+
+        <div class="ai-score">
+            Score: <span id="aiScore">--</span>/100
+        </div>
+
+        <div class="ai-section">
+            <h4>📌 Evaluation</h4>
+            <div id="aiEvaluation"></div>
+        </div>
+
+        <div class="ai-section">
+            <h4>🛠 Improvements</h4>
+            <ul id="aiImprovements"></ul>
+        </div>
+    </div>
+</div>
