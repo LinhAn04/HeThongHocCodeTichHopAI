@@ -3,10 +3,12 @@ package hcmute.edu.vn.HeThongHocCodeTichHopAI.service.iml;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.DangKyKhoaHoc;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.DoiTuongSuDung;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.KhoaHoc;
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.TrangThaiKhoaHoc;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.repository.DangKyKhoaHocRepository;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.IDangKyKhoaHocService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -50,6 +52,34 @@ public class DangKyKhoaHocService implements IDangKyKhoaHocService {
                 .findByNguoiHoc_IdDoiTuongAndKhoaHoc_IdKhoaHoc(
                         user.getIdDoiTuong(),
                         khoaHoc.getIdKhoaHoc()
-                );
+                )
+                .orElse(null);
+    }
+
+    @Override
+    public boolean daDangKy(String userId, String courseId) {
+        return dangKyKhoaHocRepository
+                .findByNguoiHoc_IdDoiTuongAndKhoaHoc_IdKhoaHoc(userId, courseId)
+                .isPresent();
+    }
+
+    @Override
+    public DangKyKhoaHoc dangKyKhoaHoc(
+            DoiTuongSuDung user,
+            KhoaHoc khoaHoc
+    ) {
+
+        if (daDangKy(user.getIdDoiTuong(), khoaHoc.getIdKhoaHoc())) {
+            throw new RuntimeException("Đã đăng ký khóa học");
+        }
+
+        DangKyKhoaHoc dk = new DangKyKhoaHoc();
+        dk.setDoiTuongSuDung(user);
+        dk.setKhoaHoc(khoaHoc);
+        dk.setTrangThaiKhoaHoc(TrangThaiKhoaHoc.DANGHOC);
+        dk.setThoiGianDangKy(LocalDateTime.now());
+        dk.setThoiGianKetThuc(null);
+
+        return dangKyKhoaHocRepository.save(dk);
     }
 }

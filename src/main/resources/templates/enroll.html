@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout - Codemy</title>
+    <link rel="stylesheet" th:href="@{/css/enroll.css}">
+</head>
+<body>
+
+<div class="checkout-wrapper">
+
+    <!-- LEFT: PAYMENT METHOD -->
+    <div class="checkout-left">
+        <h2>How would you like to pay?</h2>
+
+        <div class="payment-method active">
+            <img src="/images/momo-logo.png" alt="MoMo">
+            <span>MoMo E-Wallet</span>
+        </div>
+    </div>
+
+    <!-- RIGHT: ORDER SUMMARY -->
+    <div class="checkout-right">
+        <h3>Order Summary</h3>
+
+        <div class="order-item">
+            <div>
+                <strong th:text="${course.tenKhoaHoc}"></strong>
+                <div class="muted">Online course</div>
+            </div>
+            <div class="price" th:text="${course.giaBan}"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="order-total">
+            <span>Total</span>
+            <span th:text="${course.giaBan}"></span>
+        </div>
+
+        <form method="post" th:action="@{/enroll/payment}">
+            <input type="hidden" name="courseId" th:value="${course.idKhoaHoc}">
+            <button class="btn-primary full">
+                Continue to secure payment
+            </button>
+        </form>
+
+        <a href="/courses" class="cancel-link">Cancel payment</a>
+    </div>
+
+</div>
+
+</body>
+</html>

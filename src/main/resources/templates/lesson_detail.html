@@ -39,7 +39,7 @@
                th:href="@{'/lesson/' + ${nextLesson.idBaiHoc}}">Next &gt;&gt;</a>
             <a class="nav-btn lock"
                th:if="${nextLesson == null and trialMode}"
-               th:href="@{'/course/' + ${course.idKhoaHoc} + '?openChatbot=1'}">Unlock full course</a>
+               href="/login">Unlock full course</a>
         </div>
     </div>
 

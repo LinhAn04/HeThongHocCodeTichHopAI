@@ -81,8 +81,16 @@ public class CourseDetailController {
         DangKyKhoaHoc dk = null;
         TrangThaiKhoaHoc status = null;
         if (loggedIn) {
-            dk = dangKyKhoaHocRepository.findByNguoiHoc_IdDoiTuongAndKhoaHoc_IdKhoaHoc(user.getIdDoiTuong(), idKhoaHoc);
-            if (dk != null) status = dk.getTrangThaiKhoaHoc();
+            dk = dangKyKhoaHocRepository
+                    .findByNguoiHoc_IdDoiTuongAndKhoaHoc_IdKhoaHoc(
+                            user.getIdDoiTuong(),
+                            idKhoaHoc
+                    )
+                    .orElse(null);
+
+            if (dk != null) {
+                status = dk.getTrangThaiKhoaHoc();
+            }
         }
         mv.addObject("dangKy", dk);
         mv.addObject("courseStatus", status);

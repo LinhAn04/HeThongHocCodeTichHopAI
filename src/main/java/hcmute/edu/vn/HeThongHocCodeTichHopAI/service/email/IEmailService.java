@@ -7,4 +7,5 @@ public interface IEmailService {
     void resendVerificationCode(String email);
     void resendResetPasswordCode(String email);
     boolean verify(String email, String code);
+    void sendEnrollSuccessEmail(String toEmail, String userName, String courseName);
 }

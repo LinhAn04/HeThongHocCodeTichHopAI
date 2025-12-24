@@ -220,4 +220,68 @@ public class EmailService implements IEmailService {
         emailVerificationRepository.delete(ev);
         return true;
     }
+
+    private String getEnrollSuccessHtml(String userName, String courseName) {
+        return String.format("""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>Course Enrollment Successful</title>
+            </head>
+            <body style="margin:0; padding:0; background-color:#f7f7f7; font-family:Arial, sans-serif;">
+    
+            <div style="max-width:600px; margin:40px auto; background:white; border-radius:8px; padding:40px;
+                        box-shadow:0 4px 12px rgba(0,0,0,0.08);">
+    
+                <h2 style="text-align:center; color:#111; margin-bottom:20px;">
+                    Enrollment Successful
+                </h2>
+    
+                <p style="font-size:15px; color:#333;">
+                    Hi <b>%s</b>,<br><br>
+                    You have successfully enrolled in the following course:
+                </p>
+    
+                <div style="margin:25px 0; padding:18px; background:#f3f3f3; border-radius:6px;">
+                    <p style="margin:0; font-size:16px;">
+                        <b>Course:</b> %s
+                    </p>
+                </div>
+    
+                <p style="font-size:14px; color:#555;">
+                    You can now access the course content and start learning right away.
+                </p>
+    
+                <hr style="border:none; border-top:1px solid #e5e5e5; margin:30px 0;">
+    
+                <p style="text-align:center; font-size:12px; color:#888;">
+                    © 2025 AI Code Learning System<br>
+                    This is an automated email. Please do not reply.
+                </p>
+    
+            </div>
+            </body>
+            </html>
+            """, userName, courseName);
+    }
+
+    @Override
+    public void sendEnrollSuccessEmail(String toEmail, String userName, String courseName) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setTo(toEmail);
+            helper.setSubject("Enrollment Successful - AI Code Learning");
+
+            String html = getEnrollSuccessHtml(userName, courseName);
+            helper.setText(html, true);
+
+            mailSender.send(message);
+
+        } catch (Exception e) {
+            System.out.println("Error sending enroll success email: " + e.getMessage());
+        }
+    }
 }

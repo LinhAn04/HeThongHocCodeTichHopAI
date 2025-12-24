@@ -12,4 +12,6 @@ public interface IDangKyKhoaHocService {
     DangKyKhoaHoc save(DangKyKhoaHoc dangKyKhoaHoc);
     void deleteById(String id);
     DangKyKhoaHoc findByUserAndCourse(DoiTuongSuDung user, KhoaHoc khoaHoc);
+    DangKyKhoaHoc dangKyKhoaHoc(DoiTuongSuDung user, KhoaHoc khoaHoc);
+    boolean daDangKy(String userId, String courseId);
 }

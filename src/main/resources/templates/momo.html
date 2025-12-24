@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MoMo Payment</title>
+    <link rel="stylesheet" th:href="@{/css/momo.css}">
+</head>
+<body>
+
+<div class="momo-wrapper">
+    <div class="momo-card">
+        <h2>Scan QR</h2>
+
+        <img src="/images/bankingQr.jpg" alt="MoMo QR">
+
+        <p class="muted">
+            Please complete the payment on your MoMo app
+        </p>
+
+        <form method="post" th:action="@{/enroll/success}">
+            <input type="hidden" name="courseId" th:value="${courseId}">
+            <button class="btn-primary full">
+                I have completed payment
+            </button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

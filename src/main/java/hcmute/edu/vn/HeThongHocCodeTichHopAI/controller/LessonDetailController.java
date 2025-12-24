@@ -73,7 +73,12 @@ public class LessonDetailController {
             mv.addObject("user", user);
 
             dk = dangKyKhoaHocRepository
-                    .findByNguoiHoc_IdDoiTuongAndKhoaHoc_IdKhoaHoc(user.getIdDoiTuong(), course.getIdKhoaHoc());
+                    .findByNguoiHoc_IdDoiTuongAndKhoaHoc_IdKhoaHoc(
+                            user.getIdDoiTuong(),
+                            course.getIdKhoaHoc()
+                    )
+                    .orElse(null);
+
             enrolled = (dk != null);
         }
 
@@ -121,7 +126,11 @@ public class LessonDetailController {
 
         KhoaHoc course = khoaHocService.findById(lesson.getKhoaHoc().getIdKhoaHoc());
         DangKyKhoaHoc dk = dangKyKhoaHocRepository
-                .findByNguoiHoc_IdDoiTuongAndKhoaHoc_IdKhoaHoc(user.getIdDoiTuong(), course.getIdKhoaHoc());
+                .findByNguoiHoc_IdDoiTuongAndKhoaHoc_IdKhoaHoc(
+                        user.getIdDoiTuong(),
+                        course.getIdKhoaHoc()
+                )
+                .orElse(null);
         if (dk == null) return "redirect:/lesson/" + idBaiHoc; // trial không lưu
 
         TienDoHoc td = progressService.ensureProgress(user, course);
@@ -163,7 +172,11 @@ public class LessonDetailController {
         if (loggedIn) {
             user = doiTuongSuDungService.findByEmail(email);
             DangKyKhoaHoc dk = dangKyKhoaHocRepository
-                    .findByNguoiHoc_IdDoiTuongAndKhoaHoc_IdKhoaHoc(user.getIdDoiTuong(), course.getIdKhoaHoc());
+                    .findByNguoiHoc_IdDoiTuongAndKhoaHoc_IdKhoaHoc(
+                            user.getIdDoiTuong(),
+                            course.getIdKhoaHoc()
+                    )
+                    .orElse(null);
             enrolled = (dk != null);
         }
 
@@ -282,7 +295,11 @@ public class LessonDetailController {
         if (loggedIn) {
             user = doiTuongSuDungService.findByEmail(email);
             DangKyKhoaHoc dk = dangKyKhoaHocRepository
-                    .findByNguoiHoc_IdDoiTuongAndKhoaHoc_IdKhoaHoc(user.getIdDoiTuong(), course.getIdKhoaHoc());
+                    .findByNguoiHoc_IdDoiTuongAndKhoaHoc_IdKhoaHoc(
+                            user.getIdDoiTuong(),
+                            course.getIdKhoaHoc()
+                    )
+                    .orElse(null);
             enrolled = (dk != null);
         }
 

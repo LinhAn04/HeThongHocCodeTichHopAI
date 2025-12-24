@@ -34,6 +34,12 @@
                 th:if="${loggedIn and dangKy == null}">
             Enroll this course
         </button>
+        <a class="btn-primary enroll-btn"
+                type="button"
+                href="/login"
+                th:if="${!loggedIn and dangKy == null}">
+            Enroll this course
+        </a>
     </section>
 
     <!-- tabs -->
@@ -117,6 +123,11 @@
     <div class="chatbot-box">
         <div class="popup-header">
             <span></span>
+            <a class="btn-primary enroll-btn"
+               th:href="@{/enroll/{id}(id=${course.idKhoaHoc})}">
+                Enroll this course
+            </a>
+
             <button onclick="closeChatbot()">✕</button>
         </div>
 
