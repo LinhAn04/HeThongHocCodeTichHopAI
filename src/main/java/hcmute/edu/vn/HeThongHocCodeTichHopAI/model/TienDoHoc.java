@@ -23,6 +23,8 @@ public class TienDoHoc {
 
     private LocalDateTime capNhatLuc = LocalDateTime.now();
 
+    public TienDoHoc() {}
+
     public String getIdTienDoHoc() { return idTienDoHoc; }
     public void setIdTienDoHoc(String idTienDoHoc) { this.idTienDoHoc = idTienDoHoc; }
 

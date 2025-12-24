@@ -47,8 +47,8 @@ public class DoiTuongSuDung {
     @DBRef // tham chiếu sang collection "bai_blog"
     private Set<BaiBlog> dsBaiBlog = new HashSet<>();
 
-    @DBRef // tham chiếu sang collection "thong_bao"
-    private Set<ThongBao> dsThongBao = new HashSet<>();
+//    @DBRef // tham chiếu sang collection "thong_bao"
+//    private Set<ThongBao> dsThongBao = new HashSet<>();
 
     public DoiTuongSuDung() {}
 
@@ -97,6 +97,6 @@ public class DoiTuongSuDung {
     public Set<BaiBlog> getDsBaiBlog() { return dsBaiBlog; }
     public void setDsBaiBlog(Set<BaiBlog> dsBaiBlog) { this.dsBaiBlog = dsBaiBlog; }
 
-    public Set<ThongBao> getDsThongBao() { return dsThongBao; }
-    public void setDsThongBao(Set<ThongBao> dsThongBao) { this.dsThongBao = dsThongBao; }
+//    public Set<ThongBao> getDsThongBao() { return dsThongBao; }
+//    public void setDsThongBao(Set<ThongBao> dsThongBao) { this.dsThongBao = dsThongBao; }
 }

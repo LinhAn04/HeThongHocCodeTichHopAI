@@ -13,10 +13,18 @@ function addUserMsg(text) {
 function addBotMsg(text) {
     const div = document.createElement("div");
     div.className = "message bot";
-    div.textContent = text;
+    div.innerHTML = marked.parse(
+        text.trim().replace(/\n{2,}/g, "\n\n")
+    );
     chatBox.appendChild(div);
     chatBox.scrollTop = chatBox.scrollHeight;
 }
+
+window.addEventListener("load", () => {
+    addBotMsg(
+        "👋 Hi! I'm **Codemy AI**. How can I help you today?"
+    );
+});
 
 async function sendMessage() {
     const text = input.value.trim();
@@ -54,5 +62,14 @@ async function sendMessage() {
 
 sendBtn.addEventListener("click", sendMessage);
 input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") sendMessage();
+    if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+    }
 });
+
+input.addEventListener("input", () => {
+    input.style.height = "auto";
+    input.style.height = Math.min(input.scrollHeight, 160) + "px";
+});
+

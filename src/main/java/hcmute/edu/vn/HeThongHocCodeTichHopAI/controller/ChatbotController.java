@@ -1,12 +1,13 @@
 package hcmute.edu.vn.HeThongHocCodeTichHopAI.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.*;
 
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.*;
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.repository.LoTrinhHocRepository;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.AI.*;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.*;
 
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,25 +24,32 @@ public class ChatbotController {
     private final IOpenAIService openAIService;
     private final IDoiTuongSuDungService doiTuongSuDungService;
     private final IDangKyKhoaHocService dangKyKhoaHocService;
+    private final IKhoaHocService khoaHocService;
+    private final ITienDoHocService tienDoHocService;
+    private final IThongBaoService thongBaoService;
+    private final LoTrinhHocRepository loTrinhHocRepository;
 
     public ChatbotController(IOpenAIService openAIService,
                              IDoiTuongSuDungService doiTuongSuDungService,
-                             IDangKyKhoaHocService dangKyKhoaHocService) {
+                             IDangKyKhoaHocService dangKyKhoaHocService,
+                             IKhoaHocService khoaHocService,
+                             ITienDoHocService tienDoHocService,
+                             IThongBaoService thongBaoService,
+                             LoTrinhHocRepository loTrinhHocRepository) {
         this.openAIService = openAIService;
         this.doiTuongSuDungService = doiTuongSuDungService;
         this.dangKyKhoaHocService = dangKyKhoaHocService;
+        this.khoaHocService = khoaHocService;
+        this.tienDoHocService = tienDoHocService;
+        this.thongBaoService = thongBaoService;
+        this.loTrinhHocRepository = loTrinhHocRepository;
     }
 
-    /**
-     * CHATBOT CHUNG
-     * - chatbot.html
-     * - popup enroll
-     * - popup lesson type 4
-     */
+    // Hàm chatbot trò chuyện bình thường
     @PostMapping("/chat")
     public Map<String, String> chat(
             @RequestBody Map<String, String> req,
-            Principal principal
+            HttpServletRequest request
     ) {
         String message = req.get("message");
 
@@ -50,184 +58,88 @@ public class ChatbotController {
         }
 
         // Lấy user hiện tại
+        String email = (String) request.getSession().getAttribute("email");
+
         DoiTuongSuDung user;
-        if (principal != null) {
-            user = doiTuongSuDungService.findByEmail(principal.getName());
+        if (email != null) {
+            user = doiTuongSuDungService.findByEmail(email);
         } else {
             user = null;
         }
 
         // Lấy danh sách khóa học user đã đăng ký
-        List<DangKyKhoaHoc> dangKyList =
-                (user != null)
-                        ? dangKyKhoaHocService.findAll().stream()
-                        .filter(dk -> dk.getNguoiHoc().getIdDoiTuong()
-                                .equals(user.getIdDoiTuong()))
-                        .toList()
-                        : List.of();
+        List<DangKyKhoaHoc> dangKyList = (user != null)
+                ? dangKyKhoaHocService.findByUserId(user.getIdDoiTuong())
+                : List.of();
 
-        // Chuẩn hóa context cho AI
-        String courseContext =
-                dangKyList.isEmpty()
-                        ? "- No enrolled courses"
-                        : dangKyList.stream()
-                        .map(dk ->
-                                "- " + dk.getKhoaHoc().getTenKhoaHoc()
-                                        + " (" + dk.getTrangThaiKhoaHoc() + ")"
-                        )
-                        .reduce("", (a, b) -> a + "\n" + b);
+        String courseContext;
+        if (dangKyList.isEmpty()) {
+            courseContext = "- User has not enrolled in any course yet.";
+        } else {
+            courseContext = dangKyList.stream().map(dk -> {
+                double progress = 0;
+                String currentLesson = "Not started yet";
 
-        String systemPrompt = """
-            You are Codemy AI, an intelligent programming tutor.
-            
-            User context:
-            - Name: %s
-            - Enrolled courses:
-            %s
-            
-            Rules:
-            - You KNOW the user's enrolled courses.
-            - If user asks about learning progress, use the course status.
-            - If user has no courses, suggest beginner-friendly courses.
-            - Be concise, friendly, and supportive.
-            """.formatted(
-                                user != null ? user.getHoTen() : "Guest",
-                                courseContext
+                LoTrinhHoc loTrinh = loTrinhHocRepository
+                        .findByNguoiDung_IdDoiTuongAndKhoaHoc_IdKhoaHoc(
+                                user.getIdDoiTuong(),
+                                dk.getKhoaHoc().getIdKhoaHoc()
                         );
 
-                        String reply = openAIService.chat(systemPrompt, message);
-                        return Map.of("reply", reply);
-    }
+                if (loTrinh != null && loTrinh.getTienDoHoc() != null) {
+                    TienDoHoc tienDo = loTrinh.getTienDoHoc();
+                    progress = tienDo.getTiLeHoanThanh();
 
-    /**
-     * AI REVIEW CODE – LESSON TYPE 4
-     */
-    @PostMapping("/code-review")
-    public Map<String, String> reviewCode(@RequestBody Map<String, String> req) {
+                    if (tienDo.getBaiHocHienTai() != null) {
+                        currentLesson = tienDo.getBaiHocHienTai().getTieuDeBaiHoc();
+                    }
+                }
 
-        String problem = req.get("problem");
-        String expected = req.get("expected");
-        String code = req.get("code");
-
-        if (code == null || code.trim().isEmpty()) {
-            return Map.of("feedback", "Code is empty.");
+                return """
+📘 **%s**
+Status: %s  
+Progress: %.0f%%  
+Current lesson: %s
+""".formatted(
+                        dk.getKhoaHoc().getTenKhoaHoc(),
+                        dk.getTrangThaiKhoaHoc(),
+                        progress,
+                        currentLesson
+                );
+            }).reduce("", String::concat);
         }
 
-        String userPrompt = """
-            Problem:
+        String systemPrompt = """
+            You are Codemy AI – a friendly, enthusiastic, and professional learning assistant.
+            
+            USER PROFILE:
+            - Name: %s
+            - Role: Student
+            - Enrolled courses and learning progress:
             %s
-
-            Expected output:
-            %s
-
-            Student code:
-            %s
-
-            Tasks:
-            1. Tell if the solution is correct.
-            2. Point out errors (if any).
-            3. Suggest improvements.
-            """.formatted(problem, expected, code);
-
-        String feedback = openAIService.chat(
-                "You are a strict but helpful coding instructor.",
-                userPrompt
+            
+            INSTRUCTIONS:
+            - Always respond in a warm, motivating tone.
+            - Use bullet points, emojis (lightly 😊🚀), and line breaks for readability.
+            - If user asks about learning progress, base answers on the data above.
+            - If user is stuck, encourage them and give clear next steps.
+            - If user has no courses, suggest beginner-friendly courses politely.
+            - NEVER mention database or internal system.
+            - ALWAYS format responses with line breaks.
+            
+            OUTPUT FORMAT:
+            - Plain text
+            - Use \\n for new lines
+            """.formatted(
+                user != null ? user.getHoTen() : "Guest",
+                courseContext
         );
 
-        return Map.of("feedback", feedback);
+        String reply = openAIService.chat(systemPrompt, message);
+        return Map.of("reply", reply);
     }
 
-    @PostMapping("/enroll-flow")
-    public Map<String, Object> enrollFlow(
-            @RequestBody Map<String, String> req,
-            HttpSession session
-    ) {
-        String courseName = req.get("courseName");
-        String message = req.getOrDefault("message", "").trim();
-
-        EnrollChatState state =
-                (EnrollChatState) session.getAttribute("ENROLL_CHAT");
-
-        if (state == null) {
-            state = new EnrollChatState();
-            state.setStep(EnrollChatStep.INTRO);
-            session.setAttribute("ENROLL_CHAT", state);
-        }
-
-        switch (state.getStep()) {
-
-            case INTRO -> {
-                state.setStep(EnrollChatStep.READY_CONFIRM);
-                return Map.of(
-                        "reply", openAIService.chat("""
-                            You are Codemy AI.
-                            
-                            Introduce the course "%s" in 1–2 friendly sentences.
-                            Then ask:
-                            
-                            "Are you ready to answer 2 small questions?
-                            After that, you can enroll in this course."
-                            
-                            Use clear paragraphs.
-                            """.formatted(courseName), "")
-                );
-            }
-
-            case READY_CONFIRM -> {
-                state.setStep(EnrollChatStep.QUESTION_1);
-                state.setQ1Correct("A"); // demo
-                return Map.of(
-                        "reply", openAIService.chat("""
-                            Ask ONE simple multiple-choice question (A/B/C)
-                            about basic knowledge needed for "%s".
-                            
-                            Format clearly with line breaks.
-                            """.formatted(courseName), "")
-                );
-            }
-
-            case QUESTION_1 -> {
-                boolean correct = message.equalsIgnoreCase(state.getQ1Correct());
-                state.setStep(EnrollChatStep.QUESTION_2);
-                state.setQ2Correct("B"); // demo
-
-                return Map.of(
-                        "reply", openAIService.chat("""
-                            The student answered "%s".
-                            Correct answer is "%s".
-                            
-                            Explain briefly why it is %s.
-                            Then ask the SECOND question (A/B/C).
-                            """.formatted(
-                                    message,
-                                    state.getQ1Correct(),
-                                    correct ? "correct" : "incorrect"
-                            ), "")
-                );
-            }
-
-            case QUESTION_2 -> {
-                boolean correct = message.equalsIgnoreCase(state.getQ2Correct());
-                state.setStep(EnrollChatStep.DONE);
-                session.removeAttribute("ENROLL_CHAT");
-
-                return Map.of(
-                        "reply", openAIService.chat("""
-                            The student answered "%s".
-                            Correct answer is "%s".
-                            
-                            Explain briefly.
-                            Encourage the student.
-                            """.formatted(message, state.getQ2Correct()), ""),
-                        "showEnroll", true
-                );
-            }
-            default -> {
-                return Map.of("reply", "Session ended.");
-            }
-        }
-    }
-
+    // Hàm để chatbot đánh giá code
     @PostMapping("/code-evaluate")
     public CodeEvaluationResponse evaluateCode(
             @RequestBody Map<String, String> req
