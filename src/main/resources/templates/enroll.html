@@ -29,14 +29,54 @@
     </div>
 
     <!-- RIGHT -->
-    <form method="post" th:action="@{/enroll/payment}" id="paymentForm">
-        <input type="hidden" name="courseId" th:value="${course.idKhoaHoc}">
-        <input type="hidden" name="paymentMethod" id="paymentMethod" value="momo">
+    <div class="checkout-right">
+        <div class="order-summary">
+            <h3>Order summary</h3>
 
-        <button class="btn-primary full">
-            Continue to secure payment
-        </button>
-    </form>
+            <div class="course-info">
+                <img th:src="${course.anhBiaKhoaHoc}" alt="Course thumbnail">
+                <div class="course-meta">
+                    <h4 th:text="${course.tenKhoaHoc}">Course name</h4>
+                    <p th:text="${course.moTaKhoaHoc}">
+                        Short course description
+                    </p>
+                </div>
+            </div>
+
+            <div class="price-row">
+                <span>Course price</span>
+                <span class="price"
+                      th:text="${#numbers.formatDecimal(course.giaBan,0,'COMMA',0,'POINT')} + ' ₫'">
+            </span>
+            </div>
+
+            <div class="price-row total">
+                <span>Total</span>
+                <span class="price"
+                      th:text="${#numbers.formatDecimal(course.giaBan,0,'COMMA',0,'POINT')} + ' ₫'">
+            </span>
+            </div>
+        </div>
+
+        <form method="post"
+              th:action="@{/enroll/payment}"
+              id="paymentForm">
+
+            <input type="hidden" name="courseId"
+                   th:value="${course.idKhoaHoc}">
+
+            <input type="hidden" name="paymentMethod"
+                   id="paymentMethod" value="momo">
+
+            <input type="hidden" name="amount"
+                   th:value="${course.giaBan}">
+
+            <button class="btn-primary full">
+                Continue to secure payment
+            </button>
+        </form>
+    </div>
+
 
 </div>
 

@@ -6,6 +6,7 @@ import hcmute.edu.vn.HeThongHocCodeTichHopAI.repository.TKDoiTuongSuDungReposito
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.IAuthService;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.email.IEmailService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -100,6 +101,12 @@ public class AuthController {
             }
             return mv;
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/courses";
     }
 
     @PostMapping("/verify-register")

@@ -11,11 +11,22 @@
     font-weight: bold;
 }
 
-.lesson-header h1 { color: #fff; margin-top: 10px; }
+.lesson-header h1 {
+    color: #fff;
+    margin-top: 10px;
+}
 
-.muted { color: rgba(255,255,255,.75); }
+.muted {
+    color: rgba(255,255,255,.75);
+}
 
-.pill-row { display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
+.pill-row {
+    display:flex;
+    gap:10px;
+    margin-top:10px;
+    flex-wrap:wrap;
+}
+
 .pill {
     padding: 6px 10px;
     border-radius: 999px;
@@ -24,7 +35,11 @@
     font-size: .9rem;
 }
 
-.nav-row { display:flex; gap:10px; margin-top:14px; }
+.nav-row {
+    display:flex;
+    gap:10px;
+    margin-top:14px;
+}
 
 .nav-btn {
     display:inline-block;
@@ -35,14 +50,27 @@
     text-decoration:none;
     font-size: .9rem;
 }
-.nav-btn:hover { background: rgba(255,255,255,0.16); }
-.nav-btn.primary { background:#0d47a1; }
-.nav-btn.primary:hover { background:#1565c0; }
-.nav-btn.lock { background: rgba(255, 193, 7, 0.18); }
 
+.nav-btn:hover {
+    background: rgba(255,255,255,0.16);
+}
 
+.nav-btn.primary {
+    background:#0d47a1;
+}
 
-.content { white-space: pre-wrap; line-height: 1.6; }
+.nav-btn.primary:hover {
+    background:#1565c0;
+}
+
+.nav-btn.lock {
+    background: rgba(255, 193, 7, 0.18);
+}
+
+.content {
+    white-space: pre-wrap;
+    line-height: 1.6;
+}
 
 .btn-primary, .btn-secondary {
     border: 0;
@@ -51,10 +79,24 @@
     cursor: pointer;
     margin-top: 10px;
 }
-.btn-primary { background:#0d47a1; color:#fff; }
-.btn-primary:hover { background:#1565c0; }
-.btn-secondary { background: rgba(255,255,255,0.12); color:#fff; }
-.btn-secondary:hover { background: rgba(255,255,255,0.18); }
+
+.btn-primary {
+    background: linear-gradient(to right, #0b1e3f, #0050f0);
+    color:#fff;
+}
+
+.btn-primary:hover {
+    background:#1565c0;
+}
+
+.btn-secondary {
+    background: rgba(255,255,255,0.12);
+    color:#fff;
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,0.18);
+}
 
 .pre {
     white-space: pre-wrap;
@@ -91,10 +133,17 @@
     color: rgba(255,255,255,.9);
 }
 
-.hint.ok { border: 1px solid rgba(46,204,113,.45); }
-.hint.bad { border: 1px solid rgba(231,76,60,.45); }
+.hint.ok {
+    border: 1px solid rgba(46,204,113,.45);
+}
 
-.hidden { display:none; }
+.hint.bad {
+    border: 1px solid rgba(231,76,60,.45);
+}
+
+.hidden {
+    display:none;
+}
 
 .overlay {
     position: fixed;

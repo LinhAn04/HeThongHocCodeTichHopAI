@@ -65,7 +65,7 @@ html, body {
     display: inline-block;
     margin-top: 16px;
     padding: 10px 20px;
-    background: #0d47a1;
+    background: linear-gradient(to right, #0b1e3f, #0050f0);
     color: white;
     border-radius: 6px;
     text-decoration: none;
@@ -148,80 +148,39 @@ h2 {
     bottom:24px;
 }
 
-.chatbot-box {
-    width: 80%;
-    min-height: 50%;
-    height: 600px;
-    background: #1b1b1b;
-    border-radius: 5px;
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
     display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
 }
 
-.chat-messages {
-    padding: 14px;
-    flex: 1;
-    overflow-y: auto;
+.overlay.hidden {
+    display: none;
 }
 
-.chat-msg {
-    margin-bottom: 10px;
-    padding: 10px 12px;
-    border-radius: 10px;
-    font-size: 14px;
-    line-height: 1.4;
-}
-
-.chat-msg.bot {
-    background: rgba(255,255,255,0.08);
+.popup-box {
+    background: #1b1b1b;
     color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    width: 300px;
 }
 
-.chat-msg.user {
-    background: #0d47a1;
-    align-self: flex-end;
+.popup-content.message {
+    gap: 10px!important;
 }
 
-.chat-input {
-    position: relative;
-    padding: 12px;
-    border-top: 1px solid rgba(255,255,255,0.1);
+.login-link {
+    font-size: 1rem;
+    color: #bbbbbb;
+    text-decoration: none;
 }
 
-.chat-input textarea {
-    width: 100%;
-    min-height: 44px;
-    resize: none;
-    border-radius: 10px;
-    padding: 10px 44px 10px 12px;
-    background: rgba(255,255,255,0.06);
-    color: #fff;
-    border: none;
-    outline: none;
-}
-
-.chatbot-send-btn {
-    position: absolute;
-    right: 20px;
-    bottom: 25px;
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background: #0d47a1;
-    border: none;
-    cursor: pointer;
-    display: grid;
-    place-items: center;
-    color: #fff;
-    font-size: 14px;
-    transition: background .2s ease, transform .1s ease;
-}
-
-.send-btn:hover {
-    background: #1565c0;
-}
-
-.send-btn:active {
-    transform: scale(0.92);
+.login-link:hover {
+    color: #ffffff;
+    text-decoration: underline;
 }

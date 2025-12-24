@@ -28,15 +28,15 @@
                 <div><b>Price:</b> <span th:text="${course.giaBan}"></span></div>
             </div>
         </div>
-        <button class="btn-primary enroll-btn"
-                type="button"
-                onclick="openChatbot()"
-                th:if="${loggedIn and dangKy == null}">
-            Enroll this course
-        </button>
         <a class="btn-primary enroll-btn"
                 type="button"
-                href="/login"
+                th:href="@{/enroll/{id}(id=${course.idKhoaHoc})}"
+                th:if="${loggedIn and dangKy == null}">
+            Enroll this course
+        </a>
+        <a class="btn-primary enroll-btn"
+                type="button"
+                onclick="openLoginPopup()"
                 th:if="${!loggedIn and dangKy == null}">
             Enroll this course
         </a>
@@ -118,35 +118,31 @@
     </div>
 </div>
 
-<!-- CHATBOT POPUP -->
-<div id="chatbotOverlay" class="overlay hidden">
-    <div class="chatbot-box">
+<!-- Noti to login if user want to enroll course -->
+<div id="popup" class="overlay hidden">
+    <div class="popup-box" style="max-width:500px">
         <div class="popup-header">
-            <span></span>
-            <a class="btn-primary enroll-btn"
-               th:href="@{/enroll/{id}(id=${course.idKhoaHoc})}">
-                Enroll this course
+            <span id="title"></span>
+            <button id="closePopup">✕</button>
+        </div>
+
+        <div class="popup-content">
+            <p id="message" style="line-height:1.5">
+                Please log in to your account to enroll in this course and access its learning materials.
+            </p>
+        </div>
+
+        <div class="popup-footer"
+             style="display:flex; justify-content:flex-start">
+
+            <a class="login-link"
+               href="/login">
+                Go to login
             </a>
-
-            <button onclick="closeChatbot()">✕</button>
-        </div>
-
-        <div id="chatMessages" class="chat-messages">
-            <div class="chat-msg bot">
-                Hi 👋
-                I’ll help you check your readiness before enrolling.
-            </div>
-        </div>
-
-        <div class="chat-input">
-            <textarea id="chatInput"
-                      placeholder="Type your answer...">
-            </textarea>
-            <button class="chatbot-send-btn"
-                    title="Send">➤</button>
         </div>
     </div>
 </div>
+
 
 <script th:src="@{/js/header.js}"></script>
 <script th:src="@{/js/course_detail.js}"></script>

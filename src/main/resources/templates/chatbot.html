@@ -20,15 +20,20 @@
 <aside th:replace="fragments/sidebar :: sidebar"></aside>
 
 <div class="main-content-padding chatbot-container">
-        <div class="chat-box" id="chatBox">
-        <div class="message bot">
+    <div class="chat-box" id="chatBox">
+        <div class="message bot greeting">
             Hello! I’m Codemy AI. How can I assist you today? 😊
         </div>
     </div>
 
     <div class="chat-input-bar">
         <div class="chat-input-container">
-            <input type="text" id="chatInput" placeholder="Type your message...">
+            <input
+                    type="text"
+                    id="chatInput"
+                    placeholder="Type your message..."
+                    autocomplete="off"
+                    aria-label="Chat message input">
             <button id="sendBtn"
                     class="chat-send-btn"
                     title="Send">➤

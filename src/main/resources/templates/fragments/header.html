@@ -9,11 +9,22 @@
 
   <!-- LEFT -->
   <div class="header-left">
-    <img src="/images/logo.png" class="header-logo">
-    <div class="header-title-group">
-      <div class="header-title">Codemy</div>
-      <div class="header-subtitle">Your own code academy</div>
-    </div>
+
+    <!-- LOGO + TITLE CLICKABLE -->
+    <a href="/courses"
+       class="header-brand"
+       style="display:flex; align-items:center; color:inherit;">
+
+      <img src="/images/logo.png" class="header-logo">
+
+      <div class="header-title-group">
+        <div class="header-title">Codemy</div>
+        <div class="header-subtitle">Your own code academy</div>
+      </div>
+
+    </a>
+
+    <!-- NAV -->
     <nav class="guest-nav-right">
       <a href="/courses"
          th:classappend="${activeMenu == 'courses'} ? 'active'">
@@ -24,7 +35,6 @@
         Blogs
       </a>
     </nav>
-
   </div>
 
   <nav class="guest-nav-left" th:if="${!loggedIn}">

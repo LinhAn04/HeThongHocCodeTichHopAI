@@ -63,12 +63,20 @@ html, body {
 }
 
 .message {
+    white-space: pre-wrap;
+    word-break: break-word;
     max-width: 72%;
     padding: 14px 18px;
     border-radius: 18px;
     line-height: 1.5;
     font-size: 15px;
     animation: fadeIn 0.3s ease;
+}
+
+.message.greeting {
+    max-width: 420px;
+    font-size: 14px;
+    opacity: 0.85;
 }
 
 @keyframes fadeIn {

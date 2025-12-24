@@ -75,7 +75,7 @@ a {
     display: inline-block;
     margin-top: 18px;
     padding: 10px 20px;
-    background: #0d47a1;
+    background: linear-gradient(to right, #0b1e3f, #0050f0);
     color: white;
     border-radius: 6px;
     text-decoration: none;

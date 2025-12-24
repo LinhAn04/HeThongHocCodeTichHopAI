@@ -7,12 +7,8 @@
 }
 
 .btn-primary {
-    background: #0d47a1;
+    background: linear-gradient(to right, #0b1e3f, #0050f0);
     color: #fff;
-}
-
-.btn-primary:hover {
-    background: #1565c0;
 }
 
 .btn-secondary {

@@ -5,7 +5,7 @@ const chatBox = document.getElementById("chatBox");
 function addUserMsg(text) {
     const div = document.createElement("div");
     div.className = "message user";
-    div.innerText = text;
+    div.textContent = text;
     chatBox.appendChild(div);
     chatBox.scrollTop = chatBox.scrollHeight;
 }
@@ -13,7 +13,7 @@ function addUserMsg(text) {
 function addBotMsg(text) {
     const div = document.createElement("div");
     div.className = "message bot";
-    div.innerText = text;
+    div.textContent = text;
     chatBox.appendChild(div);
     chatBox.scrollTop = chatBox.scrollHeight;
 }
@@ -25,16 +25,30 @@ async function sendMessage() {
     addUserMsg(text);
     input.value = "";
 
-    const res = await fetch("/customer/chatbot", {
-        method: "PUT",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({message: text})
-    });
+    // typing indicator
+    const typingDiv = document.createElement("div");
+    typingDiv.className = "message bot";
+    typingDiv.textContent = "Codemy AI is typing...";
+    chatBox.appendChild(typingDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
 
-    const data = await res.json();
+    try {
+        const res = await fetch("/api/chatbot/chat", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ message: text })
+        });
 
-    if (data.reply) {
-        addBotMsg(data.reply);
+        if (!res.ok) throw new Error("Server error");
+
+        const data = await res.json();
+        chatBox.removeChild(typingDiv);
+
+        addBotMsg(data.reply || "No response from AI.");
+    } catch (e) {
+        chatBox.removeChild(typingDiv);
+        addBotMsg("Cannot connect to AI server.");
+        console.error(e);
     }
 }
 

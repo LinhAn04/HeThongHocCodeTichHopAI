@@ -7,6 +7,10 @@
     font-family: "Inria Sans", sans-serif;
 }
 
+a {
+    text-decoration: none;
+}
+
 .header-container {
     position: fixed;
     top: 0;

@@ -9,8 +9,8 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.4</version>
-        <relativePath/> <!-- lookup parent from hcmute.edu.vn.HeThongHocCodeTichHopAI.repository -->
+        <version>3.2.4</version>
+        <relativePath/>
     </parent>
 
     <!-- Thông tin project -->
@@ -125,6 +125,11 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Web client -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
 
     </dependencies>
 
