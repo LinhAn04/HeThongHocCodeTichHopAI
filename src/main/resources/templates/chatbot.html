@@ -12,26 +12,28 @@
 
 <body>
 
-<header th:replace="fragments/header :: header(user=${user})"></header>
+<header th:replace="fragments/header :: header(
+    loggedIn=${user != null},
+    user=${user}
+)"></header>
+
 <aside th:replace="fragments/sidebar :: sidebar"></aside>
 
 <div class="main-content-padding chatbot-container">
-
-    <div class="chat-header">
-        <h2>Codemy AI Assistant</h2>
-        <div class="chat-options">⋮</div>
-    </div>
-
-    <div class="chat-box" id="chatBox">
-        <!-- Example message -->
+        <div class="chat-box" id="chatBox">
         <div class="message bot">
             Hello! I’m Codemy AI. How can I assist you today? 😊
         </div>
     </div>
 
     <div class="chat-input-bar">
-        <input type="text" id="chatInput" placeholder="Type your message...">
-        <button id="sendBtn">Send</button>
+        <div class="chat-input-container">
+            <input type="text" id="chatInput" placeholder="Type your message...">
+            <button id="sendBtn"
+                    class="chat-send-btn"
+                    title="Send">➤
+            </button>
+        </div>
     </div>
 
 </div>
