@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Blogs - Codemy</title>
+    <link rel="stylesheet" th:href="@{/css/blog.css}">
+</head>
+
+<body>
+
+<header th:replace="fragments/header :: header(
+    loggedIn=${loggedIn}, user=${user})"></header>
+
+<div class="page-container">
+        <div class="lesson-list">
+            <a class="lesson-item"
+               th:each="b : ${blogs}"
+               th:href="@{'/blogs/' + ${b.idBaiBlog}}">
+
+                <div class="blog-left">
+                    <img th:src="${b.anhBiaBaiBlog}"
+                         alt="Blog cover">
+                </div>
+
+                <div class="blog-right">
+                    <div class="blog-title"
+                         th:text="${b.tieuDeBaiBlog}">
+                    </div>
+
+                    <div class="blog-meta"
+                         th:text="${#temporals.format(
+                             b.thoiGianDangBai,'dd/MM/yyyy')} +
+                             ' • ' + ${b.tacGia.hoTen}">
+                    </div>
+                </div>
+            </a>
+        </div>
+</div>
+
+<script th:src="@{/js/header.js}"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${blog.tieuDeBaiBlog}"></title>
+    <link rel="stylesheet" th:href="@{/css/blog_detail.css}">
+</head>
+
+<body>
+
+<header th:replace="fragments/header :: header(
+    loggedIn=${loggedIn}, user=${user})"></header>
+
+<div class="page-container">
+
+    <h1 th:text="${blog.tieuDeBaiBlog}"></h1>
+
+    <div class="meta">
+        <span th:text="${blog.tacGia.hoTen}"></span> •
+        <span th:text="${#temporals.format(
+            blog.thoiGianDangBai,'dd/MM/yyyy')}"></span>
+    </div>
+
+    <img th:src="${blog.anhBiaBaiBlog}"
+         class="blog-cover">
+
+    <!-- giống lesson theory -->
+    <section class="lesson-card">
+        <div class="content"
+             th:text="${blog.noiDungBaiBlog}">
+        </div>
+    </section>
+
+</div>
+
+<script th:src="@{/js/header.js}"></script>
+</body>
+</html>

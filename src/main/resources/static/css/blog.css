@@ -1,0 +1,66 @@
+@import url("https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&display=swap");
+
+* { font-family: "Inria Sans", sans-serif; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: url("../images/BackGround.jpg") no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+}
+
+.page-container {
+    padding: 90px 20px;
+}
+
+.lesson-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.lesson-item {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    background: rgba(255,255,255,0.08);
+    padding: 16px 18px;
+    border-radius: 12px;
+    color: white;
+    text-decoration: none;
+    transition: .25s;
+}
+
+.lesson-item:hover {
+    background: rgba(255,255,255,0.14);
+    transform: translateY(-2px);
+}
+
+/* IMAGE (LEFT) */
+.blog-left img {
+    width: 96px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* CONTENT (RIGHT) */
+.blog-right {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.blog-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.blog-meta {
+    font-size: 0.85rem;
+    opacity: 0.75;
+}
