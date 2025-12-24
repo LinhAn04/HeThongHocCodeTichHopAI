@@ -1,10 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>My Courses - Codemy</title>
+
+    <link rel="stylesheet" th:href="@{/css/my_courses.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
 </head>
+
 <body>
+
+<header th:replace="fragments/header :: header(
+    loggedIn=${loggedIn},
+    user=${user}
+)"></header>
+
+<aside th:replace="fragments/sidebar :: sidebar"></aside>
+
+<div class="main-content-padding page-container">
+    <!-- empty -->
+    <div th:if="${#lists.isEmpty(enrollments)}">
+        <p style="color:white; opacity:.8">
+            You haven't enrolled in any course yet.
+        </p>
+        <a href="/courses" class="btn-primary">
+            Browse courses
+        </a>
+    </div>
+
+    <!-- giống y chang Courses list -->
+    <div class="course-grid"
+         th:if="${!#lists.isEmpty(enrollments)}">
+
+        <a class="course-card"
+           th:each="dk : ${enrollments}"
+           th:href="@{'/course/' + ${dk.khoaHoc.idKhoaHoc}}">
+
+            <img th:src="${dk.khoaHoc.anhBiaKhoaHoc}"
+                 class="course-thumb">
+
+            <div class="course-name"
+                 th:text="${dk.khoaHoc.tenKhoaHoc}">
+            </div>
+
+            <div class="course-author">
+                Codemy team
+            </div>
+        </a>
+
+    </div>
+
+</div>
+
+<script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/sidebar.js}"></script>
 
 </body>
 </html>

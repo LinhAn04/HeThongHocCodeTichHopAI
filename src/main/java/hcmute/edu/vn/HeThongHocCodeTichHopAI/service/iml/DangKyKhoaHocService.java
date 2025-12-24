@@ -82,4 +82,10 @@ public class DangKyKhoaHocService implements IDangKyKhoaHocService {
 
         return dangKyKhoaHocRepository.save(dk);
     }
+
+    @Override
+    public List<DangKyKhoaHoc> findByUserId(String userId) {
+        return dangKyKhoaHocRepository
+                .findByNguoiHoc_IdDoiTuong(userId);
+    }
 }

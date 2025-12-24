@@ -35,29 +35,6 @@
       </ul>
     </li>
 
-    <!-- OVERVIEW -->
-    <li class="menu-title has-sub"
-        th:classappend="${activeMenu == 'courses' or activeMenu == 'blogs'} ? ' open'">
-
-      <a href="#" class="submenu-toggle">
-        <img src="/images/icon_overview.png" class="menu-icon">
-        <span class="menu-text">Overview</span>
-        <span class="submenu-arrow">▲</span>
-      </a>
-
-      <ul class="submenu">
-        <li class="submenu-item"
-            th:classappend="${activeMenu == 'courses'} ? ' active'">
-          <a th:href="@{/courses}">Courses</a>
-        </li>
-
-        <li class="submenu-item"
-            th:classappend="${activeMenu == 'blogs'} ? ' active'">
-          <a th:href="@{/blogs}">Blogs</a>
-        </li>
-      </ul>
-    </li>
-
     <!-- TOOLS -->
     <li class="menu-title has-sub"
         th:classappend="${activeMenu == 'chatbot'} ? ' open'">
