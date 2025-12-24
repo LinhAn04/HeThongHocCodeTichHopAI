@@ -26,24 +26,26 @@
 }
 
 .editor-header {
-    /*display: flex;*/
-    /*align-items: flex-end;*/
-    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-end;
     gap: 10px;
-    /*margin-right: auto;*/
+    margin-bottom: 10px;
 }
 
 .btn-submit, .btn-run {
-    background: linear-gradient(to right, #0b1e3f, #0050f0);
+    background: rgba(255,255,255,0.1);
     padding: 6px 12px;
     border-radius: 5px;
-    margin-right: auto;
+}
+
+.btn-submit:hover, .btn-run:hover {
+    background: rgba(255,255,255,0.25);
 }
 
 .code-editor {
     width: 100%;
     min-height: 220px;
-    background: #0f172a;
+    background: rgba(3, 22, 45, 0.35);
     color: #e5e7eb;
     border-radius: 10px;
     padding: 12px;
@@ -81,7 +83,6 @@
     display: block;
 }
 
-/* AI Popup */
 .ai-review-box {
     background: #111827;
     width: 520px;
@@ -94,4 +95,65 @@
     font-size: 1.4rem;
     font-weight: 700;
     margin: 10px 0;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.overlay.hidden {
+    display: none;
+}
+
+.ai-review-box {
+    background: rgba(15,15,20,0.95);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    width: 520px;
+    padding: 20px;
+}
+
+.ai-section {
+    margin-top: 14px;
+}
+
+.ai-section h4 {
+    margin-bottom: 6px;
+}
+
+.ai-section ul {
+    padding-left: 18px;
+}
+
+.lesson-card {
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-top: 12px;
+}
+
+.lesson-card h4 {
+    margin: 0 0 6px 0;
+    font-size: 14px;
+    font-weight: 700;
+    opacity: 0.9;
+}
+
+.lesson-card pre {
+    margin: 0;
+    padding: 10px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.08);
+    color: #e5e7eb;
+    font-size: 13px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-x: auto;
 }

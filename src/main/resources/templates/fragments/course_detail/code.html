@@ -6,8 +6,23 @@
     <!-- LEFT: Description -->
     <div class="challenge-left">
         <h3 th:text="${lesson.tieuDeBaiHoc}"></h3>
-        <div class="challenge-desc"
-             th:text="${lesson.noiDungBaiHoc}">
+        <div class="challenge-desc">
+            <p th:text="${lesson.moTaBaiHoc}"></p>
+
+            <div class="lesson-card" id="problemCard">
+                <h4>Problem</h4>
+                <pre th:text="${lesson.codeDeBai}"></pre>
+            </div>
+
+            <div class="lesson-card">
+                <h4>Hint</h4>
+                <pre th:text="${lesson.codeGoiY}"></pre>
+            </div>
+
+            <div class="lesson-card">
+                <h4>Sample Output</h4>
+                <pre th:text="${lesson.codeOutputMau}"></pre>
+            </div>
         </div>
     </div>
 
@@ -20,7 +35,9 @@
 
         <textarea id="codeEditor"
                   class="code-editor"
-                  placeholder="Write your code here..."></textarea>
+                  placeholder="Write your code here..."
+                  th:text="${lesson.starterCode}">
+        </textarea>
 
         <div class="output-tabs">
             <button class="output-tab active"
