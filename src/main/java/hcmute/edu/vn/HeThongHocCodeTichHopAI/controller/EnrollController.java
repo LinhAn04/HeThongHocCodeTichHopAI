@@ -51,7 +51,7 @@ public class EnrollController {
         model.addAttribute("course", khoaHoc);
         model.addAttribute("user", user);
 
-        return "enroll";
+        return "payment/enroll";
     }
 
 
@@ -95,7 +95,7 @@ public class EnrollController {
 
         model.addAttribute("user", user);
         model.addAttribute("courseId", courseId);
-        return "momo";
+        return "payment/method/momo";
     }
 
     @PostMapping("/banking")
@@ -113,7 +113,7 @@ public class EnrollController {
 
         model.addAttribute("user", user);
         model.addAttribute("courseId", courseId);
-        return "banking";
+        return "payment/method/banking";
     }
 
     // Callback thanh toán thành công

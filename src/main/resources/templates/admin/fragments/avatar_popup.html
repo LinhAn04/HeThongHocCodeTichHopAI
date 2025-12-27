@@ -1,0 +1,35 @@
+<div th:fragment="avatarPopup(user, loggedIn)"
+     th:if="${loggedIn}"
+     id="avatarPopup"
+     class="avatar-popup hidden">
+
+  <div class="avatar-popup-header">
+    <img class="avatar-popup-img"
+         th:src="@{${user.avatar != null ? user.avatar : '/images/avatar_user_default.png'}(v=${#dates.createNow().getTime()})}"
+         alt="User avatar">
+  </div>
+
+  <div class="avatar-popup-info">
+    <div class="avatar-popup-name" th:text="${user.hoTen}">Full Name</div>
+    <div class="avatar-popup-email" th:text="${user.email}">email@example.com</div>
+  </div>
+
+  <!-- STUDENT -->
+  <a class="avatar-popup-btn manage"
+     th:if="${user.loaiDoiTuongSuDung.name() == 'STUDENT'}"
+     th:href="@{/customer/account-setting}">
+    Manage your account
+  </a>
+
+  <!-- ADMIN -->
+  <a class="avatar-popup-btn manage"
+     th:if="${user.loaiDoiTuongSuDung.name() == 'ADMIN'}"
+     th:href="@{/admin/account-setting}">
+    Manage admin account
+  </a>
+
+  <a class="avatar-popup-logout" th:href="@{/api/auth/logout}">
+    Log out
+  </a>
+
+</div>

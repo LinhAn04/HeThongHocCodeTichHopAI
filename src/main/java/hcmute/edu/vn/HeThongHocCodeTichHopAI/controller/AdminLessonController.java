@@ -2,17 +2,19 @@ package hcmute.edu.vn.HeThongHocCodeTichHopAI.controller;
 
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.BaiHoc;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.repository.BaiHocRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+// Quản lý CRUD bài học
 @Controller
 @RequestMapping("/admin/lessons")
 public class AdminLessonController {
+    private final BaiHocRepository repo;
 
-    @Autowired
-    private BaiHocRepository repo;
+    public AdminLessonController(BaiHocRepository repo) {
+        this.repo = repo;
+    }
 
     @GetMapping("/{courseId}")
     public String list(@PathVariable String courseId, Model model) {
@@ -20,7 +22,7 @@ public class AdminLessonController {
                 repo.findByKhoaHoc_IdKhoaHoc(courseId));
         model.addAttribute("courseId", courseId);
 
-        return "admin/lessons";
+        return "admin/courses_management/lessons"; //?
     }
 
     @GetMapping("/new/{courseId}")
@@ -28,7 +30,7 @@ public class AdminLessonController {
         BaiHoc b = new BaiHoc();
         model.addAttribute("lesson", b);
         model.addAttribute("courseId", courseId);
-        return "admin/lesson_form";
+        return "admin/courses_management/lesson_form";
     }
 
     @PostMapping("/save")

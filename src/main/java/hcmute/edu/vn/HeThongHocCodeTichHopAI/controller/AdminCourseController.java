@@ -5,17 +5,19 @@ import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.KhoaHoc;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.iml.AdminCourseService;
 
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+// Quản lý CRUD khóa học
 @Controller
 @RequestMapping("/admin/courses")
 public class AdminCourseController {
+    private final AdminCourseService service;
 
-    @Autowired
-    private AdminCourseService service;
+    public AdminCourseController(AdminCourseService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public String list(Model model, HttpSession session) {
@@ -29,7 +31,7 @@ public class AdminCourseController {
         model.addAttribute("user", user);
         model.addAttribute("courses", service.findAll());
         model.addAttribute("activeMenu", "courses");
-        return "admin/courses";
+        return "admin/courses_management/courses";
     }
 
     @GetMapping("/new")
@@ -43,7 +45,7 @@ public class AdminCourseController {
 
         model.addAttribute("user", user);
         model.addAttribute("course", new KhoaHoc());
-        return "admin/course_form";
+        return "admin/courses_management/course_form";
     }
 
     @GetMapping("/edit/{id}")
@@ -57,7 +59,7 @@ public class AdminCourseController {
 
         model.addAttribute("user", user);
         model.addAttribute("course", service.findById(id));
-        return "admin/course_form";
+        return "admin/courses_management/course_form";
     }
 
     @PostMapping("/save")
