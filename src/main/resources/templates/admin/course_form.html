@@ -1,0 +1,14 @@
+<form method="post" action="/admin/courses/save">
+    <input type="hidden" name="idKhoaHoc"
+           th:value="${course.idKhoaHoc}"/>
+
+    <label>Course name</label>
+    <input name="tenKhoaHoc"
+           th:value="${course.tenKhoaHoc}"/>
+
+    <label>Description</label>
+    <textarea name="moTa"
+              th:text="${course.moTa}"></textarea>
+
+    <button type="submit">Save</button>
+</form>

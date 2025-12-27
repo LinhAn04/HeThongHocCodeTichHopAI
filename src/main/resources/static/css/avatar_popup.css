@@ -31,6 +31,7 @@
     height: 90px;
     border-radius: 50%;
     object-fit: cover;
+    z-index: 2000;
 }
 
 .avatar-popup-info {

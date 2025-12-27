@@ -1,5 +1,6 @@
 package hcmute.edu.vn.HeThongHocCodeTichHopAI.controller;
 
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.DoiTuongSuDung;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.LoaiDoiTuongSuDung;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.TKDoiTuongSuDung;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.repository.TKDoiTuongSuDungRepository;
@@ -78,15 +79,17 @@ public class AuthController {
             }
 
             // Đã kích hoạt → Lưu session
-            request.getSession().setAttribute("email", email);
+            DoiTuongSuDung user = tk.getDoiTuongSuDung();
 
-            if (tk.getDoiTuongSuDung() != null &&
-                    tk.getDoiTuongSuDung().getLoaiDoiTuongSuDung() == LoaiDoiTuongSuDung.ADMIN) {
+            HttpSession session = request.getSession(true);
+            session.setAttribute("user", user);
+            session.setAttribute("email", email);
+            session.setAttribute("role", user.getLoaiDoiTuongSuDung());
 
-                mv.setViewName("dashboard_admin");
-                mv.addObject("role", "ADMIN");
-
-            } else {
+            if (tk.getDoiTuongSuDung().getLoaiDoiTuongSuDung() == LoaiDoiTuongSuDung.ADMIN) {
+                return new ModelAndView("redirect:/admin");
+            }
+             else {
                 mv.setViewName("redirect:/courses");
                 mv.addObject("role", "STUDENT");
             }

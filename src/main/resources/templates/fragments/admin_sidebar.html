@@ -1,0 +1,44 @@
+<aside th:fragment="adminSidebar"
+       id="sidebar"
+       class="sidebar">
+
+    <ul class="menu-list">
+
+        <li class="admin-menu-item"
+            th:classappend="${activeMenu == 'account'} ? ' active'">
+            <a href="/admin/account-setting">
+                <span class="menu-text">Account</span>
+            </a>
+        </li>
+
+        <li class="admin-menu-item"
+            th:classappend="${activeMenu == 'users'} ? ' active'">
+            <a href="/admin/users">
+                <span class="menu-text">Users</span>
+            </a>
+        </li>
+
+        <li class="admin-menu-item"
+            th:classappend="${activeMenu == 'courses'} ? ' active'">
+            <a href="/admin/courses">
+                <span class="menu-text">Courses</span>
+            </a>
+        </li>
+
+        <li class="admin-menu-item"
+            th:classappend="${activeMenu == 'blogs'} ? ' active'">
+            <a href="/admin/blogs">
+                <span class="menu-text">Blogs</span>
+            </a>
+        </li>
+
+        <li class="admin-menu-item"
+            th:classappend="${activeMenu == 'revenue'} ? ' active'">
+            <a href="/admin/revenue">
+                <span class="menu-text">Revenue</span>
+            </a>
+        </li>
+    </ul>
+</aside>
+
+<script th:src="@{/js/sidebar.js}"></script>

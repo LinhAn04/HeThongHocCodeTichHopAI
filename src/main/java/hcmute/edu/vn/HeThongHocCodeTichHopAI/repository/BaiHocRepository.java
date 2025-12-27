@@ -10,4 +10,5 @@ public interface BaiHocRepository extends MongoRepository<BaiHoc, String> {
     BaiHoc findFirstByKhoaHoc_IdKhoaHocOrderByThuTuAsc(String idKhoaHoc);
     BaiHoc findFirstByKhoaHoc_IdKhoaHocAndThuTuGreaterThanOrderByThuTuAsc(String idKhoaHoc, int thuTu);
     BaiHoc findFirstByKhoaHoc_IdKhoaHocAndThuTuLessThanOrderByThuTuDesc(String idKhoaHoc, int thuTu);
+    List<BaiHoc> findByKhoaHoc_IdKhoaHoc(String idKhoaHoc);
 }

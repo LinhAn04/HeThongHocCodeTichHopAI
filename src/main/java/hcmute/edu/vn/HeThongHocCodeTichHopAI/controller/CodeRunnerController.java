@@ -1,6 +1,8 @@
 package hcmute.edu.vn.HeThongHocCodeTichHopAI.controller;
 
-import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.iml.CodeExecutionService;
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.*;
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.iml.*;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,16 +21,16 @@ public class CodeRunnerController {
     }
 
     @PostMapping("/run")
-    public Map<String, String> runCode(@RequestBody Map<String, String> req) {
+    public ExecutionResult runCode(@RequestBody Map<String, String> req) {
+
         String code = req.get("code");
+        String input = req.get("input");
 
         if (code == null || code.isBlank()) {
-            return Map.of("output", "Code is empty");
+            return new ExecutionResult(false, "", "Code is empty");
         }
 
-        String output = codeExecutionService.runCpp(code);
-
-        return Map.of("output", output);
+        return codeExecutionService.runCpp(code, input);
     }
 }
 

@@ -14,8 +14,18 @@
     <div class="avatar-popup-email" th:text="${user.email}">email@example.com</div>
   </div>
 
-  <a class="avatar-popup-btn manage" th:href="@{/customer/account-setting}">
+  <!-- STUDENT -->
+  <a class="avatar-popup-btn manage"
+     th:if="${user.loaiDoiTuongSuDung.name() == 'STUDENT'}"
+     th:href="@{/customer/account-setting}">
     Manage your account
+  </a>
+
+  <!-- ADMIN -->
+  <a class="avatar-popup-btn manage"
+     th:if="${user.loaiDoiTuongSuDung.name() == 'ADMIN'}"
+     th:href="@{/admin/account-setting}">
+    Manage admin account
   </a>
 
   <a class="avatar-popup-logout" th:href="@{/api/auth/logout}">

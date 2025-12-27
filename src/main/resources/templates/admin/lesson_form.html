@@ -1,0 +1,26 @@
+<form method="post" action="/admin/lessons/save">
+
+    <input type="hidden" name="courseId" th:value="${courseId}"/>
+
+    <input name="tieuDeBaiHoc" placeholder="Title"/>
+
+    <select name="loai">
+        <option value="1">Theory</option>
+        <option value="3">Video</option>
+        <option value="4">Code</option>
+    </select>
+
+    <textarea name="noiDungBaiHoc"
+              placeholder="Theory content"></textarea>
+
+    <input name="youtubeVideoId"
+           placeholder="Youtube ID"/>
+
+    <textarea name="codeDeBai"
+              placeholder="Code problem"></textarea>
+
+    <textarea name="starterCode"
+              placeholder="Starter code"></textarea>
+
+    <button type="submit">Save</button>
+</form>

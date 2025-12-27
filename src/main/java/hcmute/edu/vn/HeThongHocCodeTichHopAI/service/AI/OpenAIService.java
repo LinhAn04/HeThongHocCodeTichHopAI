@@ -31,8 +31,6 @@ public class OpenAIService implements IOpenAIService {
                 .defaultHeader("Authorization", "Bearer " + apiKey)
                 .defaultHeader("Content-Type", "application/json")
                 .build();
-
-        System.out.println("✅ OpenAI key loaded, model = " + model);
     }
 
     @Override
