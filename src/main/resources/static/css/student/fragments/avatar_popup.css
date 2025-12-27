@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&display=swap");
+
+* {
+    font-family: "Inria Sans", sans-serif;
+}
+
+.avatar-popup {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    width: 280px;
+    background: #3b3b3b;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    z-index: 999;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.avatar-popup-header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.avatar-popup-img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    z-index: 2000;
+}
+
+.avatar-popup-info {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.avatar-popup-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+}
+
+.avatar-popup-email {
+    font-size: 14px;
+    color: #ccc;
+    margin-top: 2px;
+}
+
+.avatar-popup-btn {
+    display: block;
+    padding: 12px 0;
+    text-align: center;
+    border-radius: 10px;
+    margin: 10px 0;
+    font-weight: 600;
+    text-decoration: none;
+    color: white;
+}
+
+.avatar-popup-btn.manage {
+    background: linear-gradient(to right, #0b1e3f, #0050f0);
+}
+
+.avatar-popup-btn.change {
+    background: linear-gradient(to right, #005cff, #02215c);
+}
+
+.avatar-popup-logout {
+    display: block;
+    margin-top: 15px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    color: #eee;
+    font-size: 14px;
+    text-decoration: none;
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin – Blogs</title>
+
+    <link rel="stylesheet" th:href="@{/css/student/fragments/header.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/fragments/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/blogs_management/admin_blogs.css}">
+</head>
+
+<body>
+
+<header th:replace="admin/fragments/admin_header :: adminHeader(${user})"></header>
+<aside th:replace="admin/fragments/admin_sidebar :: adminSidebar"></aside>
+
+<div class="main-content-padding">
+    <div class="settings-card">
+
+        <div class="page-header">
+            <h2>Blogs</h2>
+            <a th:href="@{/admin/blogs/new}" class="btn-add">+ New Blog</a>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Created At</th>
+                    <th style="width:160px;">Actions</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="b : ${blogs}">
+                    <td th:text="${b.tieuDeBaiBlog}"></td>
+                    <td th:text="${b.tacGia.hoTen}"></td>
+                    <td th:text="${#temporals.format(b.thoiGianDangBai,'dd/MM/yyyy HH:mm')}"></td>
+
+                    <td class="action-col">
+                        <a th:href="@{/admin/blogs/edit/{id}(id=${b.idBaiBlog})}"
+                           class="btn-edit">Edit</a>
+
+                        <form th:action="@{/admin/blogs/delete/{id}(id=${b.idBaiBlog})}"
+                                method="post"
+                                class="delete-form">
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

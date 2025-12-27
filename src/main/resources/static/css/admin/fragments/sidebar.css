@@ -1,0 +1,151 @@
+@import url("https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&display=swap");
+
+* {
+    font-family: "Inria Sans", sans-serif;
+}
+
+.sidebar {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    bottom: 0;
+    width: 180px;
+    background: linear-gradient(180deg, #1c1c1c, #202020);
+    color: #fff;
+    overflow: hidden;
+    transition: width 0.25s ease;
+    border-right: 1px solid rgba(255,255,255,0.05);
+    z-index: 999;
+}
+
+.menu-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.menu-title > a {
+    display: flex;
+    align-items: center;
+    padding: 14px 18px;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff;
+}
+
+.menu-title > a img.menu-icon {
+    margin-right: 6px;
+}
+
+.submenu-arrow {
+    margin-left: auto;
+    padding-right: 2px;
+    opacity: 0.7;
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
+}
+
+.submenu {
+    list-style: none;
+}
+
+.menu-title .group-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu-title .menu-icon {
+    width: 20px;
+}
+
+.submenu-arrow {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    transition: transform 0.2s ease;
+}
+
+.menu-title:not(.open) .submenu-arrow {
+    transform: rotate(180deg);
+}
+
+.submenu {
+    display: none;
+    padding-left: 38px;
+    padding-bottom: 6px;
+}
+
+.menu-title.open .submenu {
+    display: block;
+}
+
+.submenu-item a {
+    display: block;
+    padding: 8px 0;
+    color: #ddd;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.submenu-item a:hover {
+    color: #fff;
+}
+
+.submenu-item.active a {
+    background: #fff;
+    color: #000;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.menu-item > a {
+    display: block;
+    padding: 12px 18px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.menu-item:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.admin-menu-item > a {
+    display: block;
+    padding: 12px 18px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.admin-menu-item:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.admin-menu-item.active a {
+    background: #fff;
+    color: #000;
+    border-radius: 6px;
+}
+
+.toggle-btn::before,
+.toggle-btn::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    border-right: 14px solid white;
+}
+
+.toggle-btn::before {
+    left: 6px;
+}
+.toggle-btn::after {
+    left: 14px;
+}
+
+.sidebar.collapsed .toggle-btn::before,
+.sidebar.collapsed .toggle-btn::after {
+    border-right: none;
+    border-left: 14px solid white;
+}

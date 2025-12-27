@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.net.http.HttpRequest;
-
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -20,7 +18,6 @@ public class AdminController {
     @GetMapping("/account-setting")
     public String accountSetting(HttpSession session, Model model,
                                  HttpServletRequest request) {
-
         DoiTuongSuDung user =
                 (DoiTuongSuDung) session.getAttribute("user");
 

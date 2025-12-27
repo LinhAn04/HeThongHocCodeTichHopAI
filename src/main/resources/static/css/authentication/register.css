@@ -1,0 +1,156 @@
+@import url("https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&display=swap");
+
+* {
+    font-family: "Inria Sans", sans-serif;
+}
+
+body {
+    margin: 0;
+}
+
+body.register-page {
+    background: url("../../images/BackGround.jpg") no-repeat center bottom fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #fff;
+}
+
+.register-wrapper {
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.register-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    border-radius: 12px;
+    max-width: 28vw;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.register-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px 14px;
+    padding-right: 40px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.95);
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.required { color: #ff6b6b; }
+
+.sign-in-link {
+    text-decoration: none;
+    color: #a1b2bb;
+}
+
+.sign-in-link:hover {
+    text-decoration: underline;
+    color: white;
+}
+
+.password-wrapper {
+    width: 100%;
+    position: relative;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 42px !important;
+    box-sizing: border-box;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    opacity: 0.7;
+    z-index: 2;
+}
+
+.toggle-password img {
+    width: 20px;
+    height: 20px;
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+input::placeholder {
+    color: #555;
+}
+
+button {
+    margin-top: 24px;
+    padding: 10px 24px;
+    background-color: #6c757d;
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+button:hover {
+    background-color: #5a6268;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px 20px;
+    width: 100%;
+}
+
+.form-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 700px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.error-field {
+    border: 2px solid #ff4a4a !important;
+}
+
+/* Popup lỗi */
+.register-error-popup {
+    margin-top: 30px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background-color: #ffdddd;
+    color: #990000;
+    font-size: 0.95rem;
+}
+.hidden {
+    display: none;
+}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin – Blog Form</title>
+
+    <link rel="stylesheet" th:href="@{/css/student/fragments/header.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/fragments/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/blogs_management/admin_blog_form.css}">
+</head>
+
+<body>
+
+<header th:replace="admin/fragments/admin_header :: adminHeader(${user})"></header>
+<aside th:replace="admin/fragments/admin_sidebar :: adminSidebar"></aside>
+
+<div class="main-content-padding">
+    <div class="form-card">
+
+        <form th:action="${isEdit}
+        ? @{/admin/blogs/save/{id}(id=${blog.idBaiBlog})}
+        : @{/admin/blogs/save}"
+              method="post"
+              th:object="${blog}">
+        <!-- image -->
+            <div class="cover-section">
+                <div class="cover-wrapper" id="coverClickArea">
+                    <img id="coverPreview"
+                         th:src="${#strings.isEmpty(blog.anhBiaBaiBlog)
+                            ? '/images/blog_cover_placeholder.png'
+                            : blog.anhBiaBaiBlog}"
+                         th:classappend="${#strings.isEmpty(blog.anhBiaBaiBlog) ? ' cover-default' : ''}"
+                         alt="Cover Image">
+                    <div class="cover-overlay">Click to upload cover image</div>
+                </div>
+
+                <input type="file" id="coverInput" accept="image/*" hidden>
+                <input type="hidden" th:field="*{anhBiaBaiBlog}" id="coverPath">
+                <div class="error-text" id="coverError"></div>
+            </div>
+
+            <input type="hidden"
+                   name="idBaiBlog"
+                   th:if="${isEdit}"
+                   th:value="${blog.idBaiBlog}">
+
+            <label>Title</label>
+            <input type="text" th:field="*{tieuDeBaiBlog}" required>
+
+            <label>Content</label>
+            <textarea class="blog-content" rows="10" th:field="*{noiDungBaiBlog}" required></textarea>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-save">Save</button>
+                <a th:href="@{/admin/blogs}" class="btn-cancel">Cancel</a>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script th:src="@{/js/admin_blog_form.js}"></script>
+
+</body>
+</html>

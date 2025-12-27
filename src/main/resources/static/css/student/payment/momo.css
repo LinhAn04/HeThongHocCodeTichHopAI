@@ -1,0 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=Inria+Sans:wght@400;700&display=swap");
+
+* {
+    box-sizing: border-box;
+    font-family: "Inria Sans", sans-serif;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: url("../../../images/BackGround.jpg") no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.momo-wrapper {
+    padding: 40px;
+    border-radius: 18px;
+}
+
+.momo-card {
+    background: rgba(0,0,0,0.55);
+    padding: 32px 30px;
+    border-radius: 16px;
+    text-align: center;
+    width: 500px;
+}
+
+.momo-card h2 {
+    margin-bottom: 12px;
+    font-size: 22px;
+}
+
+.momo-card img {
+    width: 350px;
+    margin: 20px auto;
+    display: block;
+    border-radius: 12px;
+    background: white;
+    padding: 8px;
+}
+
+.muted {
+    font-size: 14px;
+    opacity: .75;
+    margin-bottom: 22px;
+}
+
+.btn-primary {
+    background: #d81b60;
+    border: none;
+    padding: 12px;
+    color: white;
+    font-weight: 700;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.btn-primary.full {
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background: #c2185b;
+}

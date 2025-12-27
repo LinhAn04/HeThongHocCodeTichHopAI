@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Blogs - Codemy</title>
-    <link rel="stylesheet" th:href="@{/css/blog.css}">
+    <link rel="stylesheet" th:href="@{/css/student/blogs/blog.css}">
 </head>
 
 <body>
@@ -18,8 +18,14 @@
                th:href="@{'/blogs/' + ${b.idBaiBlog}}">
 
                 <div class="blog-left">
-                    <img th:src="${b.anhBiaBaiBlog}"
-                         alt="Blog cover">
+                    <div class="cover-wrapper" id="coverClickArea">
+                        <img id="coverPreview"
+                             th:src="${#strings.isEmpty(b.anhBiaBaiBlog)
+                            ? '/images/blog_cover_placeholder.png'
+                            : b.anhBiaBaiBlog}"
+                             th:classappend="${#strings.isEmpty(b.anhBiaBaiBlog) ? ' cover-default' : ''}"
+                             alt="Cover Image">
+                    </div>
                 </div>
 
                 <div class="blog-right">
@@ -38,5 +44,7 @@
 </div>
 
 <script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/blogs.js}"></script>
+
 </body>
 </html>

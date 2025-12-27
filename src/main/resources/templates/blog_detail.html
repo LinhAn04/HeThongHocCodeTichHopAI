@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${blog.tieuDeBaiBlog}"></title>
-    <link rel="stylesheet" th:href="@{/css/blog_detail.css}">
+    <link rel="stylesheet" th:href="@{/css/student/blogs/blog_detail.css}">
 </head>
 
 <body>
@@ -21,8 +21,11 @@
             blog.thoiGianDangBai,'dd/MM/yyyy')}"></span>
     </div>
 
-    <img th:src="${blog.anhBiaBaiBlog}"
-         class="blog-cover">
+    <img class="img-cover"
+         th:src="${#strings.isEmpty(blog.anhBiaBaiBlog)
+            ? '/images/blog_cover_placeholder.png'
+            : blog.anhBiaBaiBlog}"
+         alt="Blog cover">
 
     <!-- giống lesson theory -->
     <section class="lesson-card">
@@ -34,5 +37,7 @@
 </div>
 
 <script th:src="@{/js/header.js}"></script>
+<script th:src="@{/js/blogs.js}"></script>
+
 </body>
 </html>

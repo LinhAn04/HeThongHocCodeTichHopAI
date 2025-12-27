@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title th:text="${status} + ' - That’s an error.'">Error</title>
-  <link rel="stylesheet" th:href="@{/css/error.css}">
+  <link rel="stylesheet" th:href="@{/css/error/error.css}">
 </head>
 
 <body>
@@ -26,7 +26,7 @@
 
     <!-- BACK LINK -->
     <div class="back-home">
-      <a href="/courses">Back to Home</a>
+      <a th:href="${backUrl}">Back to Home</a>
     </div>
   </div>
 
