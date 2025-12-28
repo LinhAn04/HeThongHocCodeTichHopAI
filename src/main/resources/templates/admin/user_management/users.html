@@ -27,7 +27,9 @@
         <tr>
           <th>Email</th>
           <th>Name</th>
-          <th class="status-col">Activated</th>
+          <th class="tb-middle">Status</th>
+          <th class="status-col">Action</th>
+
         </tr>
         </thead>
 
@@ -35,13 +37,24 @@
         <tr th:each="u : ${users}">
           <td th:text="${u.taiKhoan.tenDangNhap}"></td>
           <td th:text="${u.hoTen}"></td>
-          <td class="status-col">
-        <span th:class="${u.taiKhoan.trangThaiKichHoat
-            ? 'status-true'
-            : 'status-false'}"
-              th:text="${u.taiKhoan.trangThaiKichHoat}">
-        </span>
+          <td class="td-middle" th:text="${u.taiKhoan.isActive() ? 'Active' : 'Inactive'}"></td>
+
+          <td class="action-col">
+            <form th:action="@{/admin/users/toggle/{id}(id=${u.idDoiTuong})}"
+                  method="post">
+              <button type="submit"
+                      class="btn"
+                      th:classappend="${u.taiKhoan.isActive()}
+                ? ' btn-disable'
+                : ' btn-active'"
+                          th:text="${u.taiKhoan.isActive()
+                ? 'Disable account'
+                : 'Enable account'}">
+              </button>
+
+            </form>
           </td>
+
         </tr>
         </tbody>
       </table>

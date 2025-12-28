@@ -1,16 +1,90 @@
-<!--<canvas id="chart"></canvas>-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin – Revenue</title>
 
-<!--<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>-->
-<!--<script th:inline="javascript">-->
-<!--    const data = [[${stats}]];-->
+    <!-- admin common -->
+    <link rel="stylesheet" th:href="@{/css/student/fragments/header.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/fragments/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/revenue/revenue.css}">
 
-<!--    new Chart(document.getElementById("chart"), {-->
-<!--        type: 'bar',-->
-<!--        data: {-->
-<!--            labels: data.map(d => d.courseName),-->
-<!--            datasets: [{-->
-<!--                data: data.map(d => d.count)-->
-<!--            }]-->
-<!--        }-->
-<!--    });-->
-<!--</script>-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<header th:replace="~{admin/fragments/admin_header :: adminHeader(${user})}"></header>
+<aside th:replace="~{admin/fragments/admin_sidebar :: adminSidebar}"></aside>
+
+<div class="main-content-padding">
+    <div class="settings-card">
+
+        <div class="card-header">
+            <h2>Revenue Statistics</h2>
+
+            <form method="get" action="/admin/revenue">
+                <select name="type" onchange="this.form.submit()">
+                    <option value="month" th:selected="${type == 'month'}">
+                        By Month
+                    </option>
+                    <option value="quarter" th:selected="${type == 'quarter'}">
+                        By Quarter
+                    </option>
+                </select>
+            </form>
+        </div>
+
+        <div class="chart-wrapper">
+            <canvas id="revenueChart"></canvas>
+        </div>
+
+    </div>
+</div>
+
+<script th:inline="javascript">
+    const labels = /*[[${labels}]]*/ [];
+    const dataValues = /*[[${values}]]*/ [];
+
+    new Chart(document.getElementById('revenueChart'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Revenue (VND)',
+                data: dataValues,
+                borderColor: '#ffffff',
+                backgroundColor: 'transparent',
+                borderWidth: 3,
+                tension: 0.35
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            scales: {
+                x: {
+                    ticks: { color: '#fff' }
+                },
+                y: {
+                    min: 0,                  // 🔥 KHÔNG CHO ÂM
+                    beginAtZero: true,
+                    ticks: {
+                        color: '#fff',
+                        callback: v => v.toLocaleString() + ' đ'
+                    }
+                }
+            },
+
+            plugins: {
+                legend: {
+                    labels: { color: '#fff' }
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

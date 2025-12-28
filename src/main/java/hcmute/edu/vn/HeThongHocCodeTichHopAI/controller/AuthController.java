@@ -66,6 +66,13 @@ public class AuthController {
         try {
             TKDoiTuongSuDung tk = authService.login(email, password);
 
+            // Admin khóa tài khoản
+            if (!tk.isActive()) {
+                mv.setViewName("login");
+                mv.addObject("error", "Your account has been disabled by administrator.");
+                return mv;
+            }
+
             // Nếu chưa kích hoạt — KHÔNG lưu session
             if (!tk.isTrangThaiKichHoat()) {
                 String code = emailService.createCode(email);

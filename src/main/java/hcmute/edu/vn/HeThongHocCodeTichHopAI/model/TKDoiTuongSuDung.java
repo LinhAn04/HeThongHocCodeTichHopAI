@@ -15,6 +15,8 @@ public class TKDoiTuongSuDung {
 
     private boolean trangThaiKichHoat = true;
 
+    private boolean isActive = true;
+
     @DBRef // tham chiếu sang collection "doi_tuong_su_dung"
     private DoiTuongSuDung doiTuongSuDung;
 
@@ -37,6 +39,9 @@ public class TKDoiTuongSuDung {
 
     public boolean isTrangThaiKichHoat() { return trangThaiKichHoat; }
     public void setTrangThaiKichHoat(boolean trangThaiKichHoat) { this.trangThaiKichHoat = trangThaiKichHoat; }
+
+    public boolean isActive() { return isActive; }
+    public void setActive(boolean isActive) { this.isActive = isActive; }
 
     public DoiTuongSuDung getDoiTuongSuDung() { return doiTuongSuDung; }
     public void setDoiTuongSuDung(DoiTuongSuDung doiTuongSuDung) { this.doiTuongSuDung = doiTuongSuDung; }
