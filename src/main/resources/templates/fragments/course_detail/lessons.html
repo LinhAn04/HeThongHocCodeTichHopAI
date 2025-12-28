@@ -15,9 +15,9 @@
 
   <div class="lesson-list">
     <div class="lesson-item-wrapper"
-         th:each="l : ${lessons}">
+         th:each="l, stat : ${lessons}">
 
-      <!-- BÀI ĐƯỢC MỞ -->
+    <!-- BÀI ĐƯỢC MỞ -->
       <a class="lesson-item"
          th:if="${unlockedLessonIds.contains(l.idBaiHoc)}"
          th:classappend="
@@ -29,7 +29,9 @@
          th:href="@{'/lesson/' + ${l.idBaiHoc} + '#lesson'}">
 
         <div class="lesson-left">
-          <div class="lesson-type" th:text="${l.thuTu}"></div>
+          <div class="lesson-type"
+               th:text="${stat.index + 1}">
+          </div>
           <div>
             <div class="lesson-title" th:text="${l.tieuDeBaiHoc}"></div>
             <div class="lesson-desc" th:text="${l.moTaBaiHoc}"></div>
@@ -49,7 +51,9 @@
            th:if="${!unlockedLessonIds.contains(l.idBaiHoc)}">
 
         <div class="lesson-left">
-          <div class="lesson-type" th:text="${l.thuTu}"></div>
+          <div class="lesson-type"
+               th:text="${stat.index + 1}">
+          </div>
           <div>
             <div class="lesson-title" th:text="${l.tieuDeBaiHoc}"></div>
             <div class="lesson-desc" th:text="${l.moTaBaiHoc}"></div>

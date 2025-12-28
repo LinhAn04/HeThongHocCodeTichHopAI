@@ -66,7 +66,7 @@ public class CourseDetailController {
             mv.addObject("user", user);
         }
 
-        KhoaHoc khoaHoc = khoaHocService.findById(idKhoaHoc); // bạn có thể đổi sang Optional
+        KhoaHoc khoaHoc = khoaHocService.findById(idKhoaHoc);
         if (khoaHoc == null) {
             mv.setViewName("redirect:/courses");
             return mv;
@@ -74,11 +74,28 @@ public class CourseDetailController {
         mv.addObject("course", khoaHoc);
 
         // list bài học theo thứ tự
-        List<BaiHoc> lessons = baiHocRepository.findByKhoaHoc_IdKhoaHocOrderByThuTuAsc(idKhoaHoc);
-        mv.addObject("lessons", lessons);
+        List<BaiHoc> allLessons =
+                baiHocRepository.findByKhoaHoc_IdKhoaHocOrderByThuTuAsc(idKhoaHoc);
+
+        List<BaiHoc> visibleLessons = new ArrayList<>();
+
+        DangKyKhoaHoc dk = null;
+        boolean hasRegistered = (dk != null); // đã đăng ký khóa học hay chưa
+
+        for (BaiHoc l : allLessons) {
+            if (l.getIsActive()) {
+                // rule 2: bài active -> luôn hiện
+                visibleLessons.add(l);
+            } else if (hasRegistered) {
+                // rule 3: bài inactive nhưng đã đăng ký -> vẫn hiện
+                visibleLessons.add(l);
+            }
+        }
+
+        mv.addObject("lessons", visibleLessons);
 
         // trạng thái đăng ký
-        DangKyKhoaHoc dk = null;
+        dk = null;
         TrangThaiKhoaHoc status = null;
         if (loggedIn) {
             dk = dangKyKhoaHocRepository
@@ -173,14 +190,18 @@ public class CourseDetailController {
 
         Set<String> unlockedLessonIds = new HashSet<>();
 
-        if (!loggedIn) {
-            // chưa đăng nhập → mở 4 bài đầu
-            for (BaiHoc l : lessons) {
-                if (l.getThuTu() <= 4) {
-                    unlockedLessonIds.add(l.getIdBaiHoc());
-                }
+        List<BaiHoc> lessons =
+                baiHocRepository.findByKhoaHoc_IdKhoaHocOrderByThuTuAsc(idKhoaHoc);
+
+        if (!loggedIn || dk == null) {
+            int count = 0;
+            for (BaiHoc l : visibleLessons) {
+                unlockedLessonIds.add(l.getIdBaiHoc());
+                count++;
+                if (count == 4) break;
             }
-        } else {
+        }
+        else {
             // đã đăng nhập
             if (tienDo != null && tienDo.getBaiHocHienTai() != null) {
                 int currentOrder = tienDo.getBaiHocHienTai().getThuTu();

@@ -66,7 +66,7 @@ public class LessonDetailController {
 
         DoiTuongSuDung user = null;
         DangKyKhoaHoc dk = null;
-        boolean enrolled = false;
+        boolean enrolled;
 
         if (loggedIn) {
             user = doiTuongSuDungService.findByEmail(email);
@@ -80,6 +80,8 @@ public class LessonDetailController {
                     .orElse(null);
 
             enrolled = (dk != null);
+        } else {
+            enrolled = false;
         }
 
         mv.addObject("course", course);
@@ -94,7 +96,18 @@ public class LessonDetailController {
                 course.getIdKhoaHoc(), lesson.getThuTu());
 
         // nếu trial thì chỉ allow next trong 4 bài đầu
-        if (!enrolled && next != null && next.getThuTu() > 4) next = null;
+        List<BaiHoc> visibleLessons =
+                baiHocRepository.findByKhoaHoc_IdKhoaHocOrderByThuTuAsc(course.getIdKhoaHoc())
+                        .stream()
+                        .filter(l -> l.getIsActive() || enrolled)
+                        .toList();
+
+        if (!enrolled) {
+            int currentIndex = visibleLessons.indexOf(lesson);
+            if (currentIndex >= 3) { // chỉ cho next trong 4 bài đầu
+                next = null;
+            }
+        }
 
         mv.addObject("nextLesson", next);
         mv.addObject("prevLesson", prev);
@@ -117,7 +130,6 @@ public class LessonDetailController {
         return mv;
     }
 
-    // ====== COMPLETE THEORY / VIDEO (enrolled only) ======
     @PostMapping("/lesson/{idBaiHoc}/complete")
     public String completeLesson(@PathVariable String idBaiHoc, HttpServletRequest request) {
         String email = (String) request.getSession().getAttribute("email");
@@ -144,7 +156,6 @@ public class LessonDetailController {
         return "redirect:/lesson/" + idBaiHoc;
     }
 
-    // ====== QUIZ SUBMIT (trial allowed, enrolled saves when pass) ======
     public static class QuizSubmitRequest {
         public Map<Integer, Integer> answers = new HashMap<>(); // questionIndex -> optionIndex
     }
@@ -264,7 +275,6 @@ public class LessonDetailController {
         ));
     }
 
-    // ====== CODE SUBMIT (trial allowed; enrolled saves when pass) ======
     public static class CodeSubmitRequest {
         public String userOutput;
     }
