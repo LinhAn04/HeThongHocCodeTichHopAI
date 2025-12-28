@@ -126,3 +126,8 @@ tbody tr:hover {
 .table-wrapper::-webkit-scrollbar-track {
     background: transparent;
 }
+
+.td-middle {
+    vertical-align: middle;
+    text-align: center;
+}

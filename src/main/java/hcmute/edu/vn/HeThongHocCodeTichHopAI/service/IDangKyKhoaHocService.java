@@ -15,4 +15,5 @@ public interface IDangKyKhoaHocService {
     DangKyKhoaHoc dangKyKhoaHoc(DoiTuongSuDung user, KhoaHoc khoaHoc);
     boolean daDangKy(String userId, String courseId);
     List<DangKyKhoaHoc> findByUserId(String userId);
+    List<String> findCourseIdsByUser(String userId);
 }

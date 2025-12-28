@@ -135,6 +135,11 @@ public class EnrollController {
 
         dangKyService.dangKyKhoaHoc(user, khoaHoc);
 
+        if (!Boolean.TRUE.equals(khoaHoc.getHasEnrollment())) {
+            khoaHoc.setHasEnrollment(true);
+            khoaHocRepository.save(khoaHoc);
+        }
+
         emailService.sendEnrollSuccessEmail(
                 user.getEmail(),
                 user.getHoTen(),

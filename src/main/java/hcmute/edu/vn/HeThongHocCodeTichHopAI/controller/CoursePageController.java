@@ -51,7 +51,20 @@ public class CoursePageController {
             mv.addObject("user", user);
         }
 
-        List<KhoaHoc> courses = khoaHocService.findAll();
+        List<String> enrolledCourseIds = new ArrayList<>();
+
+        if (loggedIn) {
+            enrolledCourseIds = dangKyKhoaHocService.findCourseIdsByUser(user.getIdDoiTuong());
+        }
+
+        List<KhoaHoc> courses;
+
+        if (!loggedIn) {
+            courses = khoaHocService.findActiveCourses();
+        } else {
+            courses = khoaHocService.findVisibleCoursesForUser(enrolledCourseIds);
+        }
+
         mv.addObject("courses", courses);
         mv.addObject("bannerCourses", courses);
         mv.addObject("activeMenu", "courses");
@@ -83,8 +96,15 @@ public class CoursePageController {
                             );
 
             for (LichSuTruyCapKhoaHoc ls : lichSuList) {
-                if (ls.getKhoaHoc() != null) {
-                    recentCourses.add(ls.getKhoaHoc());
+                KhoaHoc kh = ls.getKhoaHoc();
+                if (kh == null) continue;
+
+                // chỉ add nếu:
+                // - course active
+                // - hoặc user đã đăng ký course đó
+                if (kh.getIsActive()
+                        || enrolledCourseIds.contains(kh.getIdKhoaHoc())) {
+                    recentCourses.add(kh);
                 }
                 if (recentCourses.size() == 4) break;
             }

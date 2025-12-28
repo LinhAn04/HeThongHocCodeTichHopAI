@@ -88,4 +88,14 @@ public class DangKyKhoaHocService implements IDangKyKhoaHocService {
         return dangKyKhoaHocRepository
                 .findByNguoiHoc_IdDoiTuong(userId);
     }
+
+    @Override
+    public List<String> findCourseIdsByUser(String userId) {
+
+        return dangKyKhoaHocRepository
+                .findByNguoiHoc_IdDoiTuong(userId)
+                .stream()
+                .map(dk -> dk.getKhoaHoc().getIdKhoaHoc())
+                .toList();
+    }
 }

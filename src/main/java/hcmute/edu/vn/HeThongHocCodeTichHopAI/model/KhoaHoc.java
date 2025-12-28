@@ -25,6 +25,10 @@ public class KhoaHoc {
 
     private double giaBan;
 
+    private Boolean isActive = true;
+
+    private Boolean hasEnrollment = false;
+
     @DBRef // tham chiếu sang collection "bai_hoc"
     private Set<BaiHoc> dsBaiHoc = new HashSet<>();
 
@@ -40,17 +44,29 @@ public class KhoaHoc {
         this.idKhoaHoc = idKhoaHoc;
     }
 
-    public String getAnhBiaKhoaHoc() { return anhBiaKhoaHoc; }
+    public String getAnhBiaKhoaHoc() {
+        return anhBiaKhoaHoc;
+    }
 
-    public void setAnhBiaKhoaHoc(String anhBiaKhoaHoc) { this.anhBiaKhoaHoc = anhBiaKhoaHoc; }
+    public void setAnhBiaKhoaHoc(String anhBiaKhoaHoc) {
+        this.anhBiaKhoaHoc = anhBiaKhoaHoc;
+    }
 
-    public String getTacGia() { return tacGia; }
+    public String getTacGia() {
+        return tacGia;
+    }
 
-    public void setTacGia(String tacGia) { this.tacGia = tacGia; }
+    public void setTacGia(String tacGia) {
+        this.tacGia = tacGia;
+    }
 
-    public LocalDateTime getNgayTao() { return ngayTao; }
+    public LocalDateTime getNgayTao() {
+        return ngayTao;
+    }
 
-    public void setNgayTao(LocalDateTime ngayTao) { this.ngayTao = ngayTao; }
+    public void setNgayTao(LocalDateTime ngayTao) {
+        this.ngayTao = ngayTao;
+    }
 
     public String getTenKhoaHoc() {
         return tenKhoaHoc;
@@ -76,6 +92,7 @@ public class KhoaHoc {
     public Set<BaiHoc> getDsBaiHoc() {
         return dsBaiHoc;
     }
+
     public void setDsBaiHoc(Set<BaiHoc> dsBaiHoc) {
         this.dsBaiHoc = dsBaiHoc;
     }
@@ -83,7 +100,24 @@ public class KhoaHoc {
     public Set<DanhGia> getDsDanhGia() {
         return dsDanhGia;
     }
+
     public void setDsDanhGia(Set<DanhGia> dsDanhGia) {
         this.dsDanhGia = dsDanhGia;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public Boolean getHasEnrollment() {
+        return hasEnrollment;
+    }
+
+    public void setHasEnrollment(Boolean hasEnrollment) {
+        this.hasEnrollment = hasEnrollment;
     }
 }

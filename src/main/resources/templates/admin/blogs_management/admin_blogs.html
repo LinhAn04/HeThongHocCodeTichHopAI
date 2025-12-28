@@ -37,7 +37,7 @@
                 <tr th:each="b : ${blogs}">
                     <td th:text="${b.tieuDeBaiBlog}"></td>
                     <td th:text="${b.tacGia.hoTen}"></td>
-                    <td th:text="${#temporals.format(b.thoiGianDangBai,'dd/MM/yyyy HH:mm')}"></td>
+                    <td class="td-middle" th:text="${#temporals.format(b.thoiGianDangBai,'dd/MM/yyyy HH:mm')}"></td>
 
                     <td class="action-col">
                         <a th:href="@{/admin/blogs/edit/{id}(id=${b.idBaiBlog})}"

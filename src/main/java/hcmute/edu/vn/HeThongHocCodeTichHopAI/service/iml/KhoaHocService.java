@@ -34,4 +34,14 @@ public class KhoaHocService implements IKhoaHocService {
     public void deleteById(String id) {
         khoaHocRepository.deleteById(id);
     }
+
+    @Override
+    public List<KhoaHoc> findActiveCourses() {
+        return khoaHocRepository.findByIsActiveTrue();
+    }
+
+    @Override
+    public List<KhoaHoc> findVisibleCoursesForUser(List<String> enrolledCourseIds) {
+        return khoaHocRepository.findVisibleCoursesForUser(enrolledCourseIds);
+    }
 }

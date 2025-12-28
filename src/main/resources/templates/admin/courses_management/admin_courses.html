@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin – Courses</title>
+    <link rel="stylesheet" th:href="@{/css/student/fragments/header.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/fragments/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/courses_management/admin_courses.css}">
+</head>
+
+<body>
+<header th:replace="admin/fragments/admin_header :: adminHeader(${user})"></header>
+<aside th:replace="admin/fragments/admin_sidebar :: adminSidebar"></aside>
+
+<div class="settings-card">
+    <div class="page-header">
+        <h2>Courses</h2>
+        <a th:href="@{/admin/courses/new}" class="btn-add">+ New course</a>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th style="width:160px">Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="c : ${courses}">
+            <td th:text="${c.tenKhoaHoc}"></td>
+            <td class="td-middle" th:text="${c.isActive ? 'Active' : 'Hidden'}"></td>
+            <td class="action-col">
+                <a th:href="@{/admin/courses/edit/{id}(id=${c.idKhoaHoc})}"
+                   class="btn btn-edit">Edit</a>
+
+                <form th:if="${canDeleteMap[c.idKhoaHoc]}"
+                      th:action="@{/admin/courses/delete/{id}(id=${c.idKhoaHoc})}"
+                      method="post">
+                    <button class="btn btn-delete">Delete</button>
+                </form>
+
+                <form th:if="${c.isActive && !canDeleteMap[c.idKhoaHoc]}"
+                      th:action="@{/admin/courses/hide/{id}(id=${c.idKhoaHoc})}"
+                      method="post">
+                    <button class="btn btn-hide">Hide</button>
+                </form>
+
+                <form th:if="${!c.isActive && !canDeleteMap[c.idKhoaHoc]}"
+                      th:action="@{/admin/courses/unhide/{id}(id=${c.idKhoaHoc})}"
+                      method="post">
+                    <button class="btn btn-unhide">UnHide</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

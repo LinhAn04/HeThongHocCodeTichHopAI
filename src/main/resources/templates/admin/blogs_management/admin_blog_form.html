@@ -27,7 +27,7 @@
                 <div class="cover-wrapper" id="coverClickArea">
                     <img id="coverPreview"
                          th:src="${#strings.isEmpty(blog.anhBiaBaiBlog)
-                            ? '/images/blog_cover_placeholder.png'
+                            ? '/images/cover_placeholder.png'
                             : blog.anhBiaBaiBlog}"
                          th:classappend="${#strings.isEmpty(blog.anhBiaBaiBlog) ? ' cover-default' : ''}"
                          alt="Cover Image">

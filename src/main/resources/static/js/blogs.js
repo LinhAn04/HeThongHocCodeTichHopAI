@@ -4,13 +4,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!img) return;
 
     img.addEventListener("load", () => {
-        if (!img.src.includes("blog_cover_placeholder")) {
+        if (!img.src.includes("cover_placeholder")) {
             img.classList.remove("cover-default");
         }
     });
 
     img.addEventListener("error", () => {
-        img.src = "/images/blog_cover_placeholder.png";
+        img.src = "/images/cover_placeholder.png";
         img.classList.add("cover-default");
     });
 });

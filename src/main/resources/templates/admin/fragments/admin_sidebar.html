@@ -26,6 +26,13 @@
         </li>
 
         <li class="admin-menu-item"
+            th:classappend="${activeMenu == 'lessons'} ? ' active'">
+            <a href="/admin/lessons">
+                <span class="menu-text">Lessons</span>
+            </a>
+        </li>
+
+        <li class="admin-menu-item"
             th:classappend="${activeMenu == 'blogs'} ? ' active'">
             <a href="/admin/blogs">
                 <span class="menu-text">Blogs</span>

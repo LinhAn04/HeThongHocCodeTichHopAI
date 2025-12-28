@@ -1,0 +1,26 @@
+<form th:action="@{/admin/lessons/save}" method="post" th:object="${lesson}">
+    <input type="hidden" name="courseId" th:value="${courseId}">
+    <input type="hidden" th:field="*{idBaiHoc}"/>
+
+    <label>Title</label>
+    <input th:field="*{tieuDeBaiHoc}">
+
+    <label>Description</label>
+    <textarea th:field="*{moTaBaiHoc}"></textarea>
+
+    <label>Content</label>
+    <textarea th:field="*{noiDungBaiHoc}"></textarea>
+
+    <label>Youtube ID</label>
+    <input th:field="*{youtubeVideoId}">
+
+    <label>Code</label>
+    <textarea th:field="*{starterCode}"
+              th:disabled="${locked}"></textarea>
+
+    <div th:if="${locked}" class="warning">
+        ⚠ Course has students – code cannot be modified
+    </div>
+
+    <button type="submit">Save</button>
+</form>

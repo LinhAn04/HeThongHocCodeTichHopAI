@@ -9,4 +9,7 @@ public interface IKhoaHocService {
     KhoaHoc findById(String id);
     KhoaHoc save(KhoaHoc khoaHoc);
     void deleteById(String id);
+    List<KhoaHoc> findActiveCourses();
+    List<KhoaHoc> findVisibleCoursesForUser(List<String> enrolledCourseIds);
+
 }
