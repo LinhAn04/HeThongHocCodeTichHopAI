@@ -84,4 +84,8 @@ public class AdminCourseService {
         }
         return map;
     }
+
+    public List<KhoaHoc> findAllActive() {
+        return courseRepo.findByIsActiveTrue();
+    }
 }

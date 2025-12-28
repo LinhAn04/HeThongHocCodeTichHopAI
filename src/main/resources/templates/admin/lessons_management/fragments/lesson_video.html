@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="content(lesson)"
+     class="lesson-fragment"
+     data-type="3">
+
+    <h4 class="fragment-title">Video lesson</h4>
+
+    <label>YouTube Video ID</label>
+    <input type="text"
+           name="youtubeVideoId"
+           th:value="${lesson.youtubeVideoId}"
+           placeholder="e.g. dQw4w9WgXcQ">
+
+    <p class="hint-text">
+        Only paste the YouTube video ID, not the full URL.
+    </p>
+
+</div>
+
+</body>
+</html>

@@ -39,6 +39,8 @@ public class BaiHoc {
     @DBRef // tham chiếu sang collection "khoa_hoc"
     private KhoaHoc khoaHoc;
 
+    private Boolean isActive;
+
     public BaiHoc() {}
 
     public String getIdBaiHoc() { return idBaiHoc; }
@@ -76,4 +78,7 @@ public class BaiHoc {
 
     public KhoaHoc getKhoaHoc() { return khoaHoc; }
     public void setKhoaHoc(KhoaHoc khoaHoc) { this.khoaHoc = khoaHoc; }
+
+    public Boolean getIsActive() { return isActive; }
+    public void setIsActive(Boolean isActive) { this.isActive = isActive; }
 }

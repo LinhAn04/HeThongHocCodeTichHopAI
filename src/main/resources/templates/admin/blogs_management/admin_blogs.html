@@ -11,7 +11,7 @@
 
 <body>
 
-<header th:replace="admin/fragments/admin_header :: adminHeader(${user})"></header>
+<header th:replace="~{admin/fragments/admin_header :: adminHeader(${user})}"></header>
 <aside th:replace="admin/fragments/admin_sidebar :: adminSidebar"></aside>
 
 <div class="main-content-padding">
@@ -39,7 +39,7 @@
                     <td th:text="${b.tacGia.hoTen}"></td>
                     <td class="td-middle" th:text="${#temporals.format(b.thoiGianDangBai,'dd/MM/yyyy HH:mm')}"></td>
 
-                    <td class="action-col">
+                    <td class="action-col td-middle">
                         <a th:href="@{/admin/blogs/edit/{id}(id=${b.idBaiBlog})}"
                            class="btn-edit">Edit</a>
 

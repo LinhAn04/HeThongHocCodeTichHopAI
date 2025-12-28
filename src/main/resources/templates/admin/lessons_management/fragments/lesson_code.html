@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="content(lesson)"
+     class="lesson-fragment"
+     data-type="4">
+
+    <h4 class="fragment-title">Code exercise</h4>
+
+    <label>Problem description</label>
+    <textarea name="codeDeBai"
+              th:text="${lesson.codeDeBai}"
+              placeholder="Describe the problem...">
+    </textarea>
+
+    <label>Hint</label>
+    <textarea name="codeGoiY"
+              th:text="${lesson.codeGoiY}"
+              placeholder="Optional hints...">
+    </textarea>
+
+    <label>Sample output</label>
+    <textarea name="codeOutputMau"
+              th:text="${lesson.codeOutputMau}"
+              placeholder="Expected output...">
+    </textarea>
+
+    <label>Starter code</label>
+    <textarea name="starterCode"
+              th:text="${lesson.starterCode}"
+              placeholder="Initial code for students...">
+    </textarea>
+
+</div>
+
+</body>
+</html>

@@ -1,11 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const locked = document.body.dataset.locked === "true";
+    const typeSelect = document.getElementById("lessonType");
+    const fragments = document.querySelectorAll(".lesson-fragment");
 
-    if (locked) {
-        const codeFields = document.querySelectorAll(
-            "textarea[name='starterCode'], textarea[name='codeDeBai']"
-        );
+    function updateFragments() {
+        const selectedType = typeSelect.value;
 
-        codeFields.forEach(f => f.disabled = true);
+        fragments.forEach(f => {
+            if (f.dataset.type === selectedType) {
+                f.style.display = "block";
+            } else {
+                f.style.display = "none";
+            }
+        });
+    }
+
+    if (typeSelect) {
+        updateFragments();
+        typeSelect.addEventListener("change", updateFragments);
     }
 });

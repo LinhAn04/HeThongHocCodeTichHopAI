@@ -1,26 +1,89 @@
-<form th:action="@{/admin/lessons/save}" method="post" th:object="${lesson}">
-    <input type="hidden" name="courseId" th:value="${courseId}">
-    <input type="hidden" th:field="*{idBaiHoc}"/>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin – Lesson</title>
 
-    <label>Title</label>
-    <input th:field="*{tieuDeBaiHoc}">
+    <link rel="stylesheet" th:href="@{/css/student/fragments/header.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/fragments/sidebar.css}">
+    <link rel="stylesheet"
+          th:href="@{/css/admin/lessons_management/admin_lesson_form.css}">
+</head>
 
-    <label>Description</label>
-    <textarea th:field="*{moTaBaiHoc}"></textarea>
+<body>
 
-    <label>Content</label>
-    <textarea th:field="*{noiDungBaiHoc}"></textarea>
+<header th:replace="~{admin/fragments/admin_header :: adminHeader(${user})}"></header>
+<aside th:replace="~{admin/fragments/admin_sidebar :: adminSidebar}"></aside>
 
-    <label>Youtube ID</label>
-    <input th:field="*{youtubeVideoId}">
+<div class="form-card">
+    <form th:action="@{/admin/lessons/save}"
+          method="post"
+          th:object="${lesson}">
 
-    <label>Code</label>
-    <textarea th:field="*{starterCode}"
-              th:disabled="${locked}"></textarea>
+        <input type="hidden" name="courseId" th:value="${courseId}">
+        <input type="hidden"
+               th:if="${isEdit}"
+               th:field="*{idBaiHoc}"/>
 
-    <div th:if="${locked}" class="warning">
-        ⚠ Course has students – code cannot be modified
-    </div>
+        <input type="hidden"
+               name="oldThuTu"
+               th:if="${isEdit}"
+               th:value="${lesson.thuTu}">
 
-    <button type="submit">Save</button>
-</form>
+        <input type="hidden" name="oldActive" th:value="${lesson.isActive}">
+
+        <label>Lesson Title</label>
+        <input type="text" th:field="*{tieuDeBaiHoc}" required>
+
+        <label>Description</label>
+        <textarea th:field="*{moTaBaiHoc}" required></textarea>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Position</label>
+                <select name="afterThuTu">
+
+                    <!-- The first lesson -->
+                    <option value="-1"
+                            th:selected="${afterThuTu == -1}">
+                        The first lesson
+                    </option>
+
+                    <!-- After lesson X -->
+                    <option th:each="l : ${lessons}"
+                            th:if="${l.idBaiHoc != lesson.idBaiHoc}"
+                            th:value="${l.thuTu}"
+                            th:selected="${afterThuTu == l.thuTu}"
+                            th:text="'After lesson ' + ${l.thuTu} + ': ' + ${l.tieuDeBaiHoc}">
+                    </option>
+
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Lesson type</label>
+                <select th:field="*{loai}" id="lessonType">
+                    <option value="1">Theory</option>
+                    <option value="2">Quiz</option>
+                    <option value="3">Video</option>
+                    <option value="4">Code exercise</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- FRAGMENTS -->
+        <div th:replace="~{admin/lessons_management/fragments/lesson_theory :: content(${lesson})}"></div>
+        <div th:replace="~{admin/lessons_management/fragments/lesson_quiz :: content(${lesson})}"></div>
+        <div th:replace="~{admin/lessons_management/fragments/lesson_video :: content(${lesson})}"></div>
+        <div th:replace="~{admin/lessons_management/fragments/lesson_code :: content(${lesson})}"></div>
+
+        <div class="form-actions">
+            <button class="btn-save">Save</button>
+            <a th:href="@{/admin/lessons/{id}(id=${courseId})}"
+               class="btn-cancel">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script th:src="@{/js/admin_lesson_form.js}"></script>
+</body>
+</html>

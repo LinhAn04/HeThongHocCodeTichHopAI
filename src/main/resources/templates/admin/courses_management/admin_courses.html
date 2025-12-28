@@ -8,8 +8,8 @@
 </head>
 
 <body>
-<header th:replace="admin/fragments/admin_header :: adminHeader(${user})"></header>
-<aside th:replace="admin/fragments/admin_sidebar :: adminSidebar"></aside>
+<header th:replace="~{admin/fragments/admin_header :: adminHeader(${user})}"></header>
+<aside th:replace="~{admin/fragments/admin_sidebar :: adminSidebar}"></aside>
 
 <div class="settings-card">
     <div class="page-header">
@@ -30,7 +30,7 @@
         <tr th:each="c : ${courses}">
             <td th:text="${c.tenKhoaHoc}"></td>
             <td class="td-middle" th:text="${c.isActive ? 'Active' : 'Hidden'}"></td>
-            <td class="action-col">
+            <td class="action-col td-middle">
                 <a th:href="@{/admin/courses/edit/{id}(id=${c.idKhoaHoc})}"
                    class="btn btn-edit">Edit</a>
 

@@ -6,4 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface BaiKiemTraRepository extends MongoRepository<BaiKiemTra, String> {
     BaiKiemTra findByBaiHoc(BaiHoc baiHoc);
+    Boolean existsByBaiHoc(BaiHoc baiHoc);
 }
