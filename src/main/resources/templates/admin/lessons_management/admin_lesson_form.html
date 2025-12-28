@@ -17,25 +17,25 @@
 <div class="form-card">
     <form th:action="@{/admin/lessons/save}"
           method="post"
-          th:object="${lesson}">
+          th:object="${form}">
 
         <input type="hidden" name="courseId" th:value="${courseId}">
         <input type="hidden"
                th:if="${isEdit}"
-               th:field="*{idBaiHoc}"/>
+               th:field="*{lesson.idBaiHoc}"/>
 
         <input type="hidden"
                name="oldThuTu"
                th:if="${isEdit}"
-               th:value="${lesson.thuTu}">
+               th:value="${form.lesson.thuTu}">
 
-        <input type="hidden" name="oldActive" th:value="${lesson.isActive}">
+        <input type="hidden" name="oldActive" th:value="${form.lesson.isActive}">
 
         <label>Lesson Title</label>
-        <input type="text" th:field="*{tieuDeBaiHoc}" required>
+        <input type="text" th:field="*{lesson.tieuDeBaiHoc}" required>
 
         <label>Description</label>
-        <textarea th:field="*{moTaBaiHoc}" required></textarea>
+        <textarea th:field="*{lesson.moTaBaiHoc}" required></textarea>
 
         <div class="form-row">
             <div class="form-group">
@@ -50,7 +50,7 @@
 
                     <!-- After lesson X -->
                     <option th:each="l : ${lessons}"
-                            th:if="${l.idBaiHoc != lesson.idBaiHoc}"
+                            th:if="${l.idBaiHoc != form.lesson.idBaiHoc}"
                             th:value="${l.thuTu}"
                             th:selected="${afterThuTu == l.thuTu}"
                             th:text="'After lesson ' + ${l.thuTu} + ': ' + ${l.tieuDeBaiHoc}">
@@ -61,7 +61,7 @@
 
             <div class="form-group">
                 <label>Lesson type</label>
-                <select th:field="*{loai}" id="lessonType">
+                <select th:field="*{lesson.loai}" id="lessonType">
                     <option value="1">Theory</option>
                     <option value="2">Quiz</option>
                     <option value="3">Video</option>
@@ -71,10 +71,13 @@
         </div>
 
         <!-- FRAGMENTS -->
-        <div th:replace="~{admin/lessons_management/fragments/lesson_theory :: content(${lesson})}"></div>
-        <div th:replace="~{admin/lessons_management/fragments/lesson_quiz :: content(${lesson})}"></div>
-        <div th:replace="~{admin/lessons_management/fragments/lesson_video :: content(${lesson})}"></div>
-        <div th:replace="~{admin/lessons_management/fragments/lesson_code :: content(${lesson})}"></div>
+        <div th:replace="~{admin/lessons_management/fragments/lesson_theory :: content(*{lesson})}"></div>
+
+        <div th:replace="~{admin/lessons_management/fragments/lesson_quiz :: content(*{lesson}, *{quizForm})}"></div>
+
+        <div th:replace="~{admin/lessons_management/fragments/lesson_video :: content(*{lesson})}"></div>
+
+        <div th:replace="~{admin/lessons_management/fragments/lesson_code :: content(*{lesson})}"></div>
 
         <div class="form-actions">
             <button class="btn-save">Save</button>

@@ -2,22 +2,67 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 
-<div th:fragment="content(lesson)"
-     class="lesson-fragment"
+<div th:fragment="content(lesson, quizForm)"
+     class="lesson-fragment quiz-fragment"
      data-type="2">
 
-    <h4 class="fragment-title">Quiz settings</h4>
+    <h2 class="fragment-title">Quiz Questions</h2>
 
-    <p class="hint-text">
-        This lesson will create a quiz (stored in <b>bai_kiem_tra</b>).
-    </p>
+    <div id="quiz-container">
 
-    <!-- Placeholder: quiz questions managed elsewhere -->
-    <div class="quiz-placeholder">
-        Quiz questions will be configured after saving the lesson.
+        <div class="quiz-question"
+             th:each="q, qStat : ${quizForm.quizCauHoi}">
+
+            <div class="quiz-header">
+                <span>Question <span th:text="${qStat.index + 1}"></span></span>
+                <button type="button"
+                        class="btn-close"
+                        onclick="removeQuestion(this)">✕</button>
+            </div>
+
+            <label>Question content</label>
+            <textarea
+                    th:field="*{quizForm.quizCauHoi[__${qStat.index}__].noiDung}"
+                    required></textarea>
+
+            <div class="quiz-option"
+                 th:each="i : ${#numbers.sequence(0,3)}"
+                 th:classappend="${q.dapAnDungIndex == i} ? ' selected' : ''"
+                 th:onclick="|selectOption(${qStat.index}, ${i})|">
+
+                <div class="option-row">
+                    <span class="option-label"
+                          th:text="${#strings.substring('ABCD', i, i+1)}"></span>
+
+                    <input type="text"
+                           th:name="'quizForm.quizCauHoi[' + ${qStat.index} + '].luaChon[' + ${i} + ']'"
+                           th:value="${q.luaChon[i]}"
+                           required>
+                </div>
+
+                <textarea class="explain-input"
+                          th:name="'quizForm.quizCauHoi[' + ${qStat.index} + '].giaiThichSai[' + ${i} + ']'"
+                          th:text="${q.giaiThichSai[i]}"></textarea>
+            </div>
+
+            <label>Correct explanation</label>
+            <textarea
+                    th:name="'quizForm.quizCauHoi[' + ${qStat.index} + '].giaiThichDung'"
+                    th:text="${q.giaiThichDung}"></textarea>
+
+
+            <input type="hidden"
+                   th:name="'quizForm.quizCauHoi[' + ${qStat.index} + '].dapAnDungIndex'"
+                   th:value="${q.dapAnDungIndex}">
+        </div>
     </div>
 
-</div>
+    <button type="button"
+            class="btn-add"
+            onclick="addQuestion()">
+        + Add question
+    </button>
 
+</div>
 </body>
 </html>

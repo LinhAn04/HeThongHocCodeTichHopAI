@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -81,105 +82,124 @@ public class AdminLessonController {
                          Model model,
                          HttpSession session) {
 
-        DoiTuongSuDung user =
-                (DoiTuongSuDung) session.getAttribute("user");
+        DoiTuongSuDung user = (DoiTuongSuDung) session.getAttribute("user");
         if (user == null) return "redirect:/login";
 
         KhoaHoc course = courseRepo.findById(courseId).orElseThrow();
 
-        if (!Boolean.TRUE.equals(course.getIsActive())) {
-            return "redirect:/admin/lessons";
-        }
-
         BaiHoc lesson = new BaiHoc();
         lesson.setLoai(1);
 
+        QuizForm quizForm = new QuizForm();
+
+        LessonForm form = new LessonForm();
+        form.setLesson(lesson);
+        form.setQuizForm(quizForm);
+
         List<BaiHoc> lessons = lessonRepo.findByKhoaHoc_IdKhoaHocOrderByThuTuAsc(courseId);
 
-        int afterThuTu;
-        if (lessons.isEmpty()) {
-            afterThuTu = -1;
-        } else {
-            afterThuTu = lessons.get(lessons.size() - 1).getThuTu();
-        }
+        int afterThuTu = lessons.isEmpty() ? -1 : lessons.get(lessons.size() - 1).getThuTu();
 
+        model.addAttribute("form", form);
         model.addAttribute("lessons", lessons);
         model.addAttribute("afterThuTu", afterThuTu);
-        model.addAttribute("isEdit", false);
-        model.addAttribute("user", user);
-        model.addAttribute("lesson", lesson);
         model.addAttribute("courseId", courseId);
         model.addAttribute("isEdit", false);
+        model.addAttribute("user", user);
 
         return "admin/lessons_management/admin_lesson_form";
     }
 
     @GetMapping("/edit/{id}")
-    public String editForm(
-            @PathVariable String id,
-            Model model, HttpSession session) {
+    public String editForm(@PathVariable String id,
+                           Model model,
+                           HttpSession session) {
 
-        DoiTuongSuDung user =
-                (DoiTuongSuDung) session.getAttribute("user");
+        DoiTuongSuDung user = (DoiTuongSuDung) session.getAttribute("user");
         if (user == null) return "redirect:/login";
 
         BaiHoc lesson = lessonRepo.findById(id).orElseThrow();
         String courseId = lesson.getKhoaHoc().getIdKhoaHoc();
 
-        List<BaiHoc> lessons =
-                lessonRepo.findByKhoaHoc_IdKhoaHocOrderByThuTuAsc(courseId);
+        QuizForm quizForm = new QuizForm();
+        List<CauHoiTracNghiem> questions = new ArrayList<>();
 
-        int afterThuTu;
-        if (lesson.getThuTu() == 1) {
-            afterThuTu = -1;
-        } else {
-            afterThuTu = lesson.getThuTu() - 1;
+        quizRepo.findByBaiHoc(lesson).ifPresent(quiz -> {
+
+            if (quiz.getCauHoi() != null) {
+                questions.addAll(quiz.getCauHoi());
+            }
+        });
+
+        for (CauHoiTracNghiem q : questions) {
+            if (q.getLuaChon() == null)
+                q.setLuaChon(new ArrayList<>());
+
+            while (q.getLuaChon().size() < 4)
+                q.getLuaChon().add("");
+
+            if (q.getGiaiThichSai() == null)
+                q.setGiaiThichSai(new ArrayList<>());
+
+            while (q.getGiaiThichSai().size() < 4)
+                q.getGiaiThichSai().add("");
         }
 
-        model.addAttribute("user", user);
-        model.addAttribute("lesson", lesson);
-        model.addAttribute("courseId", courseId);
+        quizForm.setQuizCauHoi(questions);
+
+        if (quizForm.getQuizCauHoi() == null) {
+            quizForm.setQuizCauHoi(new ArrayList<>());
+        }
+
+        LessonForm form = new LessonForm();
+        form.setLesson(lesson);
+        form.setQuizForm(quizForm);
+
+        List<BaiHoc> lessons = lessonRepo.findByKhoaHoc_IdKhoaHocOrderByThuTuAsc(courseId);
+
+        int afterThuTu = lesson.getThuTu() == 1 ? -1 : lesson.getThuTu() - 1;
+
+        model.addAttribute("form", form);
         model.addAttribute("lessons", lessons);
         model.addAttribute("afterThuTu", afterThuTu);
+        model.addAttribute("courseId", courseId);
         model.addAttribute("isEdit", true);
+        model.addAttribute("user", user);
 
         return "admin/lessons_management/admin_lesson_form";
     }
 
     @PostMapping("/save")
-    public String save(
-            @ModelAttribute BaiHoc lesson,
-            @RequestParam String courseId,
-            @RequestParam Integer afterThuTu,
-            @RequestParam(required = false) Integer oldThuTu,
-            @RequestParam(required = false) Boolean oldActive,
-            HttpSession session) {
+    public String save(@ModelAttribute("form") LessonForm form,
+                       @RequestParam String courseId,
+                       @RequestParam Integer afterThuTu,
+                       @RequestParam(required = false) Integer oldThuTu,
+                       @RequestParam(required = false) Boolean oldActive,
+                       HttpSession session) {
 
-        DoiTuongSuDung user =
-                (DoiTuongSuDung) session.getAttribute("user");
+        DoiTuongSuDung user = (DoiTuongSuDung) session.getAttribute("user");
         if (user == null) return "redirect:/login";
+
+        BaiHoc lesson = form.getLesson();
+        QuizForm quizForm = form.getQuizForm();
+
+        if (quizForm == null) {
+            quizForm = new QuizForm();
+            quizForm.setQuizCauHoi(new ArrayList<>());
+        }
 
         KhoaHoc course = courseRepo.findById(courseId).orElseThrow();
         lesson.setKhoaHoc(course);
 
-        int newThuTu;
-        if (afterThuTu < 0) {
-            newThuTu = 1;
-        } else {
-            newThuTu = afterThuTu + 1;
-        }
-
+        int newThuTu = afterThuTu < 0 ? 1 : afterThuTu + 1;
         boolean isEdit = (oldThuTu != null);
 
         if (!isEdit) {
-            // CREATE
             lessonRepo.increaseThuTuFrom(courseId, newThuTu);
             lesson.setThuTu(newThuTu);
             lesson.setIsActive(true);
         } else {
-            // EDIT
             lesson.setIsActive(oldActive);
-
             if (!Objects.equals(oldThuTu, newThuTu)) {
                 lessonRepo.decreaseThuTuFrom(courseId, oldThuTu + 1);
                 lessonRepo.increaseThuTuFrom(courseId, newThuTu);
@@ -191,14 +211,33 @@ public class AdminLessonController {
 
         BaiHoc saved = lessonRepo.save(lesson);
 
-        // QUIZ
-        if (lesson.getLoai() == 2) {
-            if (!quizRepo.existsByBaiHoc(saved)) {
-                BaiKiemTra quiz = new BaiKiemTra();
-                quiz.setBaiHoc(saved);
-                quizRepo.save(quiz);
-            }
+        if (lesson.getLoai() == 2 &&
+                (quizForm.getQuizCauHoi() == null || quizForm.getQuizCauHoi().isEmpty())) {
+
+            quizRepo.findByBaiHoc(saved).ifPresent(quizRepo::delete);
         }
+
+        if (lesson.getLoai() == 2 &&
+                quizForm.getQuizCauHoi() != null &&
+                !quizForm.getQuizCauHoi().isEmpty()) {
+
+            BaiKiemTra quiz = quizRepo.findByBaiHoc(saved)
+                    .orElseGet(BaiKiemTra::new);
+
+            quiz.setBaiHoc(saved);
+
+            quizForm.getQuizCauHoi().forEach(q -> {
+                Integer correct = q.getDapAnDungIndex();
+                if (correct != null && q.getGiaiThichSai() != null &&
+                        q.getGiaiThichSai().size() > correct) {
+                    q.getGiaiThichSai().set(correct, null);
+                }
+            });
+
+            quiz.setCauHoi(quizForm.getQuizCauHoi());
+            quizRepo.save(quiz);
+        }
+
         return "redirect:/admin/lessons/" + courseId;
     }
 

@@ -6,8 +6,9 @@
 
     <label>Lesson content</label>
     <textarea name="noiDungBaiHoc"
-              th:text="${lesson.noiDungBaiHoc}"
+              th:field="*{lesson.noiDungBaiHoc}"
               placeholder="Enter theory content here..."
               required>
     </textarea>
 </div>
+

@@ -108,7 +108,10 @@ public class LessonDetailController {
 
         // quiz data (loai=1,2,3 - có thể có quiz)
         if (lesson.getLoai() != 4) {
-            BaiKiemTra quiz = baiKiemTraRepository.findByBaiHoc(lesson);
+            BaiKiemTra quiz = baiKiemTraRepository.findByBaiHoc(lesson)
+                    .orElseThrow(() ->
+                            new IllegalStateException("Quiz not found for lesson " + lesson.getIdBaiHoc())
+                    );
             mv.addObject("quiz", quiz);
         }
         return mv;
@@ -158,7 +161,10 @@ public class LessonDetailController {
         }
 
         KhoaHoc course = khoaHocService.findById(lesson.getKhoaHoc().getIdKhoaHoc());
-        BaiKiemTra quiz = baiKiemTraRepository.findByBaiHoc(lesson);
+        BaiKiemTra quiz = baiKiemTraRepository.findByBaiHoc(lesson)
+                .orElseThrow(() ->
+                        new IllegalStateException("Quiz not found for lesson " + lesson.getIdBaiHoc())
+                );
         if (quiz == null) {
             return ResponseEntity.badRequest().body(Map.of("ok", false, "message", "Quiz not found"));
         }

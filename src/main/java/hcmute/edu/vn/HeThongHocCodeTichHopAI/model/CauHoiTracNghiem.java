@@ -26,7 +26,7 @@ public class CauHoiTracNghiem {
     public void setDapAnDungIndex(Integer dapAnDungIndex) {this.dapAnDungIndex = dapAnDungIndex;}
 
     public String getGiaiThichDung() { return giaiThichDung;}
-    public void setGiaiThichDung(String GiaiThich) {this.giaiThichDung = giaiThichDung;}
+    public void setGiaiThichDung(String giaiThichDung) {this.giaiThichDung = giaiThichDung;}
 
     public List<String> getGiaiThichSai() { return giaiThichSai;}
     public void setGiaiThichSai(List<String> giaiThichSai) {this.giaiThichSai = giaiThichSai;}

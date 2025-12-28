@@ -49,6 +49,7 @@ textarea {
 .form-actions {
     display: flex;
     gap: 14px;
+    margin-top: 10px;
 }
 
 .btn-save {
@@ -124,8 +125,131 @@ textarea::-webkit-scrollbar-track {
 }
 
 /* For theory */
-.lesson-fragment h2 {
+.lesson-fragment h2, .fragment-title h2 {
     font-size: 1.4rem;
     font-weight: 700;
     margin-bottom: 12px;
+}
+
+/* For quiz */
+.quiz-fragment {
+    margin-top: 24px;
+    padding: 20px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 12px;
+}
+
+.quiz-question {
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 16px;
+    margin-bottom: 18px;
+    border-radius: 10px;
+}
+
+.quiz-question h5 {
+    margin-bottom: 10px;
+}
+
+.quiz-question textarea,
+.quiz-question input[type="text"] {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.answers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.answer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-add,
+.btn-remove {
+    background: #4ea8ff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #000;
+}
+
+.btn-remove {
+    background: #ff6b6b;
+    margin-top: 8px;
+}
+
+.quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.btn-close {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.quiz-option {
+    padding: 10px;
+    border-radius: 8px;
+    background: rgba(0,0,0,0.25);
+}
+
+.option-row {
+    display: grid;
+    grid-template-columns: 32px 1fr auto auto;
+    align-items: center;
+    gap: 12px;
+}
+
+.option-label {
+    font-weight: 700;
+}
+
+.tf-option {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.95rem;
+}
+
+.explain-input {
+    margin-top: 8px;
+    min-height: 60px;
+}
+
+.disabled-radio {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+.quiz-option {
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.quiz-option.selected {
+    border: 2px solid #2ecc71;
+    background: rgba(46,204,113,0.15);
+}
+
+.quiz-option.selected .option-label {
+    color: #2ecc71;
 }
