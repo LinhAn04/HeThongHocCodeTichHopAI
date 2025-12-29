@@ -1,7 +1,8 @@
 package hcmute.edu.vn.HeThongHocCodeTichHopAI.controller;
 
-import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.*;
-import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.iml.*;
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.DoiTuongSuDung;
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.KhoaHoc;
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.iml.AdminCourseService;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -12,12 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-// Quản lý CRUD khóa học
 @Controller
 @RequestMapping("/admin/courses")
 public class AdminCourseController {
@@ -33,16 +32,14 @@ public class AdminCourseController {
         DoiTuongSuDung user = (DoiTuongSuDung) session.getAttribute("user");
         if (user == null) return "redirect:/login";
 
-        model.addAttribute("user", user);
         List<KhoaHoc> courses = courseService.findAll();
 
+        model.addAttribute("user", user);
         model.addAttribute("courses", courses);
-        model.addAttribute(
-                "canDeleteMap",
-                courseService.buildCanDeleteMap(courses)
-        );
-
+        model.addAttribute("canDeleteMap",
+                courseService.buildCanDeleteMap(courses));
         model.addAttribute("activeMenu", "courses");
+
         return "admin/courses_management/admin_courses";
     }
 
@@ -61,7 +58,10 @@ public class AdminCourseController {
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable String id, Model model, HttpSession session) {
+    public String edit(@PathVariable String id,
+                       Model model,
+                       HttpSession session) {
+
         DoiTuongSuDung user = (DoiTuongSuDung) session.getAttribute("user");
         if (user == null) return "redirect:/login";
 
@@ -69,21 +69,27 @@ public class AdminCourseController {
 
         model.addAttribute("user", user);
         model.addAttribute("course", course);
-
         model.addAttribute("lessons",
                 courseService.findLessonsByCourse(id));
-
         model.addAttribute("locked",
                 courseService.hasEnrollment(id));
-
         model.addAttribute("isEdit", true);
 
         return "admin/courses_management/admin_course_form";
     }
 
-
     @PostMapping("/save")
-    public String save(@ModelAttribute KhoaHoc course) {
+    public String save(@ModelAttribute KhoaHoc course,
+                       HttpSession session) {
+
+        DoiTuongSuDung user = (DoiTuongSuDung) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
+
+        if (course.getIdKhoaHoc() != null &&
+                course.getIdKhoaHoc().isBlank()) {
+            course.setIdKhoaHoc(null);
+        }
+
         courseService.save(course);
         return "redirect:/admin/courses";
     }
