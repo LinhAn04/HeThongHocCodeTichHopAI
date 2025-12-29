@@ -45,6 +45,16 @@
         <label>Description</label>
         <textarea th:field="*{moTaKhoaHoc}" required></textarea>
 
+        <label>Price (VNĐ)</label>
+        <input type="text"
+               id="priceInput"
+               th:value="${course.giaBan != null ? #numbers.formatInteger(course.giaBan, 3, 'COMMA') : ''}"
+               inputmode="numeric"
+               required>
+        <input type="hidden"
+               th:field="*{giaBan}"
+               id="priceValue">
+
         <div class="form-actions">
             <button class="btn-save">Save</button>
             <a th:href="@{/admin/courses}" class="btn-cancel">Cancel</a>

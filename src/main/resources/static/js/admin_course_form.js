@@ -46,3 +46,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
+const priceInput = document.getElementById("priceInput");
+const priceValue = document.getElementById("priceValue");
+
+priceInput.addEventListener("input", () => {
+    let raw = priceInput.value.replace(/[^\d]/g, "");
+    if (raw === "") {
+        priceValue.value = "";
+        return;
+    }
+    priceValue.value = raw;
+    priceInput.value = Number(raw).toLocaleString("en-US");
+});
