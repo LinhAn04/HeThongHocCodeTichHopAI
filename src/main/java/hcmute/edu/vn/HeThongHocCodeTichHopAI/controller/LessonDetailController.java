@@ -120,13 +120,32 @@ public class LessonDetailController {
         mv.addObject("tienDo", tienDo);
 
         // quiz data (loai=1,2,3 - có thể có quiz)
-        if (lesson.getLoai() != 4) {
-            BaiKiemTra quiz = baiKiemTraRepository.findByBaiHoc(lesson)
-                    .orElseThrow(() ->
-                            new IllegalStateException("Quiz not found for lesson " + lesson.getIdBaiHoc())
-                    );
+        // quiz data (quiz là OPTIONAL)
+        if (lesson.getLoai() == 2) { // CHỈ lesson quiz mới cần quiz
+            BaiKiemTra quiz = baiKiemTraRepository
+                    .findByBaiHoc(lesson)
+                    .orElse(null);
+
             mv.addObject("quiz", quiz);
+        } else {
+            mv.addObject("quiz", null);
         }
+
+        List<BaiHoc> orderedLessons =
+                baiHocRepository.findByKhoaHoc_IdKhoaHocOrderByThuTuAsc(
+                        course.getIdKhoaHoc()
+                );
+
+        int lessonIndex = 0;
+        for (int i = 0; i < orderedLessons.size(); i++) {
+            if (orderedLessons.get(i).getIdBaiHoc().equals(lesson.getIdBaiHoc())) {
+                lessonIndex = i + 1; // index hiển thị (bắt đầu từ 1)
+                break;
+            }
+        }
+
+        mv.addObject("lessonIndex", lessonIndex);
+
         return mv;
     }
 
@@ -172,12 +191,12 @@ public class LessonDetailController {
         }
 
         KhoaHoc course = khoaHocService.findById(lesson.getKhoaHoc().getIdKhoaHoc());
-        BaiKiemTra quiz = baiKiemTraRepository.findByBaiHoc(lesson)
-                .orElseThrow(() ->
-                        new IllegalStateException("Quiz not found for lesson " + lesson.getIdBaiHoc())
-                );
+        BaiKiemTra quiz = baiKiemTraRepository.findByBaiHoc(lesson).orElse(null);
+
         if (quiz == null) {
-            return ResponseEntity.badRequest().body(Map.of("ok", false, "message", "Quiz not found"));
+            return ResponseEntity.badRequest().body(
+                    Map.of("ok", false, "message", "Quiz not found for this lesson")
+            );
         }
 
         // auth & enrolled?

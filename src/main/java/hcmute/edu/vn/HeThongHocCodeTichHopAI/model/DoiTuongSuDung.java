@@ -38,11 +38,11 @@ public class DoiTuongSuDung {
     @DBRef // tham chiếu sang collection "phan_hoi_danh_gia"
     private Set<PhanHoiDanhGia> dsPhanHoi = new HashSet<>();
 
-    @DBRef // tham chiếu sang collection "hoa_don"
-    private Set<HoaDon> dsHoaDon = new HashSet<>();
-
-    @DBRef // tham chiếu sang collection "lo_trinh_hoc"
-    private Set<LoTrinhHoc> dsLoTrinhHoc = new HashSet<>();
+//    @DBRef // tham chiếu sang collection "hoa_don"
+//    private Set<HoaDon> dsHoaDon = new HashSet<>();
+//
+//    @DBRef // tham chiếu sang collection "lo_trinh_hoc"
+//    private Set<LoTrinhHoc> dsLoTrinhHoc = new HashSet<>();
 
     @DBRef // tham chiếu sang collection "bai_blog"
     private Set<BaiBlog> dsBaiBlog = new HashSet<>();
@@ -88,11 +88,11 @@ public class DoiTuongSuDung {
     public Set<PhanHoiDanhGia> getDsPhanHoi() { return dsPhanHoi; }
     public void setDsPhanHoi(Set<PhanHoiDanhGia> dsPhanHoi) { this.dsPhanHoi = dsPhanHoi; }
 
-    public Set<HoaDon> getDsHoaDon() { return dsHoaDon; }
-    public void setDsHoaDon(Set<HoaDon> dsHoaDon) { this.dsHoaDon = dsHoaDon; }
+//    public Set<HoaDon> getDsHoaDon() { return dsHoaDon; }
+//    public void setDsHoaDon(Set<HoaDon> dsHoaDon) { this.dsHoaDon = dsHoaDon; }
 
-    public Set<LoTrinhHoc> getDsLoTrinhHoc() { return dsLoTrinhHoc; }
-    public void setDsLoTrinhHoc(Set<LoTrinhHoc> dsLoTrinhHoc) { this.dsLoTrinhHoc = dsLoTrinhHoc; }
+//    public Set<LoTrinhHoc> getDsLoTrinhHoc() { return dsLoTrinhHoc; }
+//    public void setDsLoTrinhHoc(Set<LoTrinhHoc> dsLoTrinhHoc) { this.dsLoTrinhHoc = dsLoTrinhHoc; }
 
     public Set<BaiBlog> getDsBaiBlog() { return dsBaiBlog; }
     public void setDsBaiBlog(Set<BaiBlog> dsBaiBlog) { this.dsBaiBlog = dsBaiBlog; }

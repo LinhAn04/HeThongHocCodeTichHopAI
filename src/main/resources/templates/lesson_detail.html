@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title th:text="${lesson.tieuDeBaiHoc} + ' - ' + ${course.tenKhoaHoc}">Lesson</title>
@@ -27,7 +27,7 @@
             <p class="muted" th:text="${lesson.moTaBaiHoc}" th:if="${lesson.loai != 4}"></p>
 
             <div class="pill-row">
-                <span class="pill" th:text="'Lesson ' + ${lesson.thuTu}"></span>
+                <span class="pill" th:text="'Lesson ' + ${lessonIndex}"></span>
             </div>
         </div>
 
@@ -46,7 +46,7 @@
 
     <!-- TYPE 1: THEORY -->
     <section class="lesson-card" th:if="${lesson.loai == 1}">
-        <div class="content" th:text="${lesson.noiDungBaiHoc}">
+        <div id="lessonContent" th:text="${lesson.noiDungBaiHoc}">
         </div>
     </section>
 
@@ -91,6 +91,29 @@
 
 <script th:src="@{/js/lesson_detail.js}"></script>
 <script th:src="@{/js/code_challenge.js}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const el = document.getElementById("lessonContent");
+        if (!el) return;
+
+        let text = el.innerText;
+
+        // escape HTML
+        text = text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+
+        // replace \n (literal)
+        text = text.replace(/\\n\\n/g, "<br><br>");
+        text = text.replace(/\\n/g, "<br>");
+
+        // bold
+        text = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
+        el.innerHTML = text;
+    });
+</script>
 
 </body>
 </html>

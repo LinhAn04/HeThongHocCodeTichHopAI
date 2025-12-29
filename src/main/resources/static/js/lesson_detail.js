@@ -5,9 +5,11 @@ document.addEventListener("DOMContentLoaded", () => {
     function showPopup() {
         document.getElementById("popup")?.classList.remove("hidden");
     }
+
     function hidePopup() {
         document.getElementById("popup")?.classList.add("hidden");
     }
+
     document.getElementById("closePopup")?.addEventListener("click", hidePopup);
 
     /* Quiz logic */
@@ -47,8 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
             /* submit */
             const res = await fetch(`/lesson/${lessonId}/quiz/submit`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ answers })
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({answers})
             });
 
             const data = await res.json();
@@ -169,8 +171,8 @@ document.addEventListener("DOMContentLoaded", () => {
         btnSubmitCode.addEventListener("click", async () => {
             const res = await fetch(`/lesson/${lessonId}/code/submit`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userOutput: userOutput.value })
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({userOutput: userOutput.value})
             });
 
             const data = await res.json();
@@ -195,3 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }[m]));
     }
 });
+
+
+
+

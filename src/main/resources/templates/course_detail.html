@@ -25,7 +25,10 @@
             <div class="meta">
                 <div><b>Author:</b> <span th:text="${course.tacGia != null ? course.tacGia : 'Codemy team'}"></span></div>
                 <div><b>Created:</b> <span th:text="${course.ngayTao != null ? #temporals.format(course.ngayTao, 'dd/MM/yyyy') : '—'}"></span></div>
-                <div><b>Price:</b> <span th:text="${course.giaBan}"></span></div>
+                <div>
+                    <b>Price:</b>
+                    <span th:text="${#numbers.formatDecimal(course.giaBan, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'"></span>
+                </div>
             </div>
         </div>
         <a class="btn-primary enroll-btn"
