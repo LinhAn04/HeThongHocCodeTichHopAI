@@ -1,14 +1,14 @@
 package hcmute.edu.vn.HeThongHocCodeTichHopAI.controller;
 
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.*;
-import hcmute.edu.vn.HeThongHocCodeTichHopAI.repository.*;
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.repository.KhoaHocRepository;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.IDoiTuongSuDungService;
-import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.email.*;
-import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.iml.*;
-
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.email.EmailService;
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.iml.DangKyKhoaHocService;
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.iml.MomoPaymentService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,19 +20,22 @@ public class EnrollController {
     private final DangKyKhoaHocService dangKyService;
     private final EmailService emailService;
     private final IDoiTuongSuDungService doiTuongSuDungService;
+    private final MomoPaymentService momoPaymentService;
 
-    public EnrollController(KhoaHocRepository khoaHocRepository,
-                            DangKyKhoaHocService dangKyService,
-                            EmailService emailService,
-                            IDoiTuongSuDungService doiTuongSuDungService) {
-
+    public EnrollController(
+            KhoaHocRepository khoaHocRepository,
+            DangKyKhoaHocService dangKyService,
+            EmailService emailService,
+            IDoiTuongSuDungService doiTuongSuDungService,
+            MomoPaymentService momoPaymentService
+    ) {
         this.khoaHocRepository = khoaHocRepository;
         this.dangKyService = dangKyService;
         this.emailService = emailService;
         this.doiTuongSuDungService = doiTuongSuDungService;
+        this.momoPaymentService = momoPaymentService;
     }
 
-    // Trang đăng ký
     @GetMapping("/{courseId}")
     public String enrollPage(
             @PathVariable String courseId,
@@ -40,113 +43,88 @@ public class EnrollController {
             HttpServletRequest request
     ) {
         String email = (String) request.getSession().getAttribute("email");
-        if (email == null) {
-            return "redirect:/login";
-        }
+        if (email == null) return "redirect:/login";
 
         DoiTuongSuDung user = doiTuongSuDungService.findByEmail(email);
+        KhoaHoc course = khoaHocRepository.findById(courseId).orElseThrow();
 
-        KhoaHoc khoaHoc = khoaHocRepository.findById(courseId).orElseThrow();
+        // Đã đăng ký rồi → không cho thanh toán lại
+        if (dangKyService.daDangKy(user.getIdDoiTuong(), course.getIdKhoaHoc())) {
+            return "redirect:/course/" + courseId;
+        }
 
-        model.addAttribute("course", khoaHoc);
         model.addAttribute("user", user);
-
+        model.addAttribute("course", course);
         return "payment/enroll";
     }
 
-
-    // Thanh toán MoMo (mock)
     @PostMapping("/payment")
-    public String payment(
+    public String createPayment(
             @RequestParam String courseId,
-            @RequestParam String paymentMethod,
-            Model model,
-            HttpServletRequest request
-    ) {
+            HttpServletRequest request, Model model
+    ) throws Exception {
+
         String email = (String) request.getSession().getAttribute("email");
-        if (email == null) {
-            return "redirect:/login";
-        }
+        if (email == null) return "redirect:/login";
 
         DoiTuongSuDung user = doiTuongSuDungService.findByEmail(email);
+        KhoaHoc course = khoaHocRepository.findById(courseId).orElseThrow();
 
-        model.addAttribute("user", user);
-
-        if ("banking".equals(paymentMethod)) {
-            return "redirect:/enroll/banking?courseId=" + courseId;
-        }
-        return "redirect:/enroll/momo?courseId=" + courseId;
-    }
-
-    // Trang QR MoMo
-    @GetMapping("/momo")
-    public String momoPage(
-            @RequestParam String courseId,
-            Model model,
-            HttpServletRequest request
-
-    ) {
-        String email = (String) request.getSession().getAttribute("email");
-        if (email == null) {
-            return "redirect:/login";
+        if (dangKyService.daDangKy(user.getIdDoiTuong(), course.getIdKhoaHoc())) {
+            return "redirect:/course/" + courseId;
         }
 
-        DoiTuongSuDung user = doiTuongSuDungService.findByEmail(email);
-
-        model.addAttribute("user", user);
-        model.addAttribute("courseId", courseId);
-        return "payment/method/momo";
-    }
-
-    @PostMapping("/banking")
-    public String banking(
-            @RequestParam String courseId,
-            Model model,
-            HttpServletRequest request
-    ) {
-        String email = (String) request.getSession().getAttribute("email");
-        if (email == null) {
-            return "redirect:/login";
-        }
-
-        DoiTuongSuDung user = doiTuongSuDungService.findByEmail(email);
-
-        model.addAttribute("user", user);
-        model.addAttribute("courseId", courseId);
-        return "payment/method/banking";
-    }
-
-    // Callback thanh toán thành công
-    @PostMapping("/success")
-    public String paymentSuccess(
-            @RequestParam String courseId,
-            HttpServletRequest request
-    ) {
-        String email = (String) request.getSession().getAttribute("email");
-        if (email == null) {
-            return "redirect:/login";
-        }
-
-        DoiTuongSuDung user = doiTuongSuDungService.findByEmail(email);
-
-        KhoaHoc khoaHoc = khoaHocRepository
-                .findById(courseId)
-                .orElseThrow();
-
-        dangKyService.dangKyKhoaHoc(user, khoaHoc);
-
-        if (!Boolean.TRUE.equals(khoaHoc.getHasEnrollment())) {
-            khoaHoc.setHasEnrollment(true);
-            khoaHocRepository.save(khoaHoc);
-        }
-
-        emailService.sendEnrollSuccessEmail(
-                user.getEmail(),
-                user.getHoTen(),
-                khoaHoc.getTenKhoaHoc()
+        String payUrl = momoPaymentService.createPayment(
+                courseId,
+                course.getGiaBan()
         );
 
-        return "redirect:/course/" + courseId;
+        model.addAttribute("user", user);
+        return "redirect:" + payUrl;
     }
 
+    @GetMapping("/momo/return")
+    public String momoReturn(
+            @RequestParam(required = false) String orderId,
+            @RequestParam(required = false) Integer resultCode,
+            HttpServletRequest request,
+            Model model,
+            HttpSession session
+    ) {
+
+        // Thanh toán fail / hết hạn
+        if (resultCode == null || resultCode != 0 || orderId == null) {
+            model.addAttribute("error",
+                    "Giao dịch không thành công hoặc đã hết hạn. Vui lòng thanh toán lại.");
+            return "redirect:/courses";
+        }
+
+        // orderId = COURSE_{courseId}_{timestamp}
+        String[] parts = orderId.split("_");
+        if (parts.length < 3) {
+            return "redirect:/courses";
+        }
+
+        String courseId = parts[1];
+
+        String email = (String) request.getSession().getAttribute("email");
+        if (email == null) return "redirect:/login";
+
+        DoiTuongSuDung user = doiTuongSuDungService.findByEmail(email);
+        KhoaHoc course = khoaHocRepository.findById(courseId).orElseThrow();
+
+        // 🔒 Chống callback nhiều lần
+        if (!dangKyService.daDangKy(user.getIdDoiTuong(), course.getIdKhoaHoc())) {
+            dangKyService.dangKyKhoaHoc(user, course);
+
+            emailService.sendEnrollSuccessEmail(
+                    user.getEmail(),
+                    user.getHoTen(),
+                    course.getTenKhoaHoc()
+            );
+        }
+
+        model.addAttribute("user", user);
+        return "redirect:/course/" + courseId;
+    }
 }

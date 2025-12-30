@@ -23,7 +23,7 @@ public class KhoaHoc {
 
     private String moTaKhoaHoc;
 
-    private double giaBan;
+    private long giaBan;
 
     private Boolean isActive = true;
 
@@ -82,10 +82,10 @@ public class KhoaHoc {
         this.moTaKhoaHoc = moTaKhoaHoc;
     }
 
-    public double getGiaBan() {
+    public long getGiaBan() {
         return giaBan;
     }
-    public void setGiaBan(double giaBan) {
+    public void setGiaBan(long giaBan) {
         this.giaBan = giaBan;
     }
 
