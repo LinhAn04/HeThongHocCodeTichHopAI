@@ -56,7 +56,7 @@ public class BaiHoc {
     public void setLoai(Integer loai) { this.loai = loai; }
 
     public String getYoutubeVideoId() { return youtubeVideoId; }
-    public void setYoutubeVideoId(String videoUrl) { this.youtubeVideoId = youtubeVideoId; }
+    public void setYoutubeVideoId(String youtubeVideoId) { this.youtubeVideoId = youtubeVideoId; }
 
     public String getCodeDeBai() { return codeDeBai; }
     public void setCodeDeBai(String codeDeBai) { this.codeDeBai = codeDeBai; }

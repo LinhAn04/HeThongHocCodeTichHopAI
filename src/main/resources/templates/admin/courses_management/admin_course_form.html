@@ -53,7 +53,11 @@
                required>
         <input type="hidden"
                th:field="*{giaBan}"
-               id="priceValue">
+               id="priceValue"
+               required>
+        <div id="priceError" style="color: red; font-size: 0.9rem; display: none;">
+            Price must be at least 1,000 VNĐ
+        </div>
 
         <div class="form-actions">
             <button class="btn-save">Save</button>

@@ -5,6 +5,7 @@ import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.DoiTuongSuDung;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.KhoaHoc;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.model.TrangThaiKhoaHoc;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.repository.DangKyKhoaHocRepository;
+import hcmute.edu.vn.HeThongHocCodeTichHopAI.repository.KhoaHocRepository;
 import hcmute.edu.vn.HeThongHocCodeTichHopAI.service.IDangKyKhoaHocService;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +15,12 @@ import java.util.List;
 @Service
 public class DangKyKhoaHocService implements IDangKyKhoaHocService {
     private final DangKyKhoaHocRepository dangKyKhoaHocRepository;
+    private final KhoaHocRepository khoaHocRepository;
 
-    public DangKyKhoaHocService(DangKyKhoaHocRepository dangKyKhoaHocRepository) {
+    public DangKyKhoaHocService(DangKyKhoaHocRepository dangKyKhoaHocRepository,
+                                KhoaHocRepository khoaHocRepository) {
         this.dangKyKhoaHocRepository = dangKyKhoaHocRepository;
+        this.khoaHocRepository = khoaHocRepository;
     }
 
     @Override
@@ -79,6 +83,11 @@ public class DangKyKhoaHocService implements IDangKyKhoaHocService {
         dk.setTrangThaiKhoaHoc(TrangThaiKhoaHoc.DANGHOC);
         dk.setThoiGianDangKy(LocalDateTime.now());
         dk.setThoiGianKetThuc(null);
+
+        if (!Boolean.TRUE.equals(khoaHoc.getHasEnrollment())) {
+            khoaHoc.setHasEnrollment(true);
+            khoaHocRepository.save(khoaHoc);
+        }
 
         return dangKyKhoaHocRepository.save(dk);
     }

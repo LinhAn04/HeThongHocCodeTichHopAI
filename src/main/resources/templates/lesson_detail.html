@@ -54,15 +54,18 @@
     <div th:if="${lesson.loai == 3}"
          th:replace="~{fragments/lesson_detail/video :: video(${lesson}, ${trialMode})}">
     </div>
+<!--    <div th:if="${lesson.loai == 3}">VIDEO BLOCK</div>-->
+<!--    <div th:if="${lesson.loai == 4}">CODE BLOCK</div>-->
+
 
     <!-- TYPE 1,2,3: QUIZ (nếu có) -->
-    <div th:if="${lesson.loai != 4}"
+    <div th:if="${lesson.loai == 2}"
          th:replace="~{fragments/lesson_detail/quiz :: quiz(${quiz})}">
     </div>
 
     <!-- TYPE 4: CODE -->
     <div th:if="${lesson.loai == 4}"
-         th:replace="fragments/course_detail/code :: code(${lesson})">
+         th:replace="fragments/lesson_detail/code :: code(${lesson})">
     </div>
 
     <form th:if="${!trialMode}" method="post" th:action="@{'/lesson/' + ${lesson.idBaiHoc} + '/complete'}">

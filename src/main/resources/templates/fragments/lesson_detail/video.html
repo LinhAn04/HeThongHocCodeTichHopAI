@@ -4,7 +4,7 @@
 
 <section class="lesson-card"
          th:fragment="video(lesson, trialMode)"
-         th:if="${lesson.youtubeVideoId != null}">
+         th:if="${lesson.loai == 3}">
 
     <div class="video-wrap">
         <iframe
